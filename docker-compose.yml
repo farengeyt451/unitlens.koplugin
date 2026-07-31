@@ -1,0 +1,18 @@
+services:
+  koreader:
+    image: ghcr.io/zephyros-dev/koreader:latest
+    container_name: koreader-emulator
+    ports:
+      - '3000:3000' # Web interface http://localhost:3000
+      - '3001:3001' # HTTPS
+    cap_add:
+      - CAP_NET_RAW
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Kyiv
+    volumes:
+      - ./books:/books
+      - ./unitconverter.koplugin:/config/.config/koreader/plugins/unitconverter.koplugin
+      - ./volume/config:/config
+    restart: unless-stopped

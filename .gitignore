@@ -1,0 +1,51 @@
+# === KOReader emulator runtime (container-generated) ===
+# The whole volume/ is the container's /config home dir: cache, ssl,
+# desktop session, generated settings. None of it belongs in git.
+volume/
+!volume/.gitkeep
+
+# KOReader / plugin runtime artifacts (in case config is mounted elsewhere)
+*.sdr/
+history.lua
+settings.reader.lua
+*.metadata.lua
+koreader.log
+crash.log
+cache/
+.cache/
+
+# === Lua ===
+*.luac
+luac.out
+
+# === Editors / IDEs ===
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+*.bak
+*.tmp
+.\#*
+\#*\#
+
+# === OS junk ===
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# === Secrets / local env ===
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# === Logs ===
+*.log
+logs/
