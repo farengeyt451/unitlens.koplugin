@@ -14,5 +14,6 @@ services:
     volumes:
       - ./books:/books
       - ./unitconverter.koplugin:/config/.config/koreader/plugins/unitconverter.koplugin
+      - ./xray.koplugin:/config/.config/koreader/plugins/xray.koplugin
       - ./volume/config:/config
     restart: unless-stopped
