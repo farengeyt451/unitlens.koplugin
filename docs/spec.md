@@ -25,8 +25,8 @@ Guiding principles:
 - Category: **Length** first (inch, foot, yard, mile <-> mm, cm, m, km). Others
   (area, volume, mass, temperature, speed) use the same machinery and are added later.
 - Systems: **Metric (SI)**, **US customary**, and **British imperial**. Units whose value
-  differs by region (gallon, pint, fluid ounce, …) carry all variants; the popup lists them
-  all (see §4.2) — no region detection needed.
+  differs by region (gallon, pint, fluid ounce, …) list every value as separate `results`
+  lines; the popup shows them all (see §4.2) — no region detection needed.
 - Interaction: scan -> wavy underline -> tap -> tooltip.
 
 ### Out of scope (MVP / non-goals)
@@ -34,6 +34,9 @@ Guiding principles:
 - **No quantity math.** The popup shows a *per-unit rate*, e.g. `1 фут = 0.3048 м`.
   For `600 mm` the reader sees `1 mm = 0.0394 in`, not `600 mm = 23.62 in`. This is a
   deliberate KISS tradeoff: convey the *scale* of a unit, not compute exact values.
+- **No conversion math.** Values are **precomputed** in the dictionary (§4.2); the engine only
+  matches a word and renders the stored line(s). There is no `converter` module, no runtime
+  factors, no SI-base graph — the dict *is* the source of truth.
 - **No spelled-out number parsing.** `двенадцати` is never turned into `12`. The unit
   word alone (`футах`) triggers the underline; the number is irrelevant to the result.
 - **No region (US vs imperial) detection.** For units that diverge by region, the popup
@@ -42,19 +45,23 @@ Guiding principles:
 
 ## 3. Core rules
 
-### 3.1 Conversion direction — always the opposite system
+### 3.1 Conversion direction — an authoring convention
 
-Each unit belongs to a measurement **system** — `metric`, or `customary` (the US / British
-imperial family). On tap we convert **to the other side**: customary -> metric, metric ->
-customary. Consequences:
+The intended behaviour is: on tap, show the value in the **opposite** measurement system
+(customary -> metric, metric -> customary). But because values are **precomputed in the dict**
+(§4.2), this is a rule the **dictionary author** follows — not logic the engine runs. The
+engine is **direction-agnostic**: it matches a word and renders the stored line(s).
+Consequences:
 
-- No global "what system is this book?" detection is needed.
-- **Mixed-system books work for free** — each occurrence is handled by its own unit.
+- No global "what system is this book?" detection, and **no conversion math at all**.
+- **Mixed-system books work for free** — each occurrence renders its own unit's lines.
+- Each unit is authored **one-directional**: defining `foot` (-> metric) does **not** provide
+  `metre` (-> customary); the metric side is its own dict entry. More entries, but fully
+  explicit and WYSIWYG.
+- Region divergence (US vs imperial gallon) needs **no** detection — the unit lists every
+  value as separate `results` lines (§4.2).
 - The active dictionary is the **book's language** — auto from metadata, or the reader is
-  asked to pick when it can't be determined; user-overridable and remembered per book
-  (see §3.3).
-- Units whose value differs by region (US vs imperial — gallon, pint, …) need **no** region
-  detection: the popup **lists every variant** (§4.2), symmetrically in both directions.
+  asked to pick when it can't be determined; user-overridable and remembered per book (§3.3).
 
 ### 3.2 Detection — spelled forms vs. symbols
 
@@ -104,8 +111,8 @@ Dropping in `es.lua` therefore makes **Español** appear automatically — no co
 
 Language identity: dictionaries are keyed by their **primary language subtag** (`ru`, `en`,
 `es`), normalized (lowercase, `_`/`-` collapsed). This is unambiguous for word matching.
-Region variants (`en-US` vs `en-GB`) affect only a few conversion factors (US vs imperial
-gallon/pint), not word matching — deferred as a later refinement.
+Region variants (`en-US` vs `en-GB`) affect only a few unit **values** (US vs imperial
+gallon/pint) — listed as separate `results` lines (§4.2), not word matching.
 
 ## 4. Dictionary format
 
@@ -129,34 +136,58 @@ An earlier idea — one `endings = { "", "а", "ов", ... }` list reused for ev
 ### Authoring shape (`dicts/ru.lua`, or a user file `xx_YY.lua`)
 
 Every dictionary self-declares its identity (used to build the language menu and for
-auto-selection) and lists the **explicit inflected forms** of each unit:
+auto-selection), carries a `strings` block for localized popup text (§4.3), and lists each
+unit's **explicit inflected forms** plus its **precomputed `results`** (§4.2):
 
 ```lua
 return {
-  lang = "ru",          -- BCP-47 primary subtag; menu + auto-selection key
-  name = "Русский",     -- endonym shown in the language menu
+  lang = "ru",              -- BCP-47 primary subtag; menu + auto-selection key
+  name = "Русский",         -- endonym shown in the language menu
+
+  -- Localized popup text for THIS language (§4.3). Optional; missing keys skip a line.
+  strings = {
+    system_label   = "Система",
+    category_label = "Категория",
+    systems    = { metric = "Метрическая", customary = "Американская/Британская" },
+    categories = { length = "Длина", volume = "Объём" },
+  },
+
   units = {
-    foot = {
-      system = "customary", to = { unit = "м" }, factor = 0.3048,
-      forms = { "фут", "фута", "футу", "футом", "футе",
-                "футы", "футов", "футам", "футами", "футах" },
-      symbols = { "ft" },            -- short -> requires an adjacent digit (§4.1)
+    metre = {
+      name    = "метр",                 -- source display in the popup line
+      system  = "metric",               -- key -> strings.systems  (optional metadata)
+      category = "length",              -- key -> strings.categories (optional metadata)
+      forms   = { "метр", "метра", "метру", "метром", "метре",
+                  "метры", "метров", "метрам", "метрами", "метрах" },
+      symbols = { "м" },                -- digit-gated: bare "м" needs a number (§4.1)
+      results = {                       -- precomputed lines (§4.2)
+        { value = "3,28084", unit = "фута" },   -- -> "1 метр = 3,28084 фута"
+      },
     },
-    inch = {
-      system = "customary", to = { unit = "см" }, factor = 2.54,
-      forms = { "дюйм", "дюйма", "дюйму", "дюймом", "дюйме",
-                "дюймы", "дюймов", "дюймам", "дюймами", "дюймах" },
-      symbols = { "in" },
-    },
-    metre = {   -- metric side, converted the opposite way (to customary)
-      system = "metric", to = { unit = "ft" }, factor = 3.28084,
-      forms = { "метр", "метра", "метру", "метром", "метре",
-                "метры", "метров", "метрам", "метрами", "метрах" },
-      symbols = { "м" },             -- bare "м" is ambiguous -> needs a digit
+    arshin = {                          -- user-addable historical unit
+      name    = "аршин",
+      category = "length",              -- (no `system` -> that header line is skipped)
+      forms   = { "аршин", "аршина", "аршину", "аршином", "аршине",
+                  "аршины", "аршинам", "аршинами", "аршинах" },
+      -- no `symbols` -> only spelled forms match; nothing is digit-gated
+      results = {
+        { value = "71,12",  unit = "см" },
+        { value = "0,7112", unit = "м"  },
+      },
     },
   },
 }
 ```
+
+Fields:
+
+| field | role | required |
+|---|---|---|
+| `forms` | spelled inflected forms; **standalone** matches (§3.2) | yes |
+| `symbols` | abbreviations; **digit-gated** matches (§3.2, §4.1) | no |
+| `name` | source display in the popup line (author's spelling — `metre`/`meter`/`m`) | yes |
+| `results` | ordered list of precomputed lines (§4.2) | yes |
+| `system`, `category` | **keys** into the dict's `strings` for the popup header (§4.3) | no |
 
 Explicit `forms` are the **source of truth** — transparent, and free of both the
 incompleteness and over-generation problems above. At **load time** they compile to a flat,
@@ -214,81 +245,155 @@ metre = {
 > (`are`, `род`). This judgment lives in the author's head, not in the data — which keeps the
 > dictionaries as simple as possible.
 
-### 4.2 Unit value: `factor` or `variants`
+### 4.2 Results — precomputed conversion lines
 
-A unit resolves to its SI base via **either** a single `factor` (value is region-invariant)
-**or** an ordered `variants` list (value differs by region — the US-vs-imperial split):
+Because the plugin never parses the quantity (§2), the converted value is known at authoring
+time. So each unit **stores the answer directly** — no conversion math, no SI-base factor, no
+`converter` module. `results` is an ordered list; each entry renders exactly one popup line:
 
 ```lua
-foot = {                                  -- invariant: US == imperial
-  category = "length", system = "customary",
-  forms = { "foot", "feet" }, symbols = { "ft" },
-  to = { unit = "m" }, factor = 0.3048,   -- single line: "1 foot = 0.3048 m"
-},
-gallon = {                                -- divergent: value depends on region
-  category = "volume", system = "customary",
+{ value = "<string>", unit = "<label>", label = "<optional note>" }
+```
+
+- `value` is a **string**, shown verbatim — the author controls precision *and* the decimal
+  mark (ru `"0,3048"`, en `"0.3048"`). No float formatting, no locale code in the engine.
+- `unit` is the target label printed after the value (`"m"`, `"см"`, `"фута"`).
+- `label` (optional) disambiguates one line among several — the region-variant case.
+
+One entry -> one line; several entries -> several lines. This **single shape** covers both a
+plain conversion and the US-vs-imperial split — there is no separate "variants" concept:
+
+```lua
+foot = {                                  -- one result -> one line
+  name = "foot", system = "customary", category = "length",
+  forms = { "foot", "feet" }, symbols = { "ft", "′", "'" },
+  results = { { value = "0.3048", unit = "m" } },
+}
+gallon = {                                -- several results -> several lines
+  name = "gallon", system = "customary", category = "volume",
   forms = { "gallon", "gallons" }, symbols = { "gal" },
-  to = { unit = "L" },                    -- SI target unit shown in the popup
-  variants = {                            -- ordered -> deterministic popup order
-    { label = "U.S. liquid", factor = 3.785411784 },
-    { label = "U.S. dry",    factor = 4.40488377  },
-    { label = "imperial",    factor = 4.54609     },
+  results = {
+    { value = "3.785", unit = "L", label = "US liquid" },
+    { value = "4.405", unit = "L", label = "US dry"   },
+    { value = "4.546", unit = "L", label = "imperial" },
   },
-},
+}
 ```
 
-We do **not** detect the book's region. For a `variants` unit the popup **lists every
-variant** and the reader picks the relevant one:
+**Render template** per line: `1 {name} = {value} {unit}`, appending ` — {label}` only when a
+`label` is present. So `gallon` renders three labelled lines; `foot` renders one.
+
+Direction is an **authoring convention** (§3.1): the author picks the target, so defining
+`foot` does not auto-provide `metre` — the metric side is its own entry.
+
+### 4.3 Display strings — the `strings` block
+
+The active dict is also the **translation source** for the popup header. A dict-level
+`strings` block localizes the two field labels and maps the `system`/`category` **keys** to
+visible text:
+
+```lua
+strings = {
+  system_label   = "Система",
+  category_label = "Категория",
+  systems    = { metric = "Метрическая", customary = "Американская/Британская" },
+  categories = { length = "Длина", volume = "Объём" },
+}
+```
+
+The full popup for a matched unit is the header (from `strings`) followed by its `results`:
 
 ```
-1 gallon =
-  3.785 L — U.S. liquid
-  4.405 L — U.S. dry
-  4.546 L — imperial
+Система: Метрическая
+Категория: Длина
+
+1 фут = 0,3048 метра
 ```
 
-This is symmetric — tapping a metric unit lists all customary equivalents likewise
-(`1 л = 0.264 US liq / 0.227 US dry / 0.220 imp gal`). Labels live in the dictionary, so a
-Russian `галлон` entry carries Russian labels — no code branching. Invariant units (a plain
-`factor`) render a single line.
+Rules:
 
-Milestone note: length-first needs only the `factor` path; `variants` is first exercised at
-the volume milestone, with no rework to the schema.
+- **Keys vs. text stay separated.** A unit stores stable keys (`system = "metric"`); the
+  visible string comes from `strings.systems[key]` / `strings.categories[key]` in the active
+  dict. A user adding `system = "history"` just adds `history = "Историческая"` to `strings`.
+- **Graceful skip.** If a unit omits `system`/`category`, or `strings` has no entry for the
+  key, that header line is simply **not shown** — so a minimal user unit with no metadata
+  still renders just its result line(s). `strings` itself is optional.
+- **Extensible.** The same block may later carry other UI text (the "language not detected"
+  notice, menu labels); for now it holds only `system`/`category`.
 
-### 4.3 User dictionaries
+### 4.4 User dictionaries
 
 - Built-in `ru`/`en` are the default (the plugin works with **zero configuration**).
 - A user drops `xx_YY.lua` into the plugin's dict directory to **extend or override**
   built-ins. Same format. A commented template ships with the plugin.
+- Values are **hand-authored and manually verified** before shipping — there is no runtime
+  validator (a deliberate KISS choice). [docs/units.md](units.md) is the canonical reference
+  the built-in dicts are checked against.
 
-The canonical unit data (all categories, forms, factors) lives in
+The canonical unit data (all categories, forms, values) lives in
 [docs/units.md](units.md) and drives the built-in dictionaries.
 
 ## 5. Architecture
 
-Pure modules have **no KOReader dependencies** and are unit-testable off-device with `luajit`:
+The engine is deliberately small: a **matcher + renderer over dumb dicts**. The **pure core**
+has no KOReader dependencies and is unit-testable off-device with `luajit`; the **integration
+layer** touches KOReader APIs.
+
+```
+   DATA                 PURE CORE  (luajit-testable)              KOREADER INTEGRATION
+ ┌──────────┐         ┌──────────────────────────────┐         ┌───────────────────────┐
+ │ dicts/   │  load   │ dict.lua                     │  active │ langselect.lua        │
+ │  en.lua  │────────▶│  load + flatten:             │◀────────│  pick active dict per │
+ │  ru.lua  │         │  forms[] · symbols[] ·        │  lang   │  book (meta/menu/ask) │
+ │  xx_YY   │         │  units[] · strings           │         └───────────┬───────────┘
+ └──────────┘         └───────────────┬──────────────┘                     │
+                       compiled dict  │                                     │
+                                      ▼                                     │
+                      ┌──────────────────────────────┐        page tokens  │
+                      │ matcher.lua                  │◀───────────────┐     │
+                      │  forms standalone /           │                │     │
+                      │  symbols need a digit         │──── matches ──▶│     │
+                      └───────────────┬──────────────┘   (unit+span)  │     │
+                                      ▼                                │     │
+                      ┌──────────────────────────────┐                │     │
+                      │ format.lua                   │                │     │
+                      │  unit + strings -> popup text │                │     │
+                      └───────────────┬──────────────┘                │     │
+                            popup text│                                │     │
+ ┌─────────────────────────────────────────────────────────────┐     │     │
+ │ INTEGRATION            │                        │            │     │     │
+ │  scanner.lua ──tokens──┘   render.lua ◀─text────┘            │     │     │
+ │  page -> XPointer          underline overlay +               │─────┘     │
+ │  word tokens               tap -> tooltip                    │           │
+ └───────────────────────────────┬─────────────────────────────┘           │
+                                  │ events · cache · menu · lifecycle       │
+                      ┌───────────┴──────────────────────────────────────────┘
+                      │ main.lua  (KOReader wiring)
+                      └──────────────────────────────────────────────────────
+```
 
 | Module | Kind | Responsibility |
 |---|---|---|
-| `converter.lua` | pure | Conversion factors + formatting -> `1 <unit> = <n> <target>`; one labeled line per variant for divergent units. |
-| `dict.lua` | pure | Load dictionaries; expand `forms` -> standalone `forms[token]=unitdef` and `symbols` -> digit-gated `symbols[token]=unitdef`; expose each dict's `lang`/`name`. |
-| `matcher.lua` | pure | Apply the forms-standalone / symbols-need-digit rule over a token array -> match indices. |
+| `dict.lua` | pure | Load dictionaries; flatten `forms` -> standalone `forms[token]=unitdef` and `symbols` -> digit-gated `symbols[token]=unitdef`; expose each dict's `units`, `strings`, `lang`, `name`. |
+| `matcher.lua` | pure | Apply the forms-standalone / symbols-need-digit rule over a token array -> matches (unit + token span). |
+| `format.lua` | pure | Build popup text from a matched unit + the dict's `strings`: header (`system`/`category`, with graceful skip) + one line per `results` entry. Replaces the old converter — pure string assembly, no math. |
 | `langselect.lua` | KOReader | Resolve the active language (per-book choice -> metadata -> ask); build the language menu; persist the choice in the document sidecar; prompt when undetectable. |
 | `scanner.lua` | KOReader | Walk visible page into `{text, start_xp, end_xp}` tokens; run matcher against the active dict. |
-| `render.lua` | KOReader | Wrap `view.paintTo` (underline); resolve XPointers -> boxes; wrap `ui.highlight.onTap` (tap/tooltip). |
-| `main.lua` | KOReader | Wiring: page-change events, menus, cache, mounts. |
+| `render.lua` | KOReader | Wrap `view.paintTo` (underline); resolve XPointers -> boxes; wrap `ui.highlight.onTap`; show the `format.lua` tooltip. |
+| `main.lua` | KOReader | Wiring: page-change events, menus, cache, lifecycle. |
 
 ### 5.1 Data flow
 
 ```
 page change
   -> scanner: walk visible words into XPointer tokens {text, start_xp, end_xp}
-  -> matcher (pure): forms-set lookup (standalone) + symbols digit gate
+  -> matcher (pure): forms-set lookup (standalone) + symbols digit gate -> matches
   -> resolve matches to screen boxes via doc:getScreenBoxesFromPositions(start_xp, end_xp)
      (cached by rendering-hash signature)
   -> render: wrapped view.paintTo draws the wavy underline at each box
   -> on tap: wrapped ui.highlight.onTap hit-tests the point against boxes
-  -> tooltip: converter -> "1 фут = 0.3048 м"
+  -> format.lua: unit + dict.strings -> "Система: … / Категория: … / 1 фут = 0,3048 м"
+  -> tooltip shows the assembled text
 ```
 
 ### 5.2 KOReader integration notes
@@ -323,18 +428,18 @@ Lua's `%a` and `string.lower` are ASCII-only. Therefore:
 
 ## 7. Milestones
 
-1. **Pure core (off-device, spec-driven):** `converter.lua`, `dict.lua` + `dicts/{ru,en}.lua`,
-   `matcher.lua`; tests over sample RU/EN sentences.
+1. **Pure core (off-device, spec-driven):** `dict.lua` + `dicts/{ru,en}.lua`, `matcher.lua`,
+   `format.lua`; tests over sample RU/EN sentences and expected popup text.
 2. **Live scan (device, log only):** hook page-change; walk page to XPointer tokens; run
    matcher; log matches.
 3. **Underline rendering:** `paintTo` overlay; XPointers -> boxes (cached); draw wavy line.
-4. **Tap -> tooltip:** wrap `onTap`; hit-test; show rate string.
+4. **Tap -> tooltip:** wrap `onTap`; hit-test; show the `format.lua` text.
 5. **Language selection:** `langselect.lua` — auto from metadata (ask when undetectable), dynamic
    language menu, per-book override remembered in the sidecar.
 6. **Extensibility & polish:** user dict directory + template; menu toggle; cache tuning.
 
 ## 8. Reference
 
-- Unit data (all categories, forms, factors): [docs/units.md](units.md).
+- Unit data (all categories, forms, values): [docs/units.md](units.md).
 - Interaction/rendering approach studied from the `xray.koplugin` offline unit converter
   (paintTo overlay, `getScreenBoxesFromPositions`, `highlight.onTap`, rendering-hash cache).
