@@ -415,7 +415,11 @@ page change
 Lua's `%a` and `string.lower` are ASCII-only. Therefore:
 
 - Tokenize on whitespace/punctuation (Cyrillic bytes are non-ASCII and survive).
-- Case-fold with KOReader's Unicode helper, not `string.lower`.
+- **Case-fold via a full-Unicode library, never a hand-rolled case table.** On device
+  `util.casefold` delegates to KOReader's bundled **`ffi/utf8proc`** (`Utf8Proc.lowercase`);
+  off-device the pure-core tests use **`luautf8`** (`luarocks install --local luautf8`,
+  module `lua-utf8`). No silent ASCII fallback — `util.lua` errors if neither is present, so
+  we never half-match non-Latin text. This is what lets a user drop in *any* language dict.
 - Truncate strings on UTF-8 character boundaries, never raw bytes.
 
 ## 6. Caching
