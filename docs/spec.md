@@ -1,4 +1,4 @@
-# Unit Converter — KOReader Plugin Specification
+# Unit Lens — KOReader Plugin Specification
 
 Status: Draft (initial). Spec-driven development — this document is the source of truth; code follows it.
 
@@ -342,7 +342,7 @@ layer** touches KOReader APIs.
 ```
    DATA                 PURE CORE  (luajit-testable)              KOREADER INTEGRATION
  ┌──────────┐         ┌──────────────────────────────┐         ┌───────────────────────┐
- │ dicts/   │  load   │ dict.lua                     │  active │ langselect.lua        │
+ │ dicts/   │  load   │ ul_dict.lua                  │  active │ ul_langselect.lua     │
  │  en.lua  │────────▶│  load + flatten:             │◀────────│  pick active dict per │
  │  ru.lua  │         │  forms[] · symbols[] ·        │  lang   │  book (meta/menu/ask) │
  │  xx_YY   │         │  units[] · strings           │         └───────────┬───────────┘
@@ -350,19 +350,19 @@ layer** touches KOReader APIs.
                        compiled dict  │                                     │
                                       ▼                                     │
                       ┌──────────────────────────────┐        page tokens  │
-                      │ matcher.lua                  │◀───────────────┐     │
+                      │ ul_matcher.lua               │◀───────────────┐     │
                       │  forms standalone /           │                │     │
                       │  symbols need a digit         │──── matches ──▶│     │
                       └───────────────┬──────────────┘   (unit+span)  │     │
                                       ▼                                │     │
                       ┌──────────────────────────────┐                │     │
-                      │ format.lua                   │                │     │
+                      │ ul_format.lua                │                │     │
                       │  unit + strings -> popup text │                │     │
                       └───────────────┬──────────────┘                │     │
                             popup text│                                │     │
  ┌─────────────────────────────────────────────────────────────┐     │     │
  │ INTEGRATION            │                        │            │     │     │
- │  scanner.lua ──tokens──┘   render.lua ◀─text────┘            │     │     │
+ │  ul_scanner.lua ─tokens┘   ul_render.lua ◀─text─┘            │     │     │
  │  page -> XPointer          underline overlay +               │─────┘     │
  │  word tokens               tap -> tooltip                    │           │
  └───────────────────────────────┬─────────────────────────────┘           │
@@ -374,13 +374,20 @@ layer** touches KOReader APIs.
 
 | Module | Kind | Responsibility |
 |---|---|---|
-| `dict.lua` | pure | Load dictionaries; flatten `forms` -> standalone `forms[token]=unitdef` and `symbols` -> digit-gated `symbols[token]=unitdef`; expose each dict's `units`, `strings`, `lang`, `name`. |
-| `matcher.lua` | pure | Apply the forms-standalone / symbols-need-digit rule over a token array -> matches (unit + token span). |
-| `format.lua` | pure | Build popup text from a matched unit + the dict's `strings`: header (`system`/`category`, with graceful skip) + one line per `results` entry. Replaces the old converter — pure string assembly, no math. |
-| `langselect.lua` | KOReader | Resolve the active language (per-book choice -> metadata -> ask); build the language menu; persist the choice in the document sidecar; prompt when undetectable. |
-| `scanner.lua` | KOReader | Walk visible page into `{text, start_xp, end_xp}` tokens; run matcher against the active dict. |
-| `render.lua` | KOReader | Wrap `view.paintTo` (underline); resolve XPointers -> boxes; wrap `ui.highlight.onTap`; show the `format.lua` tooltip. |
+| `ul_dict.lua` | pure | Load dictionaries; flatten `forms` -> standalone `forms[token]=unitdef` and `symbols` -> digit-gated `symbols[token]=unitdef`; expose each dict's `units`, `strings`, `lang`, `name`. |
+| `ul_matcher.lua` | pure | Apply the forms-standalone / symbols-need-digit rule over a token array -> matches (unit + token span). |
+| `ul_format.lua` | pure | Build popup text from a matched unit + the dict's `strings`: header (`system`/`category`, with graceful skip) + one line per `results` entry. Replaces the old converter — pure string assembly, no math. |
+| `ul_langselect.lua` | KOReader | Resolve the active language (per-book choice -> metadata -> ask); build the language menu; persist the choice in the document sidecar; prompt when undetectable. |
+| `ul_scanner.lua` | KOReader | Walk visible page into `{text, start_xp, end_xp}` tokens; run matcher against the active dict. |
+| `ul_render.lua` | KOReader | Wrap `view.paintTo` (underline); resolve XPointers -> boxes; wrap `ui.highlight.onTap`; show the `ul_format.lua` tooltip. |
 | `main.lua` | KOReader | Wiring: page-change events, menus, cache, lifecycle. |
+
+> **Module naming.** Every plugin module is prefixed `ul_` (Unit Lens). KOReader loads
+> all plugins into a **shared `package.loaded`**, and it already owns generic names such as
+> `util` (`frontend/util.lua`), so a bare `require("util")` would return KOReader's module,
+> not ours. Unique prefixes avoid this collision. The two exceptions are fixed by KOReader:
+> the entry point must be `main.lua`, and dictionaries live under `dicts/` (loaded as
+> `require("dicts.<lang>")`).
 
 ### 5.1 Data flow
 
@@ -392,7 +399,7 @@ page change
      (cached by rendering-hash signature)
   -> render: wrapped view.paintTo draws the wavy underline at each box
   -> on tap: wrapped ui.highlight.onTap hit-tests the point against boxes
-  -> format.lua: unit + dict.strings -> "Система: … / Категория: … / 1 фут = 0,3048 м"
+  -> ul_format.lua: unit + dict.strings -> "Система: … / Категория: … / 1 фут = 0,3048 м"
   -> tooltip shows the assembled text
 ```
 
@@ -416,9 +423,9 @@ Lua's `%a` and `string.lower` are ASCII-only. Therefore:
 
 - Tokenize on whitespace/punctuation (Cyrillic bytes are non-ASCII and survive).
 - **Case-fold via a full-Unicode library, never a hand-rolled case table.** On device
-  `util.casefold` delegates to KOReader's bundled **`ffi/utf8proc`** (`Utf8Proc.lowercase`);
+  `ul_util.casefold` delegates to KOReader's bundled **`ffi/utf8proc`** (`Utf8Proc.lowercase`);
   off-device the pure-core tests use **`luautf8`** (`luarocks install --local luautf8`,
-  module `lua-utf8`). No silent ASCII fallback — `util.lua` errors if neither is present, so
+  module `lua-utf8`). No silent ASCII fallback — `ul_util.lua` errors if neither is present, so
   we never half-match non-Latin text. This is what lets a user drop in *any* language dict.
 - Truncate strings on UTF-8 character boundaries, never raw bytes.
 
@@ -432,13 +439,13 @@ Lua's `%a` and `string.lower` are ASCII-only. Therefore:
 
 ## 7. Milestones
 
-1. **Pure core (off-device, spec-driven):** `dict.lua` + `dicts/{ru,en}.lua`, `matcher.lua`,
-   `format.lua`; tests over sample RU/EN sentences and expected popup text.
+1. **Pure core (off-device, spec-driven):** `ul_dict.lua` + `dicts/{ru,en}.lua`, `ul_matcher.lua`,
+   `ul_format.lua`; tests over sample RU/EN sentences and expected popup text.
 2. **Live scan (device, log only):** hook page-change; walk page to XPointer tokens; run
    matcher; log matches.
 3. **Underline rendering:** `paintTo` overlay; XPointers -> boxes (cached); draw wavy line.
-4. **Tap -> tooltip:** wrap `onTap`; hit-test; show the `format.lua` text.
-5. **Language selection:** `langselect.lua` — auto from metadata (ask when undetectable), dynamic
+4. **Tap -> tooltip:** wrap `onTap`; hit-test; show the `ul_format.lua` text.
+5. **Language selection:** `ul_langselect.lua` — auto from metadata (ask when undetectable), dynamic
    language menu, per-book override remembered in the sidecar.
 6. **Extensibility & polish:** user dict directory + template; menu toggle; cache tuning.
 

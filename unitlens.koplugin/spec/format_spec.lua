@@ -1,6 +1,6 @@
 return function(t)
-	local dict = require("dict")
-	local format = require("format")
+	local dict = require("ul_dict")
+	local format = require("ul_format")
 	local en = dict.compile(require("dicts.en"))
 	local ru = dict.compile(require("dicts.ru"))
 

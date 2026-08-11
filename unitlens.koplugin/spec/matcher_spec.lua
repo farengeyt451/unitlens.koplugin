@@ -1,6 +1,6 @@
 return function(t)
-	local dict = require("dict")
-	local matcher = require("matcher")
+	local dict = require("ul_dict")
+	local matcher = require("ul_matcher")
 	local en = dict.compile(require("dicts.en"))
 	local ru = dict.compile(require("dicts.ru"))
 

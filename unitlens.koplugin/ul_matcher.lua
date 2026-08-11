@@ -4,7 +4,7 @@ matcher.lua — pure matching over a token array
 Returns a list of matches: { unit = unitdef, from = i, to = i, token = tok }
 ]]
 
-local util = require("util")
+local util = require("ul_util")
 
 local M = {}
 

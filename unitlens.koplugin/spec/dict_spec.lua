@@ -1,5 +1,5 @@
 return function(t)
-	local dict = require("dict")
+	local dict = require("ul_dict")
 	local en = dict.compile(require("dicts.en"))
 	local ru = dict.compile(require("dicts.ru"))
 

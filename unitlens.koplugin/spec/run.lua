@@ -2,11 +2,11 @@
 spec/run.lua — tiny off-device test runner for the pure core.
 
 Run from the plugin directory:
-    cd unitconverter.koplugin && lua5.1 spec/run.lua
+    cd unitlens.koplugin && lua5.1 spec/run.lua
 (luajit or lua5.4 also work — the core avoids version-specific features.)
 ]]
 
--- Make `require("util")`, `require("dicts.en")`, etc. resolve from the plugin root.
+-- Make `require("ul_util")`, `require("dicts.en")`, etc. resolve from the plugin root.
 package.path = "./?.lua;./?/init.lua;" .. package.path
 
 -- Also look in the user-local luarocks tree so `require("lua-utf8")` (the

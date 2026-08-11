@@ -1,5 +1,5 @@
 return function(t)
-	local util = require("util")
+	local util = require("ul_util")
 
 	-- casefold: full Unicode via utf8proc/luautf8 (no hand-rolled case table)
 	t.eq(util.casefold("Miles"), "miles", "casefold latin")

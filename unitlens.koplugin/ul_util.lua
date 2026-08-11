@@ -20,7 +20,7 @@ do
 			end
 		else
 			error(
-				"unitconverter/util: no Unicode lowercaser found — expected KOReader's "
+				"unitlens/util: no Unicode lowercaser found — expected KOReader's "
 					.. "'ffi/utf8proc' on device, or luautf8 for off-device tests "
 					.. "(`luarocks install --local luautf8`)."
 			)
@@ -41,7 +41,7 @@ function M.tokenize(s)
 
 		if not (ok and m and m.gsub) then
 			error(
-				"unitconverter/util.tokenize needs luautf8 (off-device helper only). "
+				"unitlens/util.tokenize needs luautf8 (off-device helper only). "
 					.. "On device, feed crengine word tokens to matcher.match instead."
 			)
 		end

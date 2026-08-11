@@ -5,7 +5,7 @@ Takes a raw dictionary table (as returned by dicts/xx.lua) and compiles it into
 flat lookup maps for O(1) matching
 ]]
 
-local util = require("util")
+local util = require("ul_util")
 
 local M = {}
 

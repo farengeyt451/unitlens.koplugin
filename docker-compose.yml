@@ -13,7 +13,7 @@ services:
       - TZ=Europe/Kyiv
     volumes:
       - ./books:/books
-      - ./unitconverter.koplugin:/config/.config/koreader/plugins/unitconverter.koplugin
+      - ./unitlens.koplugin:/config/.config/koreader/plugins/unitlens.koplugin
       - ./xray.koplugin:/config/.config/koreader/plugins/xray.koplugin
       - ./volume/config:/config
     restart: unless-stopped
