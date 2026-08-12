@@ -6,7 +6,8 @@ local logger = require("logger")
 
 local M = {}
 
-local GUARD_SAFETY_CAP <const> = 4000
+-- KOReader runs on LuaJIT (5.1 semantics), which has no `<const>` attribute.
+local GUARD_SAFETY_CAP = 4000
 
 -- Safety wrapper helper
 local function try(fn)

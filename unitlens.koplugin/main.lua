@@ -14,8 +14,6 @@ rendering yet — this milestone just proves the device scan.
 --]]
 
 local WidgetContainer = require("ui/widget/container/widgetcontainer")
-local UIManager = require("ui/uimanager")
-local InfoMessage = require("ui/widget/infomessage")
 local DataStorage = require("datastorage")
 local logger = require("logger")
 local _ = require("gettext")
@@ -27,6 +25,7 @@ local dict = require("ul_dict")
 local matcher = require("ul_matcher")
 local format = require("ul_format")
 local scanner = require("ul_scanner")
+local render = require("ul_render")
 
 -- Milestone 2 is log-only. KOReader's stdout is swallowed by the emulator, so we
 -- also append to a file we can tail: <data dir>/unitlens.log.
@@ -85,6 +84,7 @@ function UnitLens:init()
 	self.dicts = loadDicts()
 	self.last_sig = nil
 	self._last_count = 0
+	self.enabled = true
 
 	if self.ui and self.ui.menu then
 		self.ui.menu:registerToMainMenu(self)
@@ -151,6 +151,15 @@ function UnitLens:scan(reason)
 		return
 	end
 
+	-- Overlay/tap handlers need self.ui.view / self.ui.highlight, which exist by
+	-- reader time; mount is idempotent so calling it here is safe.
+	render.mount(self)
+
+	if not self.enabled then
+		render.clear(self)
+		return
+	end
+
 	local sig = self:_pageSig()
 
 	if sig and sig == self.last_sig then
@@ -177,7 +186,26 @@ function UnitLens:scan(reason)
 	end
 
 	local matches = matcher.match(d, texts)
+
+	-- Turn matches into render records carrying the XPointer span (for the box)
+	-- and the precomputed popup text (for the tooltip).
+	local render_matches = {}
+
+	for _, m in ipairs(matches) do
+		local tk = tokens[m.from]
+		if tk then
+			render_matches[#render_matches + 1] = {
+				start_xp = tk.start_xp,
+				end_xp = tk.end_xp,
+				popup = format.popup(m.unit, d.strings),
+				token = tk.text,
+			}
+		end
+	end
+
 	local dt = os.clock() - t0
+
+	render.setMatches(self, render_matches)
 
 	log(
 		string.format(
@@ -190,12 +218,6 @@ function UnitLens:scan(reason)
 			dt
 		)
 	)
-
-	for _, m in ipairs(matches) do
-		local tk = tokens[m.from]
-		local popup = format.popup(m.unit, d.strings):gsub("\n", " | ")
-		log(string.format("  MATCH '%s' [%s] -> %s", tk and tk.text or "?", m.unit.key, popup))
-	end
 
 	self._last_count = #matches
 end
@@ -210,23 +232,26 @@ function UnitLens:onPosUpdate()
 end
 
 function UnitLens:onReaderReady()
+	render.mount(self)
 	self:scan("ready")
 end
 
 function UnitLens:addToMainMenu(menu_items)
 	menu_items.unitlens = {
-		text = _("Unit Lens: scan this page (log)"),
-		sorting_hint = "more_tools",
-		callback = function()
-			self.last_sig = nil -- force a rescan
-			self:scan("manual")
-			UIManager:show(InfoMessage:new({
-				text = string.format(
-					_("Scanned current page.\nMatches: %d\n(see unitlens.log for details)"),
-					self._last_count or 0
-				),
-			}))
+		text = _("Highlight measurement units"),
+		checked_func = function()
+			return self.enabled
 		end,
+		callback = function()
+			self.enabled = not self.enabled
+			if self.enabled then
+				self.last_sig = nil -- force a rescan of the current page
+				self:scan("toggle-on")
+			else
+				render.clear(self)
+			end
+		end,
+		sorting_hint = "more_tools",
 	}
 end
 
