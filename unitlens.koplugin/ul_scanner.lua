@@ -1,11 +1,14 @@
 --[[
-scanner.lua — device-side page tokenizer (KOReader / crengine).
+scanner.lua — device-side page tokenizer (KOReader / crengine)
 ]]
 
 local logger = require("logger")
 
 local M = {}
 
+local GUARD_SAFETY_CAP <const> = 4000
+
+-- Safety wrapper helper
 local function try(fn)
 	local ok, res = pcall(fn)
 
@@ -16,6 +19,7 @@ local function try(fn)
 	return nil
 end
 
+-- Get the numeric position of an XPointer
 local function pos_of(doc, xp)
 	return try(function()
 		return doc:getPosFromXPointer(xp)
@@ -39,7 +43,7 @@ function M.pageTokens(doc, page)
 		return tokens
 	end
 
-	-- Boundary: start of the next page (nil on the last page).
+	-- Boundary: start of the next page (nil on the last page)
 	local end_xp = try(function()
 		return doc:getPageXPointer(page + 1)
 	end)
@@ -48,7 +52,8 @@ function M.pageTokens(doc, page)
 	local cursor = start_xp
 	local guard = 0
 
-	while guard < 4000 do
+	-- To not overflow in case API misbehaves
+	while guard < GUARD_SAFETY_CAP do
 		guard = guard + 1
 
 		local wstart = try(function()
@@ -67,7 +72,7 @@ function M.pageTokens(doc, page)
 			break
 		end
 
-		-- Stop once we cross into the next page.
+		-- Stop once we cross into the next page
 		if end_pos then
 			local wp = pos_of(doc, wstart)
 			if wp and wp >= end_pos then
@@ -75,18 +80,23 @@ function M.pageTokens(doc, page)
 			end
 		end
 
+		-- Extract word
 		local text = try(function()
 			return doc:getTextFromXPointers(wstart, wend)
 		end)
 
+		local leading_whitespace_pattern = "^%s+"
+		local trailing_whitespace_pattern = "%s+$"
+
 		if text then
-			text = text:gsub("^%s+", ""):gsub("%s+$", "")
+			-- Trim leading/trailing whitespace
+			text = text:gsub(leading_whitespace_pattern, ""):gsub(trailing_whitespace_pattern, "")
 			if text ~= "" then
 				tokens[#tokens + 1] = { text = text, start_xp = wstart, end_xp = wend }
 			end
 		end
 
-		-- Advance; guard against a stuck cursor.
+		-- Guard against a stuck cursor
 		if wend == cursor then
 			local adv = try(function()
 				return doc:getNextVisibleWordStart(wend)
