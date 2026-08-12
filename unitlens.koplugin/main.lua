@@ -1,5 +1,5 @@
 --[[--
-Unit Lens — KOReader plugin.
+Unit Lens — KOReader plugin
 
 Detects measurement units on the visible page and reveals their equivalent in
 the other measurement system (values are precomputed in the dictionaries — no
@@ -31,10 +31,12 @@ local scanner = require("ul_scanner")
 -- Milestone 2 is log-only. KOReader's stdout is swallowed by the emulator, so we
 -- also append to a file we can tail: <data dir>/unitlens.log.
 local LOG_PATH = "/tmp/unitlens.log"
+
 do
 	local ok, dir = pcall(function()
 		return DataStorage:getDataDir()
 	end)
+
 	if ok and dir then
 		LOG_PATH = dir .. "/unitlens.log"
 	end
@@ -43,7 +45,9 @@ end
 local function log(msg)
 	msg = "[unitlens] " .. tostring(msg)
 	logger.info(msg)
+
 	local f = io.open(LOG_PATH, "a")
+
 	if f then
 		f:write(os.date("%H:%M:%S ") .. msg .. "\n")
 		f:close()
@@ -55,13 +59,16 @@ local UnitLens = WidgetContainer:extend({
 	is_doc_only = true,
 })
 
--- Load and compile the built-in dictionaries once.
+-- Load and compile the built-in dictionaries once
 local function loadDicts()
 	local out = {}
+
 	for _, lang in ipairs({ "en", "ru" }) do
 		local ok, raw = pcall(require, "dicts." .. lang)
+
 		if ok and raw then
 			local cok, compiled = pcall(dict.compile, raw)
+
 			if cok then
 				out[lang] = compiled
 			else
@@ -78,17 +85,21 @@ function UnitLens:init()
 	self.dicts = loadDicts()
 	self.last_sig = nil
 	self._last_count = 0
+
 	if self.ui and self.ui.menu then
 		self.ui.menu:registerToMainMenu(self)
 	end
+
 	log("initialised; dicts loaded: " .. table.concat(self:loadedLangs(), ", "))
 end
 
 function UnitLens:loadedLangs()
 	local t = {}
+
 	for k in pairs(self.dicts or {}) do
 		t[#t + 1] = k
 	end
+
 	table.sort(t)
 	return t
 end
@@ -114,14 +125,17 @@ function UnitLens:pickLang()
 	return self:loadedLangs()[1]
 end
 
--- Signature so we don't rescan an unchanged page (page no + rendering hash).
+-- Signature so we don't rescan an unchanged page (page no + rendering hash)
 function UnitLens:_pageSig()
 	local doc = self.ui and self.ui.document
+
 	if not doc then
 		return nil
 	end
+
 	local page = doc.getCurrentPage and doc:getCurrentPage() or 0
 	local hash = ""
+
 	if doc.getDocumentRenderingHash then
 		pcall(function()
 			hash = doc:getDocumentRenderingHash()
@@ -132,18 +146,22 @@ end
 
 function UnitLens:scan(reason)
 	local doc = self.ui and self.ui.document
+
 	if not doc then
 		return
 	end
 
 	local sig = self:_pageSig()
+
 	if sig and sig == self.last_sig then
 		return
 	end
+
 	self.last_sig = sig
 
 	local lang = self:pickLang()
 	local d = lang and self.dicts[lang]
+
 	if not d then
 		log("scan(" .. tostring(reason) .. "): no active dictionary")
 		return
@@ -153,21 +171,26 @@ function UnitLens:scan(reason)
 	local t0 = os.clock()
 	local tokens = scanner.pageTokens(doc, page)
 	local texts = {}
+
 	for i = 1, #tokens do
 		texts[i] = tokens[i].text
 	end
+
 	local matches = matcher.match(d, texts)
 	local dt = os.clock() - t0
 
-	log(string.format(
-		"scan(%s): page=%s lang=%s tokens=%d matches=%d (%.3fs)",
-		tostring(reason),
-		tostring(page),
-		lang,
-		#tokens,
-		#matches,
-		dt
-	))
+	log(
+		string.format(
+			"scan(%s): page=%s lang=%s tokens=%d matches=%d (%.3fs)",
+			tostring(reason),
+			tostring(page),
+			lang,
+			#tokens,
+			#matches,
+			dt
+		)
+	)
+
 	for _, m in ipairs(matches) do
 		local tk = tokens[m.from]
 		local popup = format.popup(m.unit, d.strings):gsub("\n", " | ")
@@ -177,8 +200,7 @@ function UnitLens:scan(reason)
 	self._last_count = #matches
 end
 
--- Reader broadcasts these on navigation. Reflowable docs fire PosUpdate; paged
--- docs fire PageUpdate. We hook both and let the signature guard dedupe.
+-- Reader broadcasts these on navigation
 function UnitLens:onPageUpdate()
 	self:scan("page")
 end
