@@ -162,21 +162,78 @@ end
 -- Underline drawing
 -- ---------------------------------------------------------------------------
 
-local UNDERLINE_COLOR = Blitbuffer.COLOR_DARK_GRAY
+-- Intensity -> 8-bit grey (0 = black, 255 = white).
+local INTENSITY = {
+	light = Blitbuffer.Color8(0xB0),
+	medium = Blitbuffer.Color8(0x70),
+	dark = Blitbuffer.Color8(0x20),
+}
 
--- Paint a 1px wavy line along the bottom of the box.
-local function draw_wavy(bb, box)
+local function draw_solid(bb, box, color, th)
+	bb:paintRect(box.x, box.y + box.h - th, box.w, th, color)
+end
+
+local function draw_double(bb, box, color, th)
+	local line = math.max(1, math.floor(th / 2 + 0.5))
+	local gap = line
+	local y = box.y + box.h - line
+	bb:paintRect(box.x, y, box.w, line, color)
+	bb:paintRect(box.x, y - gap - line, box.w, line, color)
+end
+
+local function draw_dotted(bb, box, color, th)
+	local step = th * 2
+	local y = box.y + box.h - th
+	local x1 = box.x + box.w
+	local x = box.x
+	while x < x1 do
+		bb:paintRect(x, y, math.min(th, x1 - x), th, color)
+		x = x + step
+	end
+end
+
+local function draw_dashed(bb, box, color, th)
+	local dash = math.max(2, Screen:scaleBySize(6))
+	local gap = math.max(1, Screen:scaleBySize(3))
+	local y = box.y + box.h - th
+	local x1 = box.x + box.w
+	local x = box.x
+	while x < x1 do
+		bb:paintRect(x, y, math.min(dash, x1 - x), th, color)
+		x = x + dash + gap
+	end
+end
+
+local function draw_wavy(bb, box, color, th)
 	local amp = math.max(1, Screen:scaleBySize(2))
 	local period = math.max(2, Screen:scaleBySize(6))
-	local thickness = math.max(1, Screen:scaleBySize(1))
-	local base = box.y + box.h - thickness - amp
+	local base = box.y + box.h - th - amp
 	local x1 = box.x + box.w
 	local twopi = 2 * math.pi
-
 	for x = box.x, x1 - 1 do
 		local dy = math.floor(amp * math.sin((x - box.x) / period * twopi) + 0.5)
-		bb:paintRect(x, base + dy, 1, thickness, UNDERLINE_COLOR)
+		bb:paintRect(x, base + dy, 1, th, color)
 	end
+end
+
+local DRAW = {
+	solid = draw_solid,
+	double = draw_double,
+	dotted = draw_dotted,
+	dashed = draw_dashed,
+	wavy = draw_wavy,
+}
+
+-- Draw one box's underline according to the plugin's appearance settings.
+local function draw_underline(bb, box, opts)
+	local style = opts.underline_style or "wavy"
+	if style == "none" then
+		return
+	end
+	local fn = DRAW[style] or draw_wavy
+	local color = INTENSITY[opts.underline_intensity] or INTENSITY.medium
+	local th = math.max(1, Screen:scaleBySize(opts.underline_thickness or 2))
+	fn(bb, box, color, th)
 end
 
 -- ---------------------------------------------------------------------------
@@ -250,6 +307,11 @@ function M.clear(plugin)
 	set_dirty(plugin)
 end
 
+-- Repaint without recomputing matches/boxes (used after an appearance change).
+function M.refresh(plugin)
+	set_dirty(plugin)
+end
+
 function M.mount(plugin)
 	M.mountOverlay(plugin)
 	M.mountTapHandler(plugin)
@@ -271,6 +333,10 @@ function M.mountOverlay(plugin)
 			if not plugin.enabled then
 				return
 			end
+			local opts = plugin.opts or {}
+			if opts.underline_style == "none" then
+				return
+			end
 			resolve_boxes(plugin)
 			local boxes = plugin._ul_boxes
 			if not boxes or #boxes == 0 then
@@ -278,7 +344,7 @@ function M.mountOverlay(plugin)
 			end
 			for _, b in ipairs(boxes) do
 				if b.x and b.y and b.w and b.h then
-					draw_wavy(bb, b)
+					draw_underline(bb, b, opts)
 				end
 			end
 		end)
@@ -338,10 +404,12 @@ function M.showTooltip(plugin, box)
 	if not box or not box.popup then
 		return
 	end
+	-- 0 (Never) disables auto-dismiss; the user taps to close.
+	local timeout = (plugin.opts and plugin.opts.tooltip_timeout) or 4
 	UIManager:show(Tooltip:new({
 		text = box.popup,
 		box = box,
-		timeout = 6,
+		timeout = timeout,
 	}))
 end
 

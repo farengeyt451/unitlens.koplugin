@@ -377,10 +377,12 @@ layer** touches KOReader APIs.
 | `ul_dict.lua` | pure | Load dictionaries; flatten `forms` -> standalone `forms[token]=unitdef` and `symbols` -> digit-gated `symbols[token]=unitdef`; expose each dict's `units`, `strings`, `lang`, `name`. |
 | `ul_matcher.lua` | pure | Apply the forms-standalone / symbols-need-digit rule over a token array -> matches (unit + token span). |
 | `ul_format.lua` | pure | Build popup text from a matched unit + the dict's `strings`: header (`system`/`category`, with graceful skip) + one line per `results` entry. Replaces the old converter — pure string assembly, no math. |
-| `ul_langselect.lua` | KOReader | Resolve the active language (per-book choice -> metadata -> ask); build the language menu; persist the choice in the document sidecar; prompt when undetectable. |
+| `ul_langselect.lua` | KOReader | Resolve the active language (per-book choice -> metadata -> ask); build the language menu items; persist the choice in the document sidecar; prompt when undetectable. |
+| `ul_settings.lua` | KOReader | Read/write appearance settings (`G_reader_settings`) with defaults: enable, underline style/thickness/intensity, tooltip timeout. |
+| `ul_menu.lua` | KOReader | Build the **Unit Lens ▸** submenu (enable toggle, Language, style/thickness/intensity, tooltip timeout, About) from plugin state. |
 | `ul_scanner.lua` | KOReader | Walk visible page into `{text, start_xp, end_xp}` tokens; run matcher against the active dict. |
-| `ul_render.lua` | KOReader | Wrap `view.paintTo` (underline); resolve XPointers -> boxes; wrap `ui.highlight.onTap`; show the `ul_format.lua` tooltip. |
-| `main.lua` | KOReader | Wiring: page-change events, menus, cache, lifecycle. |
+| `ul_render.lua` | KOReader | Wrap `view.paintTo` (underline, style/thickness/intensity from settings); resolve XPointers -> boxes; wrap `ui.highlight.onTap`; show the `ul_format.lua` tooltip (timeout from settings). |
+| `main.lua` | KOReader | Wiring: page-change events, menu, settings, cache, lifecycle. |
 
 > **Module naming.** Every plugin module is prefixed `ul_` (Unit Lens). KOReader loads
 > all plugins into a **shared `package.loaded`**, and it already owns generic names such as
@@ -417,6 +419,37 @@ page change
 - **Word walking:** crengine word-navigation (`getPrevVisibleWordStart` /
   `getTextFromXPointers`) yields an exact XPointer per token.
 
+### 5.4 Settings & menu
+
+All plugin UI lives under a single **Unit Lens ▸** entry, registered under KOReader's
+Tools menu (`addToMainMenu` + `sorting_hint = "more_tools"`), built as a standard nested
+menu (`sub_item_table`) — no bespoke dialog. Layout:
+
+```
+Unit Lens ▸
+  ☑ Highlight measurement units            enable/disable
+  Language ▸        ◉ Auto (from book) · ○ English · ○ Russian · … (one per dict)
+  Underline style ▸ ◉ Wavy · Solid · Dotted · Dashed · Double · None
+  Underline thickness ▸  1px · ◉ 2px · 3px
+  Underline intensity ▸  Light · ◉ Medium · Dark
+  Tooltip timeout ▸      2s · ◉ 4s · 8s · Never
+  About                                    version + credits
+```
+
+| Setting | Key (`unitlens_`) | Values | Default | Scope |
+|---|---|---|---|---|
+| Enabled | `enabled` | bool | `true` | global |
+| Underline style | `underline_style` | wavy/solid/dotted/dashed/double/none | `wavy` | global |
+| Underline thickness | `underline_thickness` | 1/2/3 (px) | `2` | global |
+| Underline intensity | `underline_intensity` | light/medium/dark (grey) | `medium` | global |
+| Tooltip timeout | `tooltip_timeout` | 2/4/8/0 (0 = never, seconds) | `4` | global |
+| Language | `unitlens_lang` (sidecar) | `auto` or a dict code | `auto` | **per-book** |
+
+Appearance settings persist globally via `G_reader_settings`; the language choice is
+per-book in the document sidecar (`DocSettings`). `ul_render` reads the appearance values
+at paint/tooltip time, so changes apply on the next repaint without a rescan; changing the
+language or the enable toggle triggers a rescan.
+
 ### 5.3 UTF-8 pitfalls (must handle)
 
 Lua's `%a` and `string.lower` are ASCII-only. Therefore:
@@ -445,9 +478,11 @@ Lua's `%a` and `string.lower` are ASCII-only. Therefore:
    matcher; log matches.
 3. **Underline rendering:** `paintTo` overlay; XPointers -> boxes (cached); draw wavy line.
 4. **Tap -> tooltip:** wrap `onTap`; hit-test; show the `ul_format.lua` text.
-5. **Language selection:** `ul_langselect.lua` — auto from metadata (ask when undetectable), dynamic
-   language menu, per-book override remembered in the sidecar.
-6. **Extensibility & polish:** user dict directory + template; menu toggle; cache tuning.
+5. **Language selection & settings menu:** `ul_langselect.lua` — auto from metadata (ask when
+   undetectable), dynamic language menu, per-book override remembered in the sidecar. `ul_menu.lua`
+   + `ul_settings.lua` — a dedicated **Unit Lens ▸** submenu under Tools gathering the enable toggle,
+   Language, underline style/thickness/intensity, tooltip timeout, and About (version + credits). See §5.4.
+6. **Extensibility & polish:** user dict directory + template; digit-gated `600 мм` splitter; cache tuning.
 
 ## 8. Reference
 

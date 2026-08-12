@@ -5,16 +5,23 @@ Detects measurement units on the visible page and reveals their equivalent in
 the other measurement system (values are precomputed in the dictionaries — no
 runtime math).
 
-Milestone 2: live scan, log only. On each page/position change we walk the
-visible page into word tokens (ul_scanner), run the pure matcher against the
-active dictionary, and LOG every match with its popup text. No underline/tooltip
-rendering yet — this milestone just proves the device scan.
+On each page/position change we walk the visible page into word tokens
+(ul_scanner), run the pure matcher against the active dictionary, and feed the
+matches to ul_render, which draws an underline under each unit and shows a
+tooltip on tap.
+
+Milestone 5: a dedicated "Unit Lens ▸" submenu under Tools gathers the enable
+toggle, per-book language choice (ul_langselect), underline appearance and
+tooltip timeout (ul_settings), and About.
 
 @module koplugin.unitlens
 --]]
 
 local WidgetContainer = require("ui/widget/container/widgetcontainer")
 local DataStorage = require("datastorage")
+local UIManager = require("ui/uimanager")
+local InfoMessage = require("ui/widget/infomessage")
+local Notification = require("ui/widget/notification")
 local logger = require("logger")
 local _ = require("gettext")
 
@@ -26,6 +33,11 @@ local matcher = require("ul_matcher")
 local format = require("ul_format")
 local scanner = require("ul_scanner")
 local render = require("ul_render")
+local settings = require("ul_settings")
+local langselect = require("ul_langselect")
+local menu = require("ul_menu")
+
+local VERSION = "0.5.0"
 
 -- Milestone 2 is log-only. KOReader's stdout is swallowed by the emulator, so we
 -- also append to a file we can tail: <data dir>/unitlens.log.
@@ -84,7 +96,16 @@ function UnitLens:init()
 	self.dicts = loadDicts()
 	self.last_sig = nil
 	self._last_count = 0
-	self.enabled = true
+
+	-- Appearance settings are global (G_reader_settings); language is per-book
+	-- (resolved by ul_langselect). `enabled` lives in the global settings too.
+	self.enabled = settings.get("enabled")
+	self.opts = {
+		underline_style = settings.get("underline_style"),
+		underline_thickness = settings.get("underline_thickness"),
+		underline_intensity = settings.get("underline_intensity"),
+		tooltip_timeout = settings.get("tooltip_timeout"),
+	}
 
 	if self.ui and self.ui.menu then
 		self.ui.menu:registerToMainMenu(self)
@@ -104,25 +125,16 @@ function UnitLens:loadedLangs()
 	return t
 end
 
--- Temporary language pick (real langselect is Milestone 5): book metadata's
--- primary subtag, else English fallback.
-function UnitLens:pickLang()
-	local doc = self.ui and self.ui.document
-	if doc and doc.getProps then
-		local ok, props = pcall(function()
-			return doc:getProps()
-		end)
-		if ok and props and props.language and props.language ~= "" then
-			local lang = tostring(props.language):sub(1, 2):lower()
-			if self.dicts[lang] then
-				return lang
-			end
-		end
+-- One-shot notice when the book language can't be resolved (guard per book).
+function UnitLens:_warnUndetected()
+	if self._lang_warned then
+		return
 	end
-	if self.dicts.en then
-		return "en"
-	end
-	return self:loadedLangs()[1]
+	self._lang_warned = true
+	UIManager:show(Notification:new({
+		text = _("Unit Lens: book language not detected — pick one in Tools ▸ Unit Lens ▸ Language"),
+		timeout = 4,
+	}))
 end
 
 -- Signature so we don't rescan an unchanged page (page no + rendering hash)
@@ -168,11 +180,13 @@ function UnitLens:scan(reason)
 
 	self.last_sig = sig
 
-	local lang = self:pickLang()
+	local lang = langselect.resolve(self)
 	local d = lang and self.dicts[lang]
 
 	if not d then
-		log("scan(" .. tostring(reason) .. "): no active dictionary")
+		render.clear(self)
+		self:_warnUndetected()
+		log("scan(" .. tostring(reason) .. "): language undetected — none active")
 		return
 	end
 
@@ -237,22 +251,52 @@ function UnitLens:onReaderReady()
 end
 
 function UnitLens:addToMainMenu(menu_items)
-	menu_items.unitlens = {
-		text = _("Highlight measurement units"),
-		checked_func = function()
-			return self.enabled
-		end,
-		callback = function()
-			self.enabled = not self.enabled
-			if self.enabled then
-				self.last_sig = nil -- force a rescan of the current page
-				self:scan("toggle-on")
-			else
-				render.clear(self)
-			end
-		end,
-		sorting_hint = "more_tools",
-	}
+	menu_items.unitlens = menu.build(self)
+end
+
+-- --- Menu callbacks --------------------------------------------------------
+
+-- Enable/disable highlighting (global setting).
+function UnitLens:setEnabled(value)
+	self.enabled = value
+	settings.set("enabled", value)
+	if value then
+		self.last_sig = nil -- force a rescan of the current page
+		self:scan("toggle-on")
+	else
+		render.clear(self)
+	end
+end
+
+-- Change an appearance option (style/thickness/intensity/tooltip_timeout).
+-- These don't affect which units match, so just repaint — no rescan.
+function UnitLens:setOpt(key, value)
+	self.opts[key] = value
+	settings.set(key, value)
+	render.refresh(self)
+end
+
+-- Change the per-book language choice ("auto" or a dict code) and rescan.
+function UnitLens:setLanguage(code)
+	langselect.setChoice(self, code)
+	self._lang_warned = nil -- allow a fresh notice if the new choice is undetectable
+	self.last_sig = nil
+	if self.enabled then
+		self:scan("lang")
+	else
+		render.clear(self)
+	end
+end
+
+function UnitLens:showAbout()
+	local text = table.concat({
+		"Unit Lens  v" .. VERSION,
+		"",
+		_("Detects measurement units while you read and reveals their equivalent in the other measurement system — offline, dictionary-driven (no runtime math)."),
+		"",
+		_("Built-in dictionaries: English, Russian. Add your own under the plugin's dicts/ folder."),
+	}, "\n")
+	UIManager:show(InfoMessage:new({ text = text }))
 end
 
 return UnitLens
