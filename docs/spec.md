@@ -421,9 +421,10 @@ page change
 
 ### 5.4 Settings & menu
 
-All plugin UI lives under a single **Unit Lens ▸** entry, registered under KOReader's
-Tools menu (`addToMainMenu` + `sorting_hint = "more_tools"`), built as a standard nested
-menu (`sub_item_table`) — no bespoke dialog. Layout:
+All plugin UI lives under a single **Unit Lens ▸** entry at the top of KOReader's Tools tab
+(like X-Ray), built as a standard nested menu (`sub_item_table`) — no bespoke dialog. To get the
+top slot we insert our id at the front of the shared `reader_menu_order.tools` singleton on init
+(`sorting_hint = "tools"` alone only appends us as an orphan after "More tools"). Layout:
 
 ```
 Unit Lens ▸

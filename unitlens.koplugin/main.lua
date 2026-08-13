@@ -70,6 +70,27 @@ local UnitLens = WidgetContainer:extend({
 	is_doc_only = true,
 })
 
+-- Pin "Unit Lens" to the TOP of the Tools tab (like X-Ray)
+local function pinToToolsTop()
+	pcall(function()
+		local ok, order = pcall(require, "ui/elements/reader_menu_order")
+
+		if not ok then
+			ok, order = pcall(require, "apps/reader/modules/readermenuorder")
+		end
+
+		if ok and order and order.tools then
+			for i, v in ipairs(order.tools) do
+				if v == "unitlens" then
+					table.remove(order.tools, i)
+					break
+				end
+			end
+			table.insert(order.tools, 1, "unitlens")
+		end
+	end)
+end
+
 -- Load and compile the built-in dictionaries once
 local function loadDicts()
 	local out = {}
@@ -110,6 +131,7 @@ function UnitLens:init()
 	if self.ui and self.ui.menu then
 		self.ui.menu:registerToMainMenu(self)
 	end
+	pinToToolsTop()
 
 	log("initialised; dicts loaded: " .. table.concat(self:loadedLangs(), ", "))
 end
@@ -292,7 +314,9 @@ function UnitLens:showAbout()
 	local text = table.concat({
 		"Unit Lens  v" .. VERSION,
 		"",
-		_("Detects measurement units while you read and reveals their equivalent in the other measurement system — offline, dictionary-driven (no runtime math)."),
+		_(
+			"Detects measurement units while you read and reveals their equivalent in the other measurement system — offline, dictionary-driven (no runtime math)."
+		),
 		"",
 		_("Built-in dictionaries: English, Russian. Add your own under the plugin's dicts/ folder."),
 	}, "\n")

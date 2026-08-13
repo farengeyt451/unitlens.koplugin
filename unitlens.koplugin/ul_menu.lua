@@ -31,7 +31,8 @@ end
 function M.build(plugin)
 	return {
 		text = _("Unit Lens"),
-		sorting_hint = "more_tools",
+		-- "tools" puts us at the top of the Tools tab (like X-Ray); "more_tools"
+		sorting_hint = "tools",
 		sub_item_table = {
 			{
 				text = _("Highlight measurement units"),
