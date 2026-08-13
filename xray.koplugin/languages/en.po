@@ -165,25 +165,25 @@ msgid "custom_api_endpoint_hint"
 msgstr "e.g., https://openrouter.ai/api/v1/chat/completions"
 
 msgid "custom_api_endpoint_title"
-msgstr "Custom API %d — Endpoint URL"
+msgstr "Custom API %d - Endpoint URL"
 
 msgid "custom_api_is_reasoning"
 msgstr "Is Reasoning Model (e.g. DeepSeek-R1)"
 
 msgid "custom_api_key_title"
-msgstr "Custom API %d — API Key"
+msgstr "Custom API %d - API Key"
 
 msgid "custom_api_model_hint"
 msgstr "e.g., google/gemini-2.5-flash or openai/gpt-4o"
 
 msgid "custom_api_model_title"
-msgstr "Custom API %d — Default Model"
+msgstr "Custom API %d - Default Model"
 
 msgid "custom_api_name"
 msgstr "Custom API %d (OpenAI-compatible)"
 
 msgid "custom_api_not_configured"
-msgstr "(not configured — tap to set up)"
+msgstr "(not configured - tap to set up)"
 
 msgid "custom_api_saved"
 msgstr "Custom API %d configuration saved."
@@ -402,7 +402,7 @@ msgid "looking_up_msg"
 msgstr "Looking up '%s'..."
 
 msgid "low_conf_match"
-msgstr "Partial match — showing '%s' for your query. Tap below to fetch the exact term."
+msgstr "Partial match - showing '%s' for your query. Tap below to fetch the exact term."
 
 msgid "manual_pick"
 msgstr "Manual Pick"
@@ -690,7 +690,7 @@ msgid "reason"
 msgstr "Reason"
 
 msgid "reasoning_about"
-msgstr "Controls [B]thinking[/B] depth for reasoning models:\n\n• Unset: No specific instruction sent; model uses its internal defaults.\n• Low: Fast, economical extraction for simple books.\n• Medium: Balanced depth for most narratives.\n• High: Detailed analysis for complex character webs.\n\n[B]Applies to:[/B] GPT-5.x (o1/o3/gpt-5), Claude (sonnet/opus/haiku), and Gemini 2.5+.\n\n[B]Note:[/B] DeepSeek V4 reasons [B]inherently[/B] — this setting has no effect on it."
+msgstr "Controls [B]thinking[/B] depth for reasoning models:\n\n• Unset: No specific instruction sent; model uses its internal defaults.\n• Low: Fast, economical extraction for simple books.\n• Medium: Balanced depth for most narratives.\n• High: Detailed analysis for complex character webs.\n\n[B]Applies to:[/B] GPT-5.x (o1/o3/gpt-5), Claude (sonnet/opus/haiku), and Gemini 2.5+.\n\n[B]Note:[/B] DeepSeek V4 reasons [B]inherently[/B] - this setting has no effect on it."
 
 msgid "reasoning_high"
 msgstr "High"
@@ -1039,4 +1039,3 @@ msgstr "Adds an 'X-Ray' button to dictionary and selection menus for instant loo
 
 msgid "yes"
 msgstr "Yes"
-

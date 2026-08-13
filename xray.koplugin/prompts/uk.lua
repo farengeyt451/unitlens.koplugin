@@ -1,9 +1,9 @@
 return {
-    -- System instruction
-    system_instruction = "Ви — експерт-літературознавець. Ваша відповідь має бути СТРОГО у форматі JSON. Переконайтеся, що дані є високоточними і стосуються виключно наданого контексту.",
+	-- System instruction
+	system_instruction = "Ви - експерт-літературознавець. Ваша відповідь має бути СТРОГО у форматі JSON. Переконайтеся, що дані є високоточними і стосуються виключно наданого контексту.",
 
-    -- Author-only prompt (For quick bio lookup)
-    author_only = [[Ідентифікуйте та надайте біографію автора книги "%s".
+	-- Author-only prompt (For quick bio lookup)
+	author_only = [[Ідентифікуйте та надайте біографію автора книги "%s".
 Метадані припускають, що автором є "%s".
 
 КРИТИЧНО ВАЖЛИВО: Перевірте автора, використовуючи КОНТЕКСТ ТЕКСТУ КНИГИ (якщо його наведено в кінці цього запиту), щоб забезпечити 100%% точність та уникнути помилкової ідентифікації.
@@ -16,8 +16,8 @@ return {
   "author_death": "Дата смерті, відформатована згідно з місцевим форматом дати"
 }]],
 
-    -- Single Comprehensive Fetch (Combined Characters, Locations, Timeline)
-    comprehensive_xray = [[Книга: %s
+	-- Single Comprehensive Fetch (Combined Characters, Locations, Timeline)
+	comprehensive_xray = [[Книга: %s
 Автор: %s
 Прогрес читання: %d%%
 
@@ -123,8 +123,8 @@ return {
   ]
 } ]],
 
-    -- Fetch More Characters (AI Limit Bypass)
-    more_characters = [[Книга: %s
+	-- Fetch More Characters (AI Limit Bypass)
+	more_characters = [[Книга: %s
 Автор: %s
 Прогрес читання: %d%%
 
@@ -156,8 +156,8 @@ return {
   ]
 }]],
 
-    -- Targeted Single Word Lookup
-    single_word_lookup = [[Користувач виділив слово "%s".
+	-- Targeted Single Word Lookup
+	single_word_lookup = [[Користувач виділив слово "%s".
 ЗАВДАННЯ: Визначте, чи є це слово Персонажем, Локацією або Історичною постаттю в книзі.
 
 CRITICAL FOR CHARACTERS AND LOCATIONS: Use ONLY the provided "BOOK TEXT CONTEXT". Outside knowledge is strictly forbidden. Do not hallucinate.
@@ -180,7 +180,7 @@ CRITICAL FOR HISTORICAL FIGURES: You MAY use your internal knowledge to verify t
   "error_message": ""
 }
 
-Примітка: Якщо тип — "location", об'єкт повинен мати "name" та "description". Якщо тип — "historical_figure", об'єкт повинен мати "name", "biography" та "role".
+Примітка: Якщо тип - "location", об'єкт повинен мати "name" та "description". Якщо тип - "historical_figure", об'єкт повинен мати "name", "biography" та "role".
 
 Якщо `is_valid` дорівнює false:
 {
@@ -188,8 +188,8 @@ CRITICAL FOR HISTORICAL FIGURES: You MAY use your internal knowledge to verify t
   "error_message": "Коротке пояснення, чому це не персонаж і не локація."
 }]],
 
-    -- Multi-Book Series Context Prompts
-    series_detect = [[Назва книги: %s
+	-- Multi-Book Series Context Prompts
+	series_detect = [[Назва книги: %s
 Автор: %s
 
 ЗАВДАННЯ: Визначте, чи є ця книга частиною названої серії.
@@ -203,7 +203,7 @@ CRITICAL FOR HISTORICAL FIGURES: You MAY use your internal knowledge to verify t
 Якщо це НЕ книга серії, поверніть:
 { "is_series": false }]],
 
-    prior_book_list = [[Серія: %s
+	prior_book_list = [[Серія: %s
 Індекс поточної книги: %d
 Назва поточної книги: %s
 
@@ -216,7 +216,7 @@ CRITICAL FOR HISTORICAL FIGURES: You MAY use your internal knowledge to verify t
   ]
 }]],
 
-    series_book_summary = [[Книга: %s
+	series_book_summary = [[Книга: %s
 Автор: %s
 Це книга %d у серії "%s".
 
@@ -242,14 +242,14 @@ CRITICAL FOR HISTORICAL FIGURES: You MAY use your internal knowledge to verify t
   ]
 }]],
 
-        -- Find Duplicates
-    find_duplicates = [[
+	-- Find Duplicates
+	find_duplicates = [[
 Книга: %s
 Автор: %s
 Прогрес читання: %d%%
 
 Ви переглядаєте список %s, вилучених із цієї книги.
-Ваше завдання — виявити будь-які записи, які, очевидно, відносяться до ОДНІЄЇ Й ТІЄЇ Ж сутності, але записані під різними іменами.
+Ваше завдання - виявити будь-які записи, які, очевидно, відносяться до ОДНІЄЇ Й ТІЄЇ Ж сутності, але записані під різними іменами.
 
 СПИСОК:
 %s
@@ -272,8 +272,8 @@ CRITICAL FOR HISTORICAL FIGURES: You MAY use your internal knowledge to verify t
   ]
 }]],
 
-    -- Merge Descriptions
-    merge_descriptions = [[
+	-- Merge Descriptions
+	merge_descriptions = [[
 ЗАВДАННЯ: Об'єднайте наступні два описи однієї і тієї ж сутності (персонажа або локації) в єдине, зв'язне та лаконічне резюме.
 Видаліть надлишкову інформацію та переконайтеся, що підсумковий опис сприймається природно.
 
@@ -285,8 +285,8 @@ CRITICAL FOR HISTORICAL FIGURES: You MAY use your internal knowledge to verify t
   "merged_description": "Об'єднаний та доопрацьований опис (макс. {MAX_CHAR_DESC} символів)"
 }]],
 
-    -- More Terms
-    more_terms = [[
+	-- More Terms
+	more_terms = [[
 Книга: %s
 Автор: %s
 Прогрес читання: %d%%
@@ -318,15 +318,14 @@ CRITICAL FOR HISTORICAL FIGURES: You MAY use your internal knowledge to verify t
   ]
 }]],
 
--- Fallback strings
-    fallback = {
-        unknown_book = "Невідома книга",
-        unknown_author = "Невідомий автор",
-        unnamed_character = "Безіменний персонаж",
-        not_specified = "Не вказано",
-        no_description = "Опис відсутній",
-        unnamed_person = "Безіменна особа",
-        no_biography = "Біографія відсутня"
-    }
+	-- Fallback strings
+	fallback = {
+		unknown_book = "Невідома книга",
+		unknown_author = "Невідомий автор",
+		unnamed_character = "Безіменний персонаж",
+		not_specified = "Не вказано",
+		no_description = "Опис відсутній",
+		unnamed_person = "Безіменна особа",
+		no_biography = "Біографія відсутня",
+	},
 }
-

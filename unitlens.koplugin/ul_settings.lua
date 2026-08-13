@@ -1,5 +1,5 @@
 --[[
-ul_settings.lua — global appearance settings, backed by G_reader_settings
+ul_settings.lua - global appearance settings, backed by G_reader_settings
 ]]
 
 local M = {}
@@ -12,6 +12,7 @@ M.DEFAULTS = {
 	underline_thickness = 2, -- 1 | 2 | 3 (px, pre-scaling)
 	underline_intensity = "medium", -- light | medium | dark
 	tooltip_timeout = 4, -- 2 | 4 | 8 | 0 (0 = never), seconds
+	ui_lang = "auto", -- "auto" (follow KOReader) or a shipped l10n code (en/ru/es/…)
 }
 
 function M.get(key)

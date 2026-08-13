@@ -1,5 +1,5 @@
 --[[
-matcher.lua — pure matching over a token array
+matcher.lua - pure matching over a token array
 
 Returns a list of matches: { unit = unitdef, from = i, to = i, token = tok }
 ]]

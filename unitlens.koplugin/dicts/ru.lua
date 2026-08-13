@@ -1,5 +1,5 @@
 --[[
-dicts/ru.lua — Russian dictionary (length subset for Milestone 1).
+dicts/ru.lua - Russian dictionary (length subset for Milestone 1).
 
 Format: see docs/spec.md §4. Values are precomputed strings with a comma decimal
 mark (docs/units.md). Imperial units rarely carry symbols in Russian prose, so

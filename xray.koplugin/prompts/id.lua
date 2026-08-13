@@ -1,10 +1,10 @@
 return {
-    -- System instruction
-    system_instruction = "Anda adalah seorang peneliti sastra ahli. Tanggapan Anda harus HANYA dalam format JSON yang valid. Pastikan data sangat akurat dan berkaitan erat dengan konteks yang disediakan.",
+	-- System instruction
+	system_instruction = "Anda adalah seorang peneliti sastra ahli. Tanggapan Anda harus HANYA dalam format JSON yang valid. Pastikan data sangat akurat dan berkaitan erat dengan konteks yang disediakan.",
 
-    -- Author-only prompt (For quick bio lookup)
-    author_only = [[Identifikasi dan berikan biografi untuk penulis buku "%s". 
-Metadata menunjukkan penulisnya adalah "%s". 
+	-- Author-only prompt (For quick bio lookup)
+	author_only = [[Identifikasi dan berikan biografi untuk penulis buku "%s".
+Metadata menunjukkan penulisnya adalah "%s".
 
 PENTING: Verifikasi penulis menggunakan KONTEKS TEKS BUKU (jika disediakan di akhir perintah ini) untuk memastikan keakuratan 100%% dan menghindari identifikasi yang salah.
 
@@ -16,8 +16,8 @@ FORMAT JSON YANG DIPERLUKAN:
   "author_death": "Tanggal Kematian, diformat berdasarkan format tanggal lokal"
 }]],
 
-    -- Find Duplicates (for AI-Assisted Merge)
-    find_duplicates = [[Buku: %s
+	-- Find Duplicates (for AI-Assisted Merge)
+	find_duplicates = [[Buku: %s
 Penulis: %s
 Kemajuan Membaca: %d%%
 
@@ -45,8 +45,8 @@ FORMAT JSON YANG DIPERLUKAN:
   ]
 }]],
 
-    -- Single Comprehensive Fetch (Combined Characters, Locations, Timeline)
-    comprehensive_xray = [[Buku: %s
+	-- Single Comprehensive Fetch (Combined Characters, Locations, Timeline)
+	comprehensive_xray = [[Buku: %s
 Penulis: %s
 Kemajuan Membaca: %d%%
 
@@ -153,8 +153,8 @@ FORMAT JSON YANG DIPERLUKAN:
   ]
 }]],
 
-    -- Fetch More Characters (AI Limit Bypass)
-    more_characters = [[Buku: %s
+	-- Fetch More Characters (AI Limit Bypass)
+	more_characters = [[Buku: %s
 Penulis: %s
 Kemajuan Membaca: %d%%
 
@@ -186,8 +186,8 @@ FORMAT JSON YANG DIPERLUKAN:
   ]
 }]],
 
-    -- Fetch More Terms (Glossary Support)
-    more_terms = [[Buku: %s
+	-- Fetch More Terms (Glossary Support)
+	more_terms = [[Buku: %s
 Penulis: %s
 Kemajuan Membaca: %d%%
 
@@ -218,13 +218,13 @@ FORMAT JSON YANG DIPERLUKAN:
   ]
 }]],
 
-    single_word_lookup = [[Pengguna menyoroti kata "%s".
+	single_word_lookup = [[Pengguna menyoroti kata "%s".
 TUGAS: Tentukan apakah kata ini mewakili Karakter, Lokasi, Tokoh Sejarah, atau Istilah Teknis/Akronim dalam buku.
 
 PENTING UNTUK KARAKTER DAN LOKASI: Gunakan "KONTEKS TEKS BUKU" yang disediakan untuk mengidentifikasi entitas. Jika kata tersebut disediakan dalam petunjuk "TARGET PENCARIAN" atau "REFERENSI LANGSUNG", itu ADA di dalam buku pada posisi saat ini. Jangan menolaknya hanya karena tidak ditemukan persis di teks narasi yang disub-sampel. Nama pendek (sesingkat 2 huruf, mis. "Oz", "Al", "Jo") adalah valid dan harus dianalisis.
 PENTING UNTUK KARAKTER FIKSI: Deskripsikan HANYA apa yang diungkapkan oleh teks buku yang disediakan. JANGAN gunakan pengetahuan pelatihan sebelumnya tentang karakter ini, meskipun Anda mengenalinya dari seri terkenal. Jika teks hanya menyebutkan karakter ini secara singkat, deskripsi Anda harus mencerminkan informasi terbatas itu saja.
 PENTING UNTUK TOKOH SEJARAH: Anda Boleh menggunakan pengetahuan internal Anda untuk memverifikasi identitas mereka dan memberikan biografi/peran mereka, HANYA jika mereka adalah tokoh sejarah nyata yang menonjol. Anda HARUS tetap menggunakan konteks teks untuk relevansi mereka dalam buku.
-PENTING UNTUK ISTILAH: Jika buku tersebut non-fiksi, periksa apakah kata tersebut adalah istilah teknis, akronim, atau konsep kunci. Untuk istilah teknis, konsep, atau jargon: istilah tersebut dapat muncul di sampel bab alih-alih konteks halaman langsung — perlakukan sebagai valid jika Anda dapat mendefinisikannya dalam konteks materi subjek buku ini. Hanya tetapkan `is_valid` ke false jika frasa tersebut sama sekali tidak memiliki relevansi dengan materi subjek buku ini.
+PENTING UNTUK ISTILAH: Jika buku tersebut non-fiksi, periksa apakah kata tersebut adalah istilah teknis, akronim, atau konsep kunci. Untuk istilah teknis, konsep, atau jargon: istilah tersebut dapat muncul di sampel bab alih-alih konteks halaman langsung - perlakukan sebagai valid jika Anda dapat mendefinisikannya dalam konteks materi subjek buku ini. Hanya tetapkan `is_valid` ke false jika frasa tersebut sama sekali tidak memiliki relevansi dengan materi subjek buku ini.
 Jika kata tersebut BUKAN karakter, lokasi, tokoh sejarah, atau istilah teknis/konsep, atur `is_valid` ke false.
 
 FORMAT JSON YANG DIPERLUKAN:
@@ -250,8 +250,8 @@ Jika `is_valid` adalah false:
   "error_message": "Penjelasan singkat mengapa ini bukan karakter atau lokasi."
 }]],
 
-    -- Smart Merge Descriptions
-    merge_descriptions = [[TUGAS: Gabungkan dua deskripsi berikut dari entitas yang sama (karakter atau lokasi) menjadi satu ringkasan yang kohesif dan ringkas.
+	-- Smart Merge Descriptions
+	merge_descriptions = [[TUGAS: Gabungkan dua deskripsi berikut dari entitas yang sama (karakter atau lokasi) menjadi satu ringkasan yang kohesif dan ringkas.
 Hapus informasi yang mubazir dan pastikan deskripsi akhir mengalir secara alami.
 
 Deskripsi Utama: %s
@@ -262,8 +262,8 @@ FORMAT JSON YANG DIPERLUKAN:
   "merged_description": "Deskripsi gabungan dan terpoles (Maks {MAX_CHAR_DESC} karakter)"
 }]],
 
-    -- Multi-Book Series Context Prompts
-    series_detect = [[Judul Buku: %s
+	-- Multi-Book Series Context Prompts
+	series_detect = [[Judul Buku: %s
 Penulis: %s
 
 TUGAS: Tentukan apakah buku ini merupakan bagian dari seri bernama.
@@ -277,7 +277,7 @@ Kembalikan HANYA JSON yang valid:
 If ini BUKAN buku seri, kembalikan:
 { "is_series": false }]],
 
-    prior_book_list = [[Seri: %s
+	prior_book_list = [[Seri: %s
 Indeks Buku Saat Ini: %d
 Judul Buku Saat Ini: %s
 
@@ -290,7 +290,7 @@ Kembalikan HANYA JSON yang valid:
   ]
 }]],
 
-    series_book_summary = [[Buku: %s
+	series_book_summary = [[Buku: %s
 Penulis: %s
 Ini adalah buku %d dalam seri "%s".
 
@@ -316,15 +316,14 @@ FORMAT JSON YANG DIPERLUKAN:
   ]
 }]],
 
-    -- Fallback strings
-    fallback = {
-        unknown_book = "Buku Tidak Diketahui",
-        unknown_author = "Penulis Tidak Diketahui",
-        unnamed_character = "Karakter Tanpa Nama",
-        not_specified = "Tidak Ditentukan",
-        no_description = "Tidak Ada Deskripsi",
-        unnamed_person = "Orang Tanpa Nama",
-        no_biography = "Tidak Ada Biografi yang Tersedia"
-    }
+	-- Fallback strings
+	fallback = {
+		unknown_book = "Buku Tidak Diketahui",
+		unknown_author = "Penulis Tidak Diketahui",
+		unnamed_character = "Karakter Tanpa Nama",
+		not_specified = "Tidak Ditentukan",
+		no_description = "Tidak Ada Deskripsi",
+		unnamed_person = "Orang Tanpa Nama",
+		no_biography = "Tidak Ada Biografi yang Tersedia",
+	},
 }
-

@@ -1,5 +1,5 @@
 --[[
-util.lua — pure text helpers (no KOReader UI dependency)
+util.lua - pure text helpers (no KOReader UI dependency)
 ]]
 
 local M = {}
@@ -20,7 +20,7 @@ do
 			end
 		else
 			error(
-				"unitlens/util: no Unicode lowercaser found — expected KOReader's "
+				"unitlens/util: no Unicode lowercaser found - expected KOReader's "
 					.. "'ffi/utf8proc' on device, or luautf8 for off-device tests "
 					.. "(`luarocks install --local luautf8`)."
 			)
@@ -31,7 +31,7 @@ end
 M.casefold = casefold
 
 -- Split text into word/number tokens using luautf8's Unicode-aware Lua patterns,
--- so punctuation/whitespace of ANY script are separators — no hand-listed table
+-- so punctuation/whitespace of ANY script are separators - no hand-listed table
 -- A digit run is split from an adjacent letter run so "600mm" -> {"600","mm"}
 -- Off-device/test only (see header); requires luautf8, resolved lazily
 local lutf8_tok

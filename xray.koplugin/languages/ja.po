@@ -219,7 +219,7 @@ msgstr "例: https://openrouter.ai/api/v1/chat/completions"
 
 # en-hash: 210751d51c0e8e4527ae65bc6522789e
 msgid "custom_api_endpoint_title"
-msgstr "カスタムAPI %d — エンドポイントURL"
+msgstr "カスタムAPI %d - エンドポイントURL"
 
 # en-hash: aa2776ae61983d0c0c97e5f7bf996ac2
 msgid "custom_api_is_reasoning"
@@ -227,7 +227,7 @@ msgstr "推論モデルか (例: DeepSeek-R1)"
 
 # en-hash: 277c6375d0cacdc5445fdeb15f8158c9
 msgid "custom_api_key_title"
-msgstr "カスタムAPI %d — APIキー"
+msgstr "カスタムAPI %d - APIキー"
 
 # en-hash: df3771ce7d40ea58977a420365a9511c
 msgid "custom_api_model_hint"
@@ -235,7 +235,7 @@ msgstr "例: google/gemini-2.5-flash や openai/gpt-4o"
 
 # en-hash: 54ed8dfd9713a5b46416c04ee0dc253c
 msgid "custom_api_model_title"
-msgstr "カスタムAPI %d — デフォルトモデル"
+msgstr "カスタムAPI %d - デフォルトモデル"
 
 # en-hash: 6265afa1ceb063c099c3b2597670f26e
 msgid "custom_api_name"
@@ -243,7 +243,7 @@ msgstr "カスタムAPI %d (OpenAI互換)"
 
 # en-hash: 936b30f151a3c4b39d60001a9808c93d
 msgid "custom_api_not_configured"
-msgstr "(未設定 — タップして設定)"
+msgstr "(未設定 - タップして設定)"
 
 # en-hash: b7e3710795eeb8a7e11d2c69fca00e5c
 msgid "custom_api_saved"
@@ -535,7 +535,7 @@ msgstr "'%s' を検索中..."
 
 # en-hash: 1485de0735ca78d3fb650e6418fd9c9c
 msgid "low_conf_match"
-msgstr "部分一致 — '%s' を表示しています。正確な用語を取得するには以下をタップしてください。"
+msgstr "部分一致 - '%s' を表示しています。正確な用語を取得するには以下をタップしてください。"
 
 # en-hash: 6ca35323241366b4da17cd03396f1f69
 msgid "manual_pick"
@@ -1384,4 +1384,3 @@ msgstr "辞書および選択メニューに「X-Ray」ボタンを追加し、�
 # en-hash: 93cba07454f06a4a960172bbd6e2a435
 msgid "yes"
 msgstr "はい"
-

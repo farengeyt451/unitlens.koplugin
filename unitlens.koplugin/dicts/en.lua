@@ -1,5 +1,5 @@
 --[[
-dicts/en.lua — English dictionary (length subset for Milestone 1).
+dicts/en.lua - English dictionary (length subset for Milestone 1).
 
 Format: see docs/spec.md §4. Values are precomputed strings (docs/units.md).
 Customary units convert -> metric; metric units convert -> customary.

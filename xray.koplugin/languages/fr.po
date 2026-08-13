@@ -219,7 +219,7 @@ msgstr "ex: https://openrouter.ai/api/v1/chat/completions"
 
 # en-hash: 210751d51c0e8e4527ae65bc6522789e
 msgid "custom_api_endpoint_title"
-msgstr "API personnalisée %d — URL du point de terminaison"
+msgstr "API personnalisée %d - URL du point de terminaison"
 
 # en-hash: aa2776ae61983d0c0c97e5f7bf996ac2
 msgid "custom_api_is_reasoning"
@@ -227,7 +227,7 @@ msgstr "Est un modèle de raisonnement (ex. DeepSeek-R1)"
 
 # en-hash: 277c6375d0cacdc5445fdeb15f8158c9
 msgid "custom_api_key_title"
-msgstr "API personnalisée %d — Clé API"
+msgstr "API personnalisée %d - Clé API"
 
 # en-hash: df3771ce7d40ea58977a420365a9511c
 msgid "custom_api_model_hint"
@@ -235,7 +235,7 @@ msgstr "ex: google/gemini-2.5-flash ou openai/gpt-4o"
 
 # en-hash: 54ed8dfd9713a5b46416c04ee0dc253c
 msgid "custom_api_model_title"
-msgstr "API personnalisée %d — Modèle par défaut"
+msgstr "API personnalisée %d - Modèle par défaut"
 
 # en-hash: 6265afa1ceb063c099c3b2597670f26e
 msgid "custom_api_name"
@@ -243,7 +243,7 @@ msgstr "API personnalisée %d (compatible OpenAI)"
 
 # en-hash: 936b30f151a3c4b39d60001a9808c93d
 msgid "custom_api_not_configured"
-msgstr "(non configuré — appuyez pour configurer)"
+msgstr "(non configuré - appuyez pour configurer)"
 
 # en-hash: b7e3710795eeb8a7e11d2c69fca00e5c
 msgid "custom_api_saved"
@@ -263,7 +263,7 @@ msgstr "DESCRIPTIONS DES LIEUX\n\n• Court (~50 caractères) : Nom du lieu et c
 
 # en-hash: 9095a16f5b98ef0bf91cfa862f94123c
 msgid "desc_len_about_timeline"
-msgstr "CHRONOLOGIE — UN ÉVÉNEMENT PAR CHAPITRE (toujours)\n\nLa chronologie comporte toujours exactement une entrée par chapitre. Ce paramètre affecte uniquement le niveau de détail inclus dans chaque résumé.\n\n• Court (~50 caractères) : Bref résumé d'une phrase.\n• Par défaut (~80 caractères) : Résumé standard.\n• Détaillé (~150 caractères) : Inclut le contexte et les conséquences.\n• Très détaillé (~200 caractères) : Description narrative complète.\n\nIl n'y a pas de réduction de quantité pour la chronologie."
+msgstr "CHRONOLOGIE - UN ÉVÉNEMENT PAR CHAPITRE (toujours)\n\nLa chronologie comporte toujours exactement une entrée par chapitre. Ce paramètre affecte uniquement le niveau de détail inclus dans chaque résumé.\n\n• Court (~50 caractères) : Bref résumé d'une phrase.\n• Par défaut (~80 caractères) : Résumé standard.\n• Détaillé (~150 caractères) : Inclut le contexte et les conséquences.\n• Très détaillé (~200 caractères) : Description narrative complète.\n\nIl n'y a pas de réduction de quantité pour la chronologie."
 
 # en-hash: 7a1920d61156abc05a60135aefe8bc67
 msgid "desc_len_default"
@@ -1384,4 +1384,3 @@ msgstr "Ajoute un bouton 'X-Ray' aux menus de dictionnaire et de sélection pour
 # en-hash: 93cba07454f06a4a960172bbd6e2a435
 msgid "yes"
 msgstr "Oui"
-

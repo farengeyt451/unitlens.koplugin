@@ -1,5 +1,5 @@
 --[[
-ul_render.lua — KOReader rendering layer for Unit Lens
+ul_render.lua - KOReader rendering layer for Unit Lens
 ]]
 
 local UIManager = require("ui/uimanager")

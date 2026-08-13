@@ -1,5 +1,5 @@
 --[[
-scanner.lua — device-side page tokenizer (KOReader / crengine)
+scanner.lua - device-side page tokenizer (KOReader / crengine)
 ]]
 
 local logger = require("logger")

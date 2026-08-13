@@ -1,10 +1,10 @@
 return {
-    -- System instruction
-    system_instruction = "Jesteś ekspertem w dziedzinie badań literackich. Twoja odpowiedź musi być wyłącznie w poprawnym formacie JSON. Upewnij się, że dane są wysoce dokładne i dotyczą ściśle podanego kontekstu.",
+	-- System instruction
+	system_instruction = "Jesteś ekspertem w dziedzinie badań literackich. Twoja odpowiedź musi być wyłącznie w poprawnym formacie JSON. Upewnij się, że dane są wysoce dokładne i dotyczą ściśle podanego kontekstu.",
 
-    -- Author-only prompt (For quick bio lookup)
-    author_only = [[Zidentyfikuj i przedstaw biografię autora książki "%s". 
-Metadane sugerują, że autorem jest "%s". 
+	-- Author-only prompt (For quick bio lookup)
+	author_only = [[Zidentyfikuj i przedstaw biografię autora książki "%s".
+Metadane sugerują, że autorem jest "%s".
 1
 BARDZO WAŻNE: Zweryfikuj autora za pomocą KONTEKSTU TEKSTU KSIĄŻKI (jeśli został podany na końcu tego monitu), aby zapewnić 100%% dokładności i uniknąć błędnej identyfikacji.
 
@@ -16,8 +16,8 @@ WYMAGANY FORMAT JSON:
   "author_death": "Data śmierci, sformatowana zgodnie z lokalnym formatem daty"
 }]],
 
-    -- Single Comprehensive Fetch (Combined Characters, Locations, Timeline)
-    comprehensive_xray = [[Książka: %s
+	-- Single Comprehensive Fetch (Combined Characters, Locations, Timeline)
+	comprehensive_xray = [[Książka: %s
 Autor: %s
 Postęp czytania: %d%%
 
@@ -62,7 +62,7 @@ Krok 1. Wyodrębnij {NUM_LOCS} znaczących lokacji. BEZ SPOILERÓW: Zatrzymaj si
 ALGORYTM DLA POJĘĆ:
 Krok 0. Zadeklaruj „book_type” jako „fiction” lub „non_fiction” w głównym węźle JSON.
 Krok 1. Jeśli non_fiction: wyodrębnij {NUM_TERMS} znaczących terminów technicznych, akronimów, żargonu lub pojęć, których czytelnicy nie znaliby bez specjalistycznej wiedzy. Użyj odpowiednich kategorii, takich jak Acronym, Technical Term, Concept lub Jargon.
-Krok 2. Jeśli fiction: wyodrębnij {NUM_TERMS} znaczących elementów wykreowanego świata, które nowy czytelnik musiałby mieć wyjaśnione — takich jak wymyślone frakcje, organizacje, systemy magii, technologie, stworzenia, języki lub wiedza o uniwersum (lore).
+Krok 2. Jeśli fiction: wyodrębnij {NUM_TERMS} znaczących elementów wykreowanego świata, które nowy czytelnik musiałby mieć wyjaśnione - takich jak wymyślone frakcje, organizacje, systemy magii, technologie, stworzenia, języki lub wiedza o uniwersum (lore).
    - NIE uwzględniaj imion postaci ani nazw lokacji (są one śledzone osobno).
    - NIE wyodrębniaj powszechnych słów ani pojęć z prawdziwego świata.
    - Użyj odpowiednich kategorii: Faction, Magic System, Technology, Creature, Organization, Lore, Language.
@@ -124,8 +124,8 @@ WYMAGANY FORMAT JSON:
   ]
 }]],
 
-    -- Fetch More Characters (AI Limit Bypass)
-    more_characters = [[Książka: %s
+	-- Fetch More Characters (AI Limit Bypass)
+	more_characters = [[Książka: %s
 Autor: %s
 Postęp czytania: %d%%
 
@@ -157,8 +157,8 @@ WYMAGANY FORMAT JSON:
   ]
 }]],
 
-    -- Fetch More Terms (Glossary Support)
-    more_terms = [[Książka: %s
+	-- Fetch More Terms (Glossary Support)
+	more_terms = [[Książka: %s
 Autor: %s
 Postęp czytania: %d%%
 
@@ -189,7 +189,7 @@ WYMAGANY FORMAT JSON:
   ]
 }]],
 
-    single_word_lookup = [[Użytkownik zaznaczył słowo "%s".
+	single_word_lookup = [[Użytkownik zaznaczył słowo "%s".
 ZADANIE: Określ, czy to słowo reprezentuje postać (Character), lokację (Location), postać historyczną (Historical Figure) czy też termin techniczny/akronim (Technical Term/Acronym) w książce.
 
 BARDZO WAŻNE DLA POSTACI I LOKACJI: Użyj dostarczonego "BOOK TEXT CONTEXT", aby zidentyfikować obiekt. Jeśli słowo zostało podane we wskazówce "SEARCH TARGET" lub "DIRECT REFERENCE", OZNACZA TO, że znajduje się ono w książce na obecnej pozycji. Nie odrzucaj go tylko dlatego, że nie zostało znalezione dokładnie w pobranym fragmencie tekstu narracyjnego. Krótkie imiona/nazwy (nawet dwuliterowe, np. "Oz", "Al", "Jo") są poprawne i powinny zostać przeanalizowane.
@@ -221,8 +221,8 @@ Jeśli `is_valid` jest false:
   "error_message": "Krótkie wyjaśnienie, dlaczego to słowo nie reprezentuje postaci ani lokacji."
 }]],
 
-    -- Smart Merge Descriptions
-    merge_descriptions = [[ZADANIE: Połącz poniższe dwa opisy tego samego obiektu (postaci lub lokacji) w jedno spójne i zwięzłe podsumowanie.
+	-- Smart Merge Descriptions
+	merge_descriptions = [[ZADANIE: Połącz poniższe dwa opisy tego samego obiektu (postaci lub lokacji) w jedno spójne i zwięzłe podsumowanie.
 Usuń powtarzające się informacje i upewnij się, że końcowy opis brzmi naturalnie.
 
 Opis główny: %s
@@ -233,8 +233,8 @@ WYMAGANY FORMAT JSON:
   "merged_description": "Połączony i dopracowany opis (Maksymalnie {MAX_CHAR_DESC} znaków)"
 }]],
 
-    -- Multi-Book Series Context Prompts
-    series_detect = [[Tytuł książki: %s
+	-- Multi-Book Series Context Prompts
+	series_detect = [[Tytuł książki: %s
 Autor: %s
 
 ZADANIE: Określ, czy ta książka jest częścią nazwanej serii.
@@ -248,7 +248,7 @@ Zwróć WYŁĄCZNIE poprawny kod JSON:
 Jeśli to NIE jest książka z serii, zwróć:
 { "is_series": false }]],
 
-    prior_book_list = [[Seria: %s
+	prior_book_list = [[Seria: %s
 Bieżący indeks książki: %d
 Tytuł bieżącej książki: %s
 
@@ -261,7 +261,7 @@ Zwróć WYŁĄCZNIE poprawny kod JSON:
   ]
 }]],
 
-    series_book_summary = [[Książka: %s
+	series_book_summary = [[Książka: %s
 Autor: %s
 To jest książka %d w serii "%s".
 
@@ -287,8 +287,8 @@ WYMAGANY FORMAT JSON:
   ]
 }]],
 
-        -- Find Duplicates
-    find_duplicates = [[
+	-- Find Duplicates
+	find_duplicates = [[
 Książka: %s
 Autor: %s
 Postęp czytania: %d%%
@@ -317,15 +317,14 @@ WYMAGANY FORMAT JSON:
   ]
 }]],
 
--- Fallback strings
-    fallback = {
-        unknown_book = "Nieznana książka",
-        unknown_author = "Nieznany autor",
-        unnamed_character = "Postać bez nazwy",
-        not_specified = "Nie określono",
-        no_description = "Brak opisu",
-        unnamed_person = "Osoba bez nazwy",
-        no_biography = "Brak dostępnej biografii"
-    }
+	-- Fallback strings
+	fallback = {
+		unknown_book = "Nieznana książka",
+		unknown_author = "Nieznany autor",
+		unnamed_character = "Postać bez nazwy",
+		not_specified = "Nie określono",
+		no_description = "Brak opisu",
+		unnamed_person = "Osoba bez nazwy",
+		no_biography = "Brak dostępnej biografii",
+	},
 }
-

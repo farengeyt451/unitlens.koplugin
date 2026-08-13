@@ -1,9 +1,9 @@
 --[[
-spec/run.lua — tiny off-device test runner for the pure core.
+spec/run.lua - tiny off-device test runner for the pure core.
 
 Run from the plugin directory:
     cd unitlens.koplugin && lua5.1 spec/run.lua
-(luajit or lua5.4 also work — the core avoids version-specific features.)
+(luajit or lua5.4 also work - the core avoids version-specific features.)
 ]]
 
 -- Make `require("ul_util")`, `require("dicts.en")`, etc. resolve from the plugin root.

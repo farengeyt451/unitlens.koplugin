@@ -1,16 +1,17 @@
 --[[
-ul_menu.lua — builds the "Unit Lens menu
+ul_menu.lua - builds the "Unit Lens" menu
 ]]
 
-local _ = require("gettext")
 local langselect = require("ul_langselect")
+local i18n = require("ul_i18n")
 
 local M = {}
+
+local t = i18n.t
 
 -- A radio group over one plugin.opts key. `choices` = { { text, value }, ... }
 local function radio_group(plugin, key, choices)
 	local sub = {}
-
 	for _, c in ipairs(choices) do
 		sub[#sub + 1] = {
 			text = c.text,
@@ -24,18 +25,18 @@ local function radio_group(plugin, key, choices)
 			keep_menu_open = true,
 		}
 	end
-
 	return sub
 end
 
 function M.build(plugin)
 	return {
-		text = _("Unit Lens"),
-		-- "tools" puts us at the top of the Tools tab (like X-Ray); "more_tools"
+		text = "Unit Lens", -- brand, not translated
+		-- Placed at the top of the Tools tab via reader_menu_order (see main.lua);
+		-- sorting_hint is the fallback that would otherwise append us as an orphan
 		sorting_hint = "tools",
 		sub_item_table = {
 			{
-				text = _("Highlight measurement units"),
+				text = t("Highlight measurement units"),
 				checked_func = function()
 					return plugin.enabled
 				end,
@@ -45,51 +46,57 @@ function M.build(plugin)
 				keep_menu_open = true,
 			},
 			{
-				text = _("Language"),
+				text = t("Book language"),
 				sub_item_table_func = function()
 					return langselect.menuItems(plugin)
 				end,
 			},
 			{
-				text = _("Underline style"),
+				text = t("Interface language"),
 				separator = true,
+				sub_item_table_func = function()
+					return i18n.menuItems(plugin)
+				end,
+			},
+			{
+				text = t("Underline style"),
 				sub_item_table = radio_group(plugin, "underline_style", {
-					{ text = _("Wavy"), value = "wavy" },
-					{ text = _("Solid"), value = "solid" },
-					{ text = _("Dotted"), value = "dotted" },
-					{ text = _("Dashed"), value = "dashed" },
-					{ text = _("Double"), value = "double" },
-					{ text = _("None"), value = "none" },
+					{ text = t("Wavy"), value = "wavy" },
+					{ text = t("Solid"), value = "solid" },
+					{ text = t("Dotted"), value = "dotted" },
+					{ text = t("Dashed"), value = "dashed" },
+					{ text = t("Double"), value = "double" },
+					{ text = t("None"), value = "none" },
 				}),
 			},
 			{
-				text = _("Underline thickness"),
+				text = t("Underline thickness"),
 				sub_item_table = radio_group(plugin, "underline_thickness", {
-					{ text = _("1 px"), value = 1 },
-					{ text = _("2 px"), value = 2 },
-					{ text = _("3 px"), value = 3 },
+					{ text = t("1 px"), value = 1 },
+					{ text = t("2 px"), value = 2 },
+					{ text = t("3 px"), value = 3 },
 				}),
 			},
 			{
-				text = _("Underline intensity"),
+				text = t("Underline intensity"),
 				sub_item_table = radio_group(plugin, "underline_intensity", {
-					{ text = _("Light"), value = "light" },
-					{ text = _("Medium"), value = "medium" },
-					{ text = _("Dark"), value = "dark" },
+					{ text = t("Light"), value = "light" },
+					{ text = t("Medium"), value = "medium" },
+					{ text = t("Dark"), value = "dark" },
 				}),
 			},
 			{
-				text = _("Tooltip timeout"),
+				text = t("Tooltip timeout"),
 				separator = true,
 				sub_item_table = radio_group(plugin, "tooltip_timeout", {
-					{ text = _("2 seconds"), value = 2 },
-					{ text = _("4 seconds"), value = 4 },
-					{ text = _("8 seconds"), value = 8 },
-					{ text = _("Never"), value = 0 },
+					{ text = t("2 seconds"), value = 2 },
+					{ text = t("4 seconds"), value = 4 },
+					{ text = t("8 seconds"), value = 8 },
+					{ text = t("Never"), value = 0 },
 				}),
 			},
 			{
-				text = _("About"),
+				text = t("About"),
 				keep_menu_open = true,
 				callback = function()
 					plugin:showAbout()

@@ -1,8 +1,8 @@
 --[[--
-Unit Lens — KOReader plugin
+Unit Lens - KOReader plugin
 
 Detects measurement units on the visible page and reveals their equivalent in
-the other measurement system (values are precomputed in the dictionaries — no
+the other measurement system (values are precomputed in the dictionaries - no
 runtime math).
 
 On each page/position change we walk the visible page into word tokens
@@ -23,7 +23,6 @@ local UIManager = require("ui/uimanager")
 local InfoMessage = require("ui/widget/infomessage")
 local Notification = require("ui/widget/notification")
 local logger = require("logger")
-local _ = require("gettext")
 
 -- Our modules are ul_-prefixed on purpose: KOReader already owns generic names
 -- like "util" (frontend/util.lua), and package.loaded is shared across plugins,
@@ -35,6 +34,7 @@ local scanner = require("ul_scanner")
 local render = require("ul_render")
 local settings = require("ul_settings")
 local langselect = require("ul_langselect")
+local i18n = require("ul_i18n")
 local menu = require("ul_menu")
 
 local VERSION = "0.5.0"
@@ -128,6 +128,11 @@ function UnitLens:init()
 		tooltip_timeout = settings.get("tooltip_timeout"),
 	}
 
+	-- Interface (UI) language - global, separate from the per-book dictionary
+	-- language. "auto" follows KOReader's app language; English is the fallback.
+	self.ui_lang_choice = settings.get("ui_lang")
+	i18n.setLang(self.ui_lang_choice)
+
 	if self.ui and self.ui.menu then
 		self.ui.menu:registerToMainMenu(self)
 	end
@@ -154,7 +159,7 @@ function UnitLens:_warnUndetected()
 	end
 	self._lang_warned = true
 	UIManager:show(Notification:new({
-		text = _("Unit Lens: book language not detected — pick one in Tools ▸ Unit Lens ▸ Language"),
+		text = i18n.t("Unit Lens: book language not detected - pick one in Tools ▸ Unit Lens ▸ Book language"),
 		timeout = 4,
 	}))
 end
@@ -208,7 +213,7 @@ function UnitLens:scan(reason)
 	if not d then
 		render.clear(self)
 		self:_warnUndetected()
-		log("scan(" .. tostring(reason) .. "): language undetected — none active")
+		log("scan(" .. tostring(reason) .. "): language undetected - none active")
 		return
 	end
 
@@ -291,11 +296,19 @@ function UnitLens:setEnabled(value)
 end
 
 -- Change an appearance option (style/thickness/intensity/tooltip_timeout).
--- These don't affect which units match, so just repaint — no rescan.
+-- These don't affect which units match, so just repaint - no rescan.
 function UnitLens:setOpt(key, value)
 	self.opts[key] = value
 	settings.set(key, value)
 	render.refresh(self)
+end
+
+-- Change the Interface (UI) language ("auto" or a shipped l10n code). Menu labels
+-- are rebuilt on the next menu open; nothing on the page needs to change.
+function UnitLens:setUiLanguage(choice)
+	self.ui_lang_choice = choice
+	settings.set("ui_lang", choice)
+	i18n.setLang(choice)
 end
 
 -- Change the per-book language choice ("auto" or a dict code) and rescan.
@@ -312,13 +325,15 @@ end
 
 function UnitLens:showAbout()
 	local text = table.concat({
-		"Unit Lens  v" .. VERSION,
 		"",
-		_(
-			"Detects measurement units while you read and reveals their equivalent in the other measurement system — offline, dictionary-driven (no runtime math)."
-		),
+		"Unit Lens v" .. VERSION,
 		"",
-		_("Built-in dictionaries: English, Russian. Add your own under the plugin's dicts/ folder."),
+		i18n.t("about_description"),
+		"",
+		i18n.t("about_dicts"),
+		"",
+		i18n.t("Author") .. ":" .. " " .. "Alexander Kislov",
+		"",
 	}, "\n")
 	UIManager:show(InfoMessage:new({ text = text }))
 end

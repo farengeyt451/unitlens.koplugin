@@ -1,5 +1,5 @@
 --[[
-format.lua — pure popup-text builder
+format.lua - pure popup-text builder
 
 Given a matched unit and the active dict's `strings` block, assemble the popup
 ]]
@@ -30,7 +30,7 @@ function M.popup(unit, strings)
 		local line = "1 " .. unit.name .. " = " .. r.value .. " " .. r.unit
 
 		if r.label then
-			line = line .. " — " .. r.label
+			line = line .. " - " .. r.label
 		end
 		lines[#lines + 1] = line
 	end

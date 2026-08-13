@@ -1,8 +1,8 @@
 --[[
-ul_langselect.lua — active-language resolution + the Language submenu
+ul_langselect.lua - active-language resolution + the Language submenu
 ]]
 
-local _ = require("gettext")
+local i18n = require("ul_i18n")
 
 local M = {}
 
@@ -82,7 +82,7 @@ end
 function M.menuItems(plugin)
 	local items = {
 		{
-			text = _("Auto (from book)"),
+			text = i18n.t("Auto (from book)"),
 			radio = true,
 			checked_func = function()
 				return M.getChoice(plugin) == "auto"

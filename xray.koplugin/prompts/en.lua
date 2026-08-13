@@ -1,10 +1,10 @@
 return {
-    -- System instruction
-    system_instruction = "You are an expert literary researcher. Your response must be ONLY in valid JSON format. Ensure data is highly accurate and pertains strictly to the provided context.",
+	-- System instruction
+	system_instruction = "You are an expert literary researcher. Your response must be ONLY in valid JSON format. Ensure data is highly accurate and pertains strictly to the provided context.",
 
-    -- Author-only prompt (For quick bio lookup)
-    author_only = [[Identify and provide biography for the author of the book "%s". 
-Metadata suggests the author is "%s". 
+	-- Author-only prompt (For quick bio lookup)
+	author_only = [[Identify and provide biography for the author of the book "%s".
+Metadata suggests the author is "%s".
 
 CRITICAL: Verify the author using the BOOK TEXT CONTEXT (if provided at the end of this prompt) to ensure 100%% accuracy and avoid incorrect identifications.
 
@@ -16,8 +16,8 @@ REQUIRED JSON FORMAT:
   "author_death": "Death Date, formatted based on local date format"
 }]],
 
-    -- Find Duplicates (for AI-Assisted Merge)
-    find_duplicates = [[Book: %s
+	-- Find Duplicates (for AI-Assisted Merge)
+	find_duplicates = [[Book: %s
 Author: %s
 Reading Progress: %d%%
 
@@ -45,8 +45,8 @@ REQUIRED JSON FORMAT:
   ]
 }]],
 
-    -- Single Comprehensive Fetch (Combined Characters, Locations, Timeline)
-    comprehensive_xray = [[Book: %s
+	-- Single Comprehensive Fetch (Combined Characters, Locations, Timeline)
+	comprehensive_xray = [[Book: %s
 Author: %s
 Reading Progress: %d%%
 
@@ -153,8 +153,8 @@ REQUIRED JSON FORMAT:
   ]
 } ]],
 
-    -- Fetch More Characters (AI Limit Bypass)
-    more_characters = [[Book: %s
+	-- Fetch More Characters (AI Limit Bypass)
+	more_characters = [[Book: %s
 Author: %s
 Reading Progress: %d%%
 
@@ -186,8 +186,8 @@ REQUIRED JSON FORMAT:
   ]
 }]],
 
-    -- Fetch More Terms (Glossary Support)
-    more_terms = [[Book: %s
+	-- Fetch More Terms (Glossary Support)
+	more_terms = [[Book: %s
 Author: %s
 Reading Progress: %d%%
 
@@ -218,13 +218,13 @@ REQUIRED JSON FORMAT:
   ]
 }]],
 
-    single_word_lookup = [[The user highlighted the word "%s".
+	single_word_lookup = [[The user highlighted the word "%s".
 TASK: Determine if this word represents a Character, Location, Historical Figure, or Technical Term/Acronym in the book.
 
 CRITICAL FOR CHARACTERS AND LOCATIONS: Use the provided "BOOK TEXT CONTEXT" to identify the entity. If the word is provided in a "SEARCH TARGET" or "DIRECT REFERENCE" hint, it IS present in the book at the current position. Do not reject it just because it isn't found exactly in the sub-sampled narrative text. Short names (as short as 2 letters, e.g. "Oz", "Al", "Jo") are valid and should be analyzed.
 CRITICAL FOR FICTIONAL CHARACTERS: Describe ONLY what the provided book text reveals. Do NOT use prior training knowledge about this character, even if you recognize them from a well-known series. If the text only briefly mentions this character, your description must reflect that limited information.
 CRITICAL FOR HISTORICAL FIGURES: You MAY use your internal knowledge to verify their identity and provide their biography/role, ONLY if they are a real, notable historical figure. You MUST still use the text context for their relevance in the book.
-CRITICAL FOR TERMS: If the book is non-fiction, check if the word is a technical term, acronym, or key concept. For technical terms, concepts, or jargon: the term may appear in chapter samples rather than the immediate page context — treat it as valid if you can define it in the context of this book's subject. Only set `is_valid` to false if the phrase has absolutely no relevance to this book's subject matter.
+CRITICAL FOR TERMS: If the book is non-fiction, check if the word is a technical term, acronym, or key concept. For technical terms, concepts, or jargon: the term may appear in chapter samples rather than the immediate page context - treat it as valid if you can define it in the context of this book's subject. Only set `is_valid` to false if the phrase has absolutely no relevance to this book's subject matter.
 If the word is NOT a character, location, historical figure, or technical term/concept, set `is_valid` to false.
 
 REQUIRED JSON FORMAT:
@@ -250,8 +250,8 @@ If `is_valid` is false:
   "error_message": "Short explanation why this is not a character or location."
 }]],
 
-    -- Smart Merge Descriptions
-    merge_descriptions = [[TASK: Combine the following two descriptions of the same entity (character or location) into a single, cohesive, and concise summary.
+	-- Smart Merge Descriptions
+	merge_descriptions = [[TASK: Combine the following two descriptions of the same entity (character or location) into a single, cohesive, and concise summary.
 Remove redundant information and ensure the final description flows naturally.
 
 Primary Description: %s
@@ -262,7 +262,7 @@ REQUIRED JSON FORMAT:
   "merged_description": "Combined and polished description (Max {MAX_CHAR_DESC} chars)"
 }]],
 
-    book_type_detect = [[Book Title: %s
+	book_type_detect = [[Book Title: %s
 Author: %s
 Series: %s
 File Description/Subject Metadata: %s
@@ -276,8 +276,8 @@ Return ONLY valid JSON:
   "confidence": "high"
 }]],
 
-    -- Multi-Book Series Context Prompts
-    series_detect = [[Book Title: %s
+	-- Multi-Book Series Context Prompts
+	series_detect = [[Book Title: %s
 Author: %s
 
 TASK: Determine if this book is part of a named series.
@@ -291,7 +291,7 @@ Return ONLY valid JSON:
 If this is NOT a series book, return:
 { "is_series": false }]],
 
-    prior_book_list = [[Series: %s
+	prior_book_list = [[Series: %s
 Current Book Index: %d
 Current Book Title: %s
 
@@ -304,7 +304,7 @@ Return ONLY valid JSON:
   ]
 }]],
 
-    series_book_summary = [[Book: %s
+	series_book_summary = [[Book: %s
 Author: %s
 This is book %d in the series "%s".
 
@@ -330,14 +330,14 @@ REQUIRED JSON FORMAT:
   ]
 }]],
 
-    -- Fallback strings
-    fallback = {
-        unknown_book = "Unknown Book",
-        unknown_author = "Unknown Author",
-        unnamed_character = "Unnamed Character",
-        not_specified = "Not Specified",
-        no_description = "No Description",
-        unnamed_person = "Unnamed Person",
-        no_biography = "No Biography Available"
-    }
+	-- Fallback strings
+	fallback = {
+		unknown_book = "Unknown Book",
+		unknown_author = "Unknown Author",
+		unnamed_character = "Unnamed Character",
+		not_specified = "Not Specified",
+		no_description = "No Description",
+		unnamed_person = "Unnamed Person",
+		no_biography = "No Biography Available",
+	},
 }
