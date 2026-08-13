@@ -198,15 +198,26 @@ local function draw_dashed(bb, box, color, th)
 end
 
 local function draw_wavy(bb, box, color, th)
-	local amp = math.max(1, Screen:scaleBySize(2))
-	local period = math.max(2, Screen:scaleBySize(6))
+	local amp = math.max(1, math.floor(Screen:scaleBySize(1)))
+	local period = math.max(5, Screen:scaleBySize(6))
 	local base = box.y + box.h - th - amp
-	local x1 = box.x + box.w
+	local x0 = box.x
+	local x1 = box.x + box.w - 1
 	local twopi = 2 * math.pi
+	local prev_y
 
-	for x = box.x, x1 - 1 do
-		local dy = math.floor(amp * math.sin((x - box.x) / period * twopi) + 0.5)
-		bb:paintRect(x, base + dy, 1, th, color)
+	for x = x0, x1 do
+		local phase = (x - x0) / period * twopi
+		local y = math.floor(base + amp * math.sin(phase) + 0.5)
+		bb:paintRect(x, y, 1, th, color)
+
+		-- Keep the wave continuous when rounding causes small vertical jumps.
+		if prev_y ~= nil and prev_y ~= y then
+			local y0 = math.min(prev_y, y)
+			bb:paintRect(x, y0, 1, math.abs(prev_y - y) + th, color)
+		end
+
+		prev_y = y
 	end
 end
 
