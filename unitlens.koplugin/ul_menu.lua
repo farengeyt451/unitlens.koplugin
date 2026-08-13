@@ -1,14 +1,5 @@
 --[[
-ul_menu.lua — builds the "Unit Lens ▸" submenu.
-
-A standard nested KOReader menu (sub_item_table), registered under Tools via
-`sorting_hint = "more_tools"`. All items read/write live plugin state:
-  * enable toggle          -> plugin.enabled  (plugin:setEnabled)
-  * Language               -> ul_langselect (plugin:setLanguage)
-  * style/thickness/…      -> plugin.opts     (plugin:setOpt)
-  * About                  -> plugin:showAbout
-
-Callbacks live on the plugin instance so this module stays a pure builder.
+ul_menu.lua — builds the "Unit Lens menu
 ]]
 
 local _ = require("gettext")
@@ -16,9 +7,10 @@ local langselect = require("ul_langselect")
 
 local M = {}
 
--- A radio group over one plugin.opts key. `choices` = { { text, value }, ... }.
+-- A radio group over one plugin.opts key. `choices` = { { text, value }, ... }
 local function radio_group(plugin, key, choices)
 	local sub = {}
+
 	for _, c in ipairs(choices) do
 		sub[#sub + 1] = {
 			text = c.text,
@@ -32,6 +24,7 @@ local function radio_group(plugin, key, choices)
 			keep_menu_open = true,
 		}
 	end
+
 	return sub
 end
 

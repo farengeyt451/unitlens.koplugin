@@ -1,23 +1,5 @@
 --[[
-ul_render.lua — KOReader rendering layer for Unit Lens (Milestone 3).
-
-Draws a wavy underline under each matched unit on the visible page, and shows a
-tooltip with the precomputed conversion when the user taps a match.
-
-Approach (mirrors xray.koplugin, kept deliberately minimal):
-  * wrap self.ui.view.paintTo      -> paint underlines onto the blitbuffer after
-                                      the reader page is drawn (no annotations are
-                                      created or persisted).
-  * resolve each match's XPointers -> screen boxes via getScreenBoxesFromPositions
-                                      (cached by a rendering-hash signature).
-  * wrap self.ui.highlight.onTap   -> hit-test the tap against boxes -> tooltip.
-
-State lives on the plugin instance (self), so this module is a set of functions
-operating on that instance rather than a stateful object:
-  self._ul_matches  : { { start_xp, end_xp, popup, token }, ... }  (set by main:scan)
-  self._ul_boxes    : resolved { { x, y, w, h, popup }, ... }
-  self._ul_box_sig  : cache signature for the resolved boxes
-  self._ul_paint_wrapped / self._ul_tap_wrapped : one-time mount guards
+ul_render.lua — KOReader rendering layer for Unit Lens
 ]]
 
 local UIManager = require("ui/uimanager")
@@ -54,15 +36,17 @@ function Tooltip:init()
 	local face = Font:getFace("infofont", sc(15))
 
 	-- Size the card to its content: measure the widest line so single-line rows
-	-- (the "System: …" / "Category: …" headers) don't wrap, but cap at the screen.
+	-- (the "System: …" / "Category: …" headers) don't wrap, but cap at the screen
 	local text = self.text or ""
 	local widest = sc(80)
+
 	for line in (text .. "\n"):gmatch("(.-)\n") do
 		local w = RenderText:sizeUtf8Text(0, sw, face, line, true, false).x
 		if w > widest then
 			widest = w
 		end
 	end
+
 	local content_w = math.min(widest, sw - sc(40))
 
 	local body = TextBoxWidget:new({
@@ -86,17 +70,19 @@ function Tooltip:init()
 	local margin = sc(8)
 	local box = self.box or { x = 0, y = 0, w = 0, h = 0 }
 
-	-- Horizontally centered on the word, clamped to the screen.
+	-- Horizontally centered on the word, clamped to the screen
 	local x = math.floor(box.x + box.w / 2 - cw / 2)
 	x = math.max(sc(2), math.min(sw - cw - sc(2), x))
 
-	-- Below the word if it fits, otherwise above.
+	-- Below the word if it fits, otherwise above
 	local y
+
 	if box.y + box.h + margin + ch <= sh then
 		y = box.y + box.h + margin
 	else
 		y = box.y - margin - ch
 	end
+
 	y = math.max(sc(2), math.min(sh - ch - sc(2), y))
 
 	card.overlap_offset = { x, y }
@@ -129,6 +115,7 @@ function Tooltip:dismiss()
 		end)
 		self._timer = nil
 	end
+
 	if not self._closed then
 		self._closed = true
 		UIManager:close(self)
@@ -145,7 +132,9 @@ function Tooltip:onShow()
 		end
 		UIManager:scheduleIn(self.timeout, self._timer)
 	end
+
 	UIManager:setDirty(self, "ui")
+
 	return true
 end
 
@@ -154,6 +143,7 @@ function Tooltip:onCloseWidget()
 		pcall(function()
 			UIManager:unschedule(self._timer)
 		end)
+
 		self._timer = nil
 	end
 end
@@ -162,7 +152,7 @@ end
 -- Underline drawing
 -- ---------------------------------------------------------------------------
 
--- Intensity -> 8-bit grey (0 = black, 255 = white).
+-- Intensity -> 8-bit grey (0 = black, 255 = white)
 local INTENSITY = {
 	light = Blitbuffer.Color8(0xB0),
 	medium = Blitbuffer.Color8(0x70),
@@ -177,6 +167,7 @@ local function draw_double(bb, box, color, th)
 	local line = math.max(1, math.floor(th / 2 + 0.5))
 	local gap = line
 	local y = box.y + box.h - line
+
 	bb:paintRect(box.x, y, box.w, line, color)
 	bb:paintRect(box.x, y - gap - line, box.w, line, color)
 end
@@ -186,6 +177,7 @@ local function draw_dotted(bb, box, color, th)
 	local y = box.y + box.h - th
 	local x1 = box.x + box.w
 	local x = box.x
+
 	while x < x1 do
 		bb:paintRect(x, y, math.min(th, x1 - x), th, color)
 		x = x + step
@@ -198,6 +190,7 @@ local function draw_dashed(bb, box, color, th)
 	local y = box.y + box.h - th
 	local x1 = box.x + box.w
 	local x = box.x
+
 	while x < x1 do
 		bb:paintRect(x, y, math.min(dash, x1 - x), th, color)
 		x = x + dash + gap
@@ -210,6 +203,7 @@ local function draw_wavy(bb, box, color, th)
 	local base = box.y + box.h - th - amp
 	local x1 = box.x + box.w
 	local twopi = 2 * math.pi
+
 	for x = box.x, x1 - 1 do
 		local dy = math.floor(amp * math.sin((x - box.x) / period * twopi) + 0.5)
 		bb:paintRect(x, base + dy, 1, th, color)
@@ -224,15 +218,17 @@ local DRAW = {
 	wavy = draw_wavy,
 }
 
--- Draw one box's underline according to the plugin's appearance settings.
+-- Draw one box's underline according to the plugin's appearance settings
 local function draw_underline(bb, box, opts)
 	local style = opts.underline_style or "wavy"
 	if style == "none" then
 		return
 	end
+
 	local fn = DRAW[style] or draw_wavy
 	local color = INTENSITY[opts.underline_intensity] or INTENSITY.medium
 	local th = math.max(1, Screen:scaleBySize(opts.underline_thickness or 2))
+
 	fn(bb, box, color, th)
 end
 
@@ -245,25 +241,31 @@ local function box_sig(plugin)
 	if not doc then
 		return ""
 	end
+
 	local page = doc.getCurrentPage and doc:getCurrentPage() or 0
 	local hash = ""
+
 	if doc.getDocumentRenderingHash then
 		pcall(function()
 			hash = doc:getDocumentRenderingHash()
 		end)
 	end
+
 	return table.concat({ tostring(page), tostring(hash), Screen:getWidth(), Screen:getHeight() }, "|")
 end
 
 local function resolve_boxes(plugin)
 	local sig = box_sig(plugin)
+
 	if plugin._ul_box_sig == sig and plugin._ul_boxes then
 		return
 	end
+
 	plugin._ul_box_sig = sig
 
 	local doc = plugin.ui and plugin.ui.document
 	local out = {}
+
 	if doc and plugin._ul_matches then
 		for _, m in ipairs(plugin._ul_matches) do
 			-- A word may wrap across lines -> several boxes.
@@ -280,6 +282,7 @@ end
 
 local function set_dirty(plugin)
 	local ui = plugin.ui
+
 	if ui and ui.view then
 		UIManager:setDirty(ui.view.dialog or ui, "ui")
 	else
@@ -307,7 +310,7 @@ function M.clear(plugin)
 	set_dirty(plugin)
 end
 
--- Repaint without recomputing matches/boxes (used after an appearance change).
+-- Repaint without recomputing matches/boxes (used after an appearance change)
 function M.refresh(plugin)
 	set_dirty(plugin)
 end
@@ -321,11 +324,14 @@ function M.mountOverlay(plugin)
 	if plugin._ul_paint_wrapped then
 		return
 	end
+
 	local view = plugin.ui and plugin.ui.view
+
 	if not view then
 		logger.info("[unitlens] render: no ui.view to wrap yet")
 		return
 	end
+
 	local orig = view.paintTo
 	view.paintTo = function(view_self, bb, x, y)
 		orig(view_self, bb, x, y) -- draw the reader page first
@@ -352,6 +358,7 @@ function M.mountOverlay(plugin)
 			logger.warn("[unitlens] render draw error: " .. tostring(err))
 		end
 	end
+
 	plugin._ul_paint_wrapped = true
 	logger.info("[unitlens] render: paintTo overlay mounted")
 end
@@ -360,12 +367,16 @@ function M.mountTapHandler(plugin)
 	if plugin._ul_tap_wrapped then
 		return
 	end
+
 	local hl = plugin.ui and plugin.ui.highlight
+
 	if not hl then
 		logger.info("[unitlens] render: no ui.highlight to wrap yet")
 		return
 	end
+
 	local orig_tap = hl.onTap
+
 	hl.onTap = function(hl_self, _, ges)
 		if ges and M.handleTap(plugin, ges) then
 			return true
@@ -374,6 +385,7 @@ function M.mountTapHandler(plugin)
 			return orig_tap(hl_self, _, ges)
 		end
 	end
+
 	plugin._ul_tap_wrapped = true
 	logger.info("[unitlens] render: tap handler mounted")
 end
@@ -382,15 +394,19 @@ function M.handleTap(plugin, ges)
 	if not plugin.enabled then
 		return false
 	end
+
 	local boxes = plugin._ul_boxes
+
 	if not boxes or #boxes == 0 then
 		return false
 	end
 	if not (ges and ges.pos) then
 		return false
 	end
+
 	local tx, ty = ges.pos.x, ges.pos.y
 	local tol = Screen:scaleBySize(8)
+
 	for _, b in ipairs(boxes) do
 		if tx >= b.x - tol and tx <= b.x + b.w + tol and ty >= b.y - tol and ty <= b.y + b.h + tol then
 			M.showTooltip(plugin, b)
@@ -404,7 +420,7 @@ function M.showTooltip(plugin, box)
 	if not box or not box.popup then
 		return
 	end
-	-- 0 (Never) disables auto-dismiss; the user taps to close.
+	-- 0 (Never) disables auto-dismiss; the user taps to close
 	local timeout = (plugin.opts and plugin.opts.tooltip_timeout) or 4
 	UIManager:show(Tooltip:new({
 		text = box.popup,
