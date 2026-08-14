@@ -13,11 +13,18 @@ return {
 		["Underline thickness"] = "Grosor del subrayado",
 		["Underline intensity"] = "Intensidad del subrayado",
 		["Tooltip timeout"] = "Duración del aviso",
+		["Tooltip text size"] = "Tamaño del texto del aviso",
 		["About"] = "Acerca de",
 
 		-- Language pickers
 		["Auto (from book)"] = "Auto (del libro)",
 		["Auto (system)"] = "Auto (según la app)",
+
+		-- Tooltip text size (relative to the book's font size)
+		["Auto (follow book)"] = "Auto (según el libro)",
+		["Smaller"] = "Más pequeño",
+		["Larger"] = "Más grande",
+		["Largest"] = "El más grande",
 
 		-- Underline styles
 		["Wavy"] = "Ondulado",

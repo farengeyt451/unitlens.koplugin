@@ -13,11 +13,18 @@ return {
 		["Underline thickness"] = "Underline thickness",
 		["Underline intensity"] = "Underline intensity",
 		["Tooltip timeout"] = "Tooltip timeout",
+		["Tooltip text size"] = "Tooltip text size",
 		["About"] = "About",
 
 		-- Language pickers
 		["Auto (from book)"] = "Auto (from book)",
 		["Auto (system)"] = "Auto (system)",
+
+		-- Tooltip text size (relative to the book's font size)
+		["Auto (follow book)"] = "Auto (follow book)",
+		["Smaller"] = "Smaller",
+		["Larger"] = "Larger",
+		["Largest"] = "Largest",
 
 		-- Underline styles
 		["Wavy"] = "Wavy",

@@ -126,6 +126,7 @@ function UnitLens:init()
 		underline_thickness = settings.get("underline_thickness"),
 		underline_intensity = settings.get("underline_intensity"),
 		tooltip_timeout = settings.get("tooltip_timeout"),
+		tooltip_text_size = settings.get("tooltip_text_size"),
 	}
 
 	-- Interface (UI) language - global, separate from the per-book dictionary

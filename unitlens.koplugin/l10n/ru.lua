@@ -13,11 +13,18 @@ return {
 		["Underline thickness"] = "Толщина подчёркивания",
 		["Underline intensity"] = "Насыщенность подчёркивания",
 		["Tooltip timeout"] = "Время подсказки",
+		["Tooltip text size"] = "Размер текста подсказки",
 		["About"] = "О плагине",
 
 		-- Language pickers
 		["Auto (from book)"] = "Авто (из книги)",
 		["Auto (system)"] = "Авто (как в приложении)",
+
+		-- Tooltip text size (relative to the book's font size)
+		["Auto (follow book)"] = "Авто (как в книге)",
+		["Smaller"] = "Мельче",
+		["Larger"] = "Крупнее",
+		["Largest"] = "Самый крупный",
 
 		-- Underline styles
 		["Wavy"] = "Волнистое",

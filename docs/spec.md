@@ -458,6 +458,7 @@ scanning `l10n/`, so a new language is a one-file PR with no code changes
 | Underline thickness | `underline_thickness`     | 1/2/3 (px)                           | `2`      | global       |
 | Underline intensity | `underline_intensity`     | light/medium/dark (grey)             | `medium` | global       |
 | Tooltip timeout     | `tooltip_timeout`         | 2/4/8/0 (0 = never, seconds)         | `4`      | global       |
+| Tooltip text size   | `tooltip_text_size`       | auto/smaller/larger/largest (nudge)  | `auto`   | global       |
 | Interface language  | `ui_lang`                 | `auto` or an l10n code               | `auto`   | global       |
 | Book language       | `unitlens_lang` (sidecar) | `auto` or a dict code                | `auto`   | **per-book** |
 
@@ -465,6 +466,13 @@ Appearance settings persist globally via `G_reader_settings`; the language choic
 per-book in the document sidecar (`DocSettings`). `ul_render` reads the appearance values
 at paint/tooltip time, so changes apply on the next repaint without a rescan; changing the
 language or the enable toggle triggers a rescan.
+
+**Tooltip typography** follows the reader instead of a hardcoded value: the size is the
+book's active body font size (`document.configurable.font_size`, global `cre_font_size`
+fallback), optionally nudged by *Tooltip text size*, and clamped for sanity. The face is
+KOReader's `cfont` content-font alias — `Font:getFace` resolves aliases/filenames, not
+crengine font-family names, so the book's actual family can't be reused reliably. Note
+`Font:getFace` scales the size by screen DPI internally, so a **raw** point size is passed.
 
 ### 5.3 UTF-8 pitfalls (must handle)
 

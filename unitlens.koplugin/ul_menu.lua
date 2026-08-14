@@ -87,12 +87,21 @@ function M.build(plugin)
 			},
 			{
 				text = t("Tooltip timeout"),
-				separator = true,
 				sub_item_table = radio_group(plugin, "tooltip_timeout", {
 					{ text = t("2 seconds"), value = 2 },
 					{ text = t("4 seconds"), value = 4 },
 					{ text = t("8 seconds"), value = 8 },
 					{ text = t("Never"), value = 0 },
+				}),
+			},
+			{
+				text = t("Tooltip text size"),
+				separator = true,
+				sub_item_table = radio_group(plugin, "tooltip_text_size", {
+					{ text = t("Auto (follow book)"), value = "auto" },
+					{ text = t("Smaller"), value = "smaller" },
+					{ text = t("Larger"), value = "larger" },
+					{ text = t("Largest"), value = "largest" },
 				}),
 			},
 			{

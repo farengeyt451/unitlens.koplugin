@@ -10,8 +10,9 @@ local Font = require("ui/font")
 local FrameContainer = require("ui/widget/container/framecontainer")
 local InputContainer = require("ui/widget/container/inputcontainer")
 local OverlapGroup = require("ui/widget/overlapgroup")
-local TextBoxWidget = require("ui/widget/textboxwidget")
-local RenderText = require("ui/rendertext")
+local VerticalGroup = require("ui/widget/verticalgroup")
+local VerticalSpan = require("ui/widget/verticalspan")
+local TextWidget = require("ui/widget/textwidget")
 local GestureRange = require("ui/gesturerange")
 local logger = require("logger")
 
@@ -25,7 +26,13 @@ local Tooltip = InputContainer:extend({
 	text = nil,
 	box = nil, -- { x, y, w, h } of the tapped unit, for positioning
 	timeout = 6,
+	face_name = nil, -- font alias for the card text (defaults to content font)
+	font_size = nil, -- RAW point size (getFace scales by DPI); follows the reader
 })
+
+-- Tooltip typography follows the reader's own font (see M.readerFont)
+local TOOLTIP_FACE_DEFAULT = "cfont"
+local TOOLTIP_SIZE_DEFAULT = 20
 
 function Tooltip:init()
 	local sw, sh = Screen:getWidth(), Screen:getHeight()
@@ -33,35 +40,33 @@ function Tooltip:init()
 		return Screen:scaleBySize(n)
 	end
 
-	local face = Font:getFace("infofont", sc(15))
+	local face = Font:getFace(self.face_name or TOOLTIP_FACE_DEFAULT, self.font_size or TOOLTIP_SIZE_DEFAULT)
 
-	-- Size the card to its content: measure the widest line so single-line rows
-	-- (the "System: …" / "Category: …" headers) don't wrap, but cap at the screen
 	local text = self.text or ""
-	local widest = sc(80)
+	local max_w = sw - sc(32)
+	local rows = {}
 
 	for line in (text .. "\n"):gmatch("(.-)\n") do
-		local w = RenderText:sizeUtf8Text(0, sw, face, line, true, false).x
-		if w > widest then
-			widest = w
+		if line == "" then
+			rows[#rows + 1] = VerticalSpan:new({ width = sc(6) })
+		else
+			rows[#rows + 1] = TextWidget:new({
+				text = line,
+				face = face,
+				max_width = max_w,
+			})
 		end
 	end
 
-	local content_w = math.min(widest, sw - sc(40))
+	local body = VerticalGroup:new({ align = "left", unpack(rows) })
 
-	local body = TextBoxWidget:new({
-		text = text,
-		face = face,
-		width = content_w,
-		alignment = "left",
-	})
-
+	-- Compact rounded callout (xray-like): thin border, rounded corners, snug padding
 	local card = FrameContainer:new({
 		background = Blitbuffer.COLOR_WHITE,
-		color = Blitbuffer.COLOR_DARK_GRAY,
-		bordersize = sc(2),
-		radius = sc(6),
-		padding = sc(10),
+		color = Blitbuffer.COLOR_BLACK,
+		bordersize = sc(1),
+		radius = sc(8),
+		padding = sc(8),
 		body,
 	})
 
@@ -427,16 +432,47 @@ function M.handleTap(plugin, ges)
 	return false
 end
 
+-- The tooltip mirrors the reader's own typography instead of a hardcoded size
+local TOOLTIP_SIZE_MIN = 12 -- clamp on the book size before the user's nudge
+local TOOLTIP_SIZE_MAX = 24
+local TOOLTIP_SIZE_FLOOR = 10 -- hard clamp after the nudge
+local TOOLTIP_SIZE_CEIL = 28
+
+-- Relative nudge applied on top of the reader's size (see the "Tooltip text size"
+-- menu). "auto" = follow the book exactly.
+local SIZE_DELTAS = { auto = 0, smaller = -2, larger = 2, largest = 4 }
+
+function M.readerFont(plugin)
+	local size
+	local doc = plugin and plugin.ui and plugin.ui.document
+	if doc and doc.configurable and doc.configurable.font_size then
+		size = doc.configurable.font_size
+	elseif G_reader_settings then
+		size = G_reader_settings:readSetting("cre_font_size")
+	end
+	size = tonumber(size) or 20
+	size = math.max(TOOLTIP_SIZE_MIN, math.min(TOOLTIP_SIZE_MAX, size))
+
+	local choice = plugin and plugin.opts and plugin.opts.tooltip_text_size or "auto"
+	size = size + (SIZE_DELTAS[choice] or 0)
+	size = math.max(TOOLTIP_SIZE_FLOOR, math.min(TOOLTIP_SIZE_CEIL, size))
+
+	return "cfont", size
+end
+
 function M.showTooltip(plugin, box)
 	if not box or not box.popup then
 		return
 	end
 	-- 0 (Never) disables auto-dismiss; the user taps to close
 	local timeout = (plugin.opts and plugin.opts.tooltip_timeout) or 4
+	local face_name, font_size = M.readerFont(plugin)
 	UIManager:show(Tooltip:new({
 		text = box.popup,
 		box = box,
 		timeout = timeout,
+		face_name = face_name,
+		font_size = font_size,
 	}))
 end
 
