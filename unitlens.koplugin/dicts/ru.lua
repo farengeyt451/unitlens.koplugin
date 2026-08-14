@@ -1,9 +1,15 @@
 --[[
-dicts/ru.lua - Russian dictionary (length subset for Milestone 1).
+dicts/ru.lua - Russian dictionary (length, mass, volume).
 
 Format: see docs/spec.md §4. Values are precomputed strings with a comma decimal
 mark (docs/units.md). Imperial units rarely carry symbols in Russian prose, so
-only the metric side declares digit-gated symbols (м, см, мм, км).
+only the metric side declares digit-gated symbols (м, см, мм, км, г, кг, т, ц, л).
+
+Only single-word forms are listed: the matcher tests one token at a time, so
+multi-word units (жидкая унция, кубический метр, миля в час, квадратный метр) are
+deferred until phrase matching lands — this is why area/speed are not here yet.
+Where US and British Imperial diverge (galon, pint, quart, bushel), both variants
+are shown as separate labelled results (США / Великобритания).
 ]]
 
 return {
@@ -14,7 +20,7 @@ return {
 		system_label = "Система",
 		category_label = "Категория",
 		systems = { customary = "Имперская", metric = "Метрическая" },
-		categories = { length = "Длина" },
+		categories = { length = "Длина", mass = "Масса", volume = "Объём" },
 	},
 
 	units = {
@@ -169,6 +175,289 @@ return {
 			},
 			symbols = { "км" },
 			results = { { value = "0,6214", unit = "мили" } },
+		},
+
+		-- ── Mass ──────────────────────────────────────────────────────────
+
+		-- Customary/imperial -> metric
+		ounce = {
+			name = "унция",
+			system = "customary",
+			category = "mass",
+			forms = {
+				"унция",
+				"унции",
+				"унцию",
+				"унцией",
+				"унциею",
+				"унций",
+				"унциям",
+				"унциями",
+				"унциях",
+			},
+			results = { { value = "28,35", unit = "г" } },
+		},
+		pound = {
+			name = "фунт",
+			system = "customary",
+			category = "mass",
+			forms = {
+				"фунт",
+				"фунта",
+				"фунту",
+				"фунтом",
+				"фунте",
+				"фунты",
+				"фунтов",
+				"фунтам",
+				"фунтами",
+				"фунтах",
+			},
+			results = { { value = "453,6", unit = "г" } },
+		},
+		stone = {
+			name = "стоун",
+			system = "customary",
+			category = "mass",
+			forms = {
+				"стоун",
+				"стоуна",
+				"стоуну",
+				"стоуном",
+				"стоуне",
+				"стоуны",
+				"стоунов",
+				"стоунам",
+				"стоунами",
+				"стоунах",
+			},
+			results = { { value = "6,35", unit = "кг" } },
+		},
+		grain = {
+			name = "гран",
+			system = "customary",
+			category = "mass",
+			forms = {
+				"гран",
+				"грана",
+				"грану",
+				"граном",
+				"гране",
+				"граны",
+				"гранов",
+				"гранам",
+				"гранами",
+				"гранах",
+			},
+			results = { { value = "64,8", unit = "мг" } },
+		},
+
+		-- Metric -> customary
+		gram = {
+			name = "грамм",
+			system = "metric",
+			category = "mass",
+			forms = {
+				"грамм",
+				"грамма",
+				"грамму",
+				"граммом",
+				"грамме",
+				"граммы",
+				"граммов",
+				"граммам",
+				"граммами",
+				"граммах",
+			},
+			symbols = { "г" },
+			results = { { value = "0,0353", unit = "унции" } },
+		},
+		kilogram = {
+			name = "килограмм",
+			system = "metric",
+			category = "mass",
+			forms = {
+				"килограмм",
+				"килограмма",
+				"килограмму",
+				"килограммом",
+				"килограмме",
+				"килограммы",
+				"килограммов",
+				"килограммам",
+				"килограммами",
+				"килограммах",
+			},
+			symbols = { "кг" },
+			results = { { value = "2,205", unit = "фунта" } },
+		},
+		tonne = {
+			name = "тонна",
+			system = "metric",
+			category = "mass",
+			forms = {
+				"тонна",
+				"тонны",
+				"тонне",
+				"тонну",
+				"тонной",
+				"тонн",
+				"тоннам",
+				"тоннами",
+				"тоннах",
+			},
+			symbols = { "т" },
+			results = { { value = "2204,6", unit = "фунта" } },
+		},
+		quintal = {
+			name = "центнер",
+			system = "metric",
+			category = "mass",
+			forms = {
+				"центнер",
+				"центнера",
+				"центнеру",
+				"центнером",
+				"центнере",
+				"центнеры",
+				"центнеров",
+				"центнерам",
+				"центнерами",
+				"центнерах",
+			},
+			symbols = { "ц" },
+			results = { { value = "220,5", unit = "фунта" } },
+		},
+
+		-- ── Volume ────────────────────────────────────────────────────────
+
+		-- Customary/imperial -> metric. US and Imperial diverge -> two labelled
+		-- results (see docs/units.md §1.3).
+		gallon = {
+			name = "галлон",
+			system = "customary",
+			category = "volume",
+			forms = {
+				"галлон",
+				"галлона",
+				"галлону",
+				"галлоном",
+				"галлоне",
+				"галлоны",
+				"галлонов",
+				"галлонам",
+				"галлонами",
+				"галлонах",
+			},
+			results = {
+				{ value = "3,785", unit = "л", label = "США" },
+				{ value = "4,546", unit = "л", label = "Великобритания" },
+			},
+		},
+		pint = {
+			name = "пинта",
+			system = "customary",
+			category = "volume",
+			forms = {
+				"пинта",
+				"пинты",
+				"пинте",
+				"пинту",
+				"пинтой",
+				"пинтою",
+				"пинт",
+				"пинтам",
+				"пинтами",
+				"пинтах",
+			},
+			results = {
+				{ value = "0,473", unit = "л", label = "США" },
+				{ value = "0,568", unit = "л", label = "Великобритания" },
+			},
+		},
+		quart = {
+			name = "кварта",
+			system = "customary",
+			category = "volume",
+			forms = {
+				"кварта",
+				"кварты",
+				"кварте",
+				"кварту",
+				"квартой",
+				"квартою",
+				"кварт",
+				"квартам",
+				"квартами",
+				"квартах",
+			},
+			results = {
+				{ value = "0,946", unit = "л", label = "США" },
+				{ value = "1,137", unit = "л", label = "Великобритания" },
+			},
+		},
+		bushel = {
+			name = "бушель",
+			system = "customary",
+			category = "volume",
+			forms = {
+				"бушель",
+				"бушеля",
+				"бушелю",
+				"бушелем",
+				"бушеле",
+				"бушели",
+				"бушелей",
+				"бушелям",
+				"бушелями",
+				"бушелях",
+			},
+			results = {
+				{ value = "35,24", unit = "л", label = "США" },
+				{ value = "36,37", unit = "л", label = "Великобритания" },
+			},
+		},
+		barrel = {
+			name = "баррель",
+			system = "customary",
+			category = "volume",
+			forms = {
+				"баррель",
+				"барреля",
+				"баррелю",
+				"баррелем",
+				"барреле",
+				"баррели",
+				"баррелей",
+				"баррелям",
+				"баррелями",
+				"баррелях",
+			},
+			results = { { value = "159", unit = "л", label = "нефтяной" } },
+		},
+
+		-- Metric -> customary
+		litre = {
+			name = "литр",
+			system = "metric",
+			category = "volume",
+			forms = {
+				"литр",
+				"литра",
+				"литру",
+				"литром",
+				"литре",
+				"литры",
+				"литров",
+				"литрам",
+				"литрами",
+				"литрах",
+			},
+			symbols = { "л" },
+			results = {
+				{ value = "0,264", unit = "галлона", label = "США" },
+				{ value = "0,22", unit = "галлона", label = "Великобритания" },
+			},
 		},
 
 		-- Historical unit with no `system` and no `symbols` (exercises graceful

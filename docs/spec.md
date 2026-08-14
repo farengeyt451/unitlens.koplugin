@@ -41,6 +41,11 @@ Guiding principles:
   word alone (`футах`) triggers the underline; the number is irrelevant to the result.
 - **No region (US vs imperial) detection.** For units that diverge by region, the popup
   lists every variant and the reader picks (see §4.2).
+- **No glued/complex token detection.** Glued number+unit (`600мм`, `12°C`, `5'6"`), numeric
+  ranges (`10–12 km`) and punctuation-edge cases are out of scope; detection works on the whole
+  word tokens crengine word-navigation delivers.
+- **No temperature.** Temperature is an offset (non-multiplicative) conversion and a separate
+  design problem; deferred.
 - No cloud, no AI, no persisted user highlights/annotations.
 
 ## 3. Core rules
@@ -498,19 +503,34 @@ Lua's `%a` and `string.lower` are ASCII-only. Therefore:
 
 ## 7. Milestones
 
+### Done
+
 1. **Pure core (off-device, spec-driven):** `ul_dict.lua` + `dicts/{ru,en}.lua`, `ul_matcher.lua`,
    `ul_format.lua`; tests over sample RU/EN sentences and expected popup text.
 2. **Live scan (device, log only):** hook page-change; walk page to XPointer tokens; run
    matcher; log matches.
-3. **Underline rendering:** `paintTo` overlay; XPointers -> boxes (cached); draw wavy line.
+3. **Underline rendering:** `paintTo` overlay; XPointers -> boxes (cached); draw underline.
 4. **Tap -> tooltip:** wrap `onTap`; hit-test; show the `ul_format.lua` text.
-5. **Language selection & settings menu:** `ul_langselect.lua` - book language auto from metadata
-   (ask when undetectable), dynamic menu, per-book override in the sidecar. `ul_i18n.lua` + `l10n/` —
-   interface translations (global, auto-follows the app; contributor-friendly one-file PRs).
-   `ul_menu.lua` + `ul_settings.lua` - a dedicated **Unit Lens ▸** submenu at the top of Tools with
-   the enable toggle, Book language, Interface language, underline style/thickness/intensity, tooltip
-   timeout, and About (version + credits). See §5.4.
-6. **Extensibility & polish:** user dict directory + template; digit-gated `600 мм` splitter; cache tuning.
+5. **Language selection & settings menu:** `ul_langselect.lua` book language (auto from metadata,
+   ask when undetectable, per-book sidecar override); `ul_i18n.lua` + `l10n/` interface translations
+   (global, auto-follows the app, one-file PRs); `ul_menu.lua` + `ul_settings.lua` the **Unit Lens ▸**
+   submenu at the top of Tools. Polish since: underline style/thickness/intensity, tooltip
+   timeout, tooltip content (detailed/simple), tooltip size (follow-book ±nudge), last-page scan fix.
+
+### Remaining — execution order **M7 → M8 → M6 → M9**
+
+6. **Extensibility — user dictionaries:** auto-discover `dicts/*.lua` (drop the hardcoded en/ru
+   require list) so a dropped-in file shows up under Book language automatically; ship a dict
+   **template + authoring guide** (mirrors `l10n/README.md`).
+7. **Dictionary coverage:** extend `en`/`ru` from length to the remaining multiplicative categories
+   in `units.md` — mass/weight, volume (US vs imperial variants as multiple `results`), area, speed —
+   with category/system `strings` and precomputed values; add tests. *(Temperature excluded — non-goal.)*
+8. **Quality & performance:** false-positive audit on the expanded dicts (keep symbols digit-gated;
+   drop words common in prose but rare as units); confirm the rendering-hash box cache and profile
+   on-device scan time with the bigger dicts; broaden matcher tests. *(Glued-token/range robustness
+   excluded — non-goal.)*
+9. **Release & packaging:** README (features, install, screenshots, how to add languages/dicts),
+   version/license/credits, GitHub release (+ optional KOReader plugin-index submission).
 
 ## 8. Reference
 

@@ -37,4 +37,23 @@ return function(t)
 		"1 аршин = 71,12 см\n1 аршин = 0,7112 м",
 		"ru arshin simple popup (multi-result, no header)"
 	)
+
+	-- M7: mass unit with the new category header.
+	t.eq(
+		format.popup(ru.units.pound, ru.strings),
+		"Система: Имперская\nКатегория: Масса\n\n1 фунт = 453,6 г",
+		"ru pound popup (mass)"
+	)
+
+	-- M7: volume unit with US/Imperial variants -> labelled result lines.
+	t.eq(
+		format.popup(ru.units.gallon, ru.strings),
+		"Система: Имперская\nКатегория: Объём\n\n1 галлон = 3,785 л - США\n1 галлон = 4,546 л - Великобритания",
+		"ru gallon popup (US/Imperial labels)"
+	)
+	t.eq(
+		format.popup(ru.units.gallon, ru.strings, false),
+		"1 галлон = 3,785 л - США\n1 галлон = 4,546 л - Великобритания",
+		"ru gallon simple popup"
+	)
 end

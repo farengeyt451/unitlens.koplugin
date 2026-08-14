@@ -33,4 +33,16 @@ return function(t)
 
 	-- Multiple units on one line, in order.
 	t.eq(keys("6 ft and 3 inches", en), { "foot", "inch" }, "en: two matches in order")
+
+	-- M7: Russian mass/volume spelled forms match standalone.
+	t.eq(keys("он весил три фунта", ru), { "pound" }, "ru: фунта -> pound")
+	t.eq(keys("бочка на сто галлонов", ru), { "gallon" }, "ru: галлонов -> gallon")
+	t.eq(keys("в двух унциях золота", ru), { "ounce" }, "ru: унциях -> ounce")
+	t.eq(keys("выпил пинту эля", ru), { "pint" }, "ru: пинту -> pint")
+
+	-- M7: Russian metric symbols are digit-gated.
+	t.eq(keys("масса 5 кг", ru), { "kilogram" }, "ru: 5 кг -> kilogram")
+	t.eq(keys("добавьте 200 г муки", ru), { "gram" }, "ru: 200 г -> gram")
+	t.eq(keys("бутыль на 3 л", ru), { "litre" }, "ru: 3 л -> litre")
+	t.eq(keys("вес т неизвестен", ru), {}, "ru: bare т (no digit) ignored")
 end
