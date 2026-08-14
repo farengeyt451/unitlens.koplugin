@@ -50,11 +50,14 @@ function Tooltip:init()
 		if line == "" then
 			table.insert(body, VerticalSpan:new({ width = sc(6) }))
 		else
-			table.insert(body, TextWidget:new({
-				text = line,
-				face = face,
-				max_width = max_w,
-			}))
+			table.insert(
+				body,
+				TextWidget:new({
+					text = line,
+					face = face,
+					max_width = max_w,
+				})
+			)
 		end
 	end
 
@@ -431,14 +434,17 @@ function M.handleTap(plugin, ges)
 end
 
 -- The tooltip mirrors the reader's own typography instead of a hardcoded size
-local TOOLTIP_SIZE_MIN = 12 -- clamp on the book size before the user's nudge
-local TOOLTIP_SIZE_MAX = 24
-local TOOLTIP_SIZE_FLOOR = 10 -- hard clamp after the nudge
-local TOOLTIP_SIZE_CEIL = 28
+local TOOLTIP_SIZE_FLOOR = 10
+local TOOLTIP_SIZE_CEIL = 30
 
--- Relative nudge applied on top of the reader's size (see the "Tooltip text size"
--- menu). "auto" = follow the book exactly.
-local SIZE_DELTAS = { auto = 0, smaller = -2, larger = 2, largest = 4 }
+-- Relative nudge (in the reader's font-size unit) applied on top of the book size
+local SIZE_DELTAS = {
+	auto = 0,
+	smallest = -4,
+	smaller = -2,
+	bigger = 2,
+	biggest = 4,
+}
 
 function M.readerFont(plugin)
 	local size
@@ -449,7 +455,6 @@ function M.readerFont(plugin)
 		size = G_reader_settings:readSetting("cre_font_size")
 	end
 	size = tonumber(size) or 20
-	size = math.max(TOOLTIP_SIZE_MIN, math.min(TOOLTIP_SIZE_MAX, size))
 
 	local choice = plugin and plugin.opts and plugin.opts.tooltip_text_size or "auto"
 	size = size + (SIZE_DELTAS[choice] or 0)

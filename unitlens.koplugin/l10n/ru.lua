@@ -14,6 +14,7 @@ return {
 		["Underline intensity"] = "Насыщенность подчёркивания",
 		["Tooltip timeout"] = "Время подсказки",
 		["Tooltip text size"] = "Размер текста подсказки",
+		["Tooltip content"] = "Стиль подсказки",
 		["About"] = "О плагине",
 
 		-- Language pickers
@@ -22,9 +23,14 @@ return {
 
 		-- Tooltip text size (relative to the book's font size)
 		["Auto (follow book)"] = "Авто (как в книге)",
+		["Smallest"] = "Самый мелкий",
 		["Smaller"] = "Мельче",
-		["Larger"] = "Крупнее",
-		["Largest"] = "Самый крупный",
+		["Bigger"] = "Крупнее",
+		["Biggest"] = "Самый крупный",
+
+		-- Tooltip content
+		["Detailed"] = "Подробная",
+		["Simple"] = "Краткая",
 
 		-- Underline styles
 		["Wavy"] = "Волнистое",

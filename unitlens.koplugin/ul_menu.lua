@@ -96,12 +96,20 @@ function M.build(plugin)
 			},
 			{
 				text = t("Tooltip text size"),
-				separator = true,
 				sub_item_table = radio_group(plugin, "tooltip_text_size", {
 					{ text = t("Auto (follow book)"), value = "auto" },
+					{ text = t("Smallest"), value = "smallest" },
 					{ text = t("Smaller"), value = "smaller" },
-					{ text = t("Larger"), value = "larger" },
-					{ text = t("Largest"), value = "largest" },
+					{ text = t("Bigger"), value = "bigger" },
+					{ text = t("Biggest"), value = "biggest" },
+				}),
+			},
+			{
+				text = t("Tooltip content"),
+				separator = true,
+				sub_item_table = radio_group(plugin, "tooltip_detail", {
+					{ text = t("Detailed"), value = "detailed" },
+					{ text = t("Simple"), value = "simple" },
 				}),
 			},
 			{

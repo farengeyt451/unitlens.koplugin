@@ -27,9 +27,14 @@ return function(t)
 	)
 
 	-- No strings at all -> only the result line(s), no header, no blank line.
+	t.eq(format.popup(en.units.mile, {}), "1 mile = 1.609 km", "popup with empty strings skips header")
+
+	-- Simple mode (detailed = false): conversion only, header dropped even when
+	-- strings are present. Multi-result still lists every line.
+	t.eq(format.popup(en.units.foot, en.strings, false), "1 foot = 0.3048 m", "en foot simple popup")
 	t.eq(
-		format.popup(en.units.mile, {}),
-		"1 mile = 1.609 km",
-		"popup with empty strings skips header"
+		format.popup(ru.units.arshin, ru.strings, false),
+		"1 аршин = 71,12 см\n1 аршин = 0,7112 м",
+		"ru arshin simple popup (multi-result, no header)"
 	)
 end

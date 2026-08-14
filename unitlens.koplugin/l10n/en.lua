@@ -14,6 +14,7 @@ return {
 		["Underline intensity"] = "Underline intensity",
 		["Tooltip timeout"] = "Tooltip timeout",
 		["Tooltip text size"] = "Tooltip text size",
+		["Tooltip content"] = "Tooltip content",
 		["About"] = "About",
 
 		-- Language pickers
@@ -22,9 +23,14 @@ return {
 
 		-- Tooltip text size (relative to the book's font size)
 		["Auto (follow book)"] = "Auto (follow book)",
+		["Smallest"] = "Smallest",
 		["Smaller"] = "Smaller",
-		["Larger"] = "Larger",
-		["Largest"] = "Largest",
+		["Bigger"] = "Bigger",
+		["Biggest"] = "Biggest",
+
+		-- Tooltip content
+		["Detailed"] = "Detailed",
+		["Simple"] = "Simple",
 
 		-- Underline styles
 		["Wavy"] = "Wavy",

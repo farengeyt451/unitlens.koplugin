@@ -14,6 +14,7 @@ return {
 		["Underline intensity"] = "Intensidad del subrayado",
 		["Tooltip timeout"] = "Duración del aviso",
 		["Tooltip text size"] = "Tamaño del texto del aviso",
+		["Tooltip content"] = "Contenido del aviso",
 		["About"] = "Acerca de",
 
 		-- Language pickers
@@ -22,9 +23,14 @@ return {
 
 		-- Tooltip text size (relative to the book's font size)
 		["Auto (follow book)"] = "Auto (según el libro)",
+		["Smallest"] = "El más pequeño",
 		["Smaller"] = "Más pequeño",
-		["Larger"] = "Más grande",
-		["Largest"] = "El más grande",
+		["Bigger"] = "Más grande",
+		["Biggest"] = "El más grande",
+
+		-- Tooltip content
+		["Detailed"] = "Detallado",
+		["Simple"] = "Simple",
 
 		-- Underline styles
 		["Wavy"] = "Ondulado",

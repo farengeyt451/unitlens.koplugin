@@ -119,7 +119,6 @@ function UnitLens:init()
 	self._last_count = 0
 
 	-- Appearance settings are global (G_reader_settings); language is per-book
-	-- (resolved by ul_langselect). `enabled` lives in the global settings too.
 	self.enabled = settings.get("enabled")
 	self.opts = {
 		underline_style = settings.get("underline_style"),
@@ -127,10 +126,10 @@ function UnitLens:init()
 		underline_intensity = settings.get("underline_intensity"),
 		tooltip_timeout = settings.get("tooltip_timeout"),
 		tooltip_text_size = settings.get("tooltip_text_size"),
+		tooltip_detail = settings.get("tooltip_detail"),
 	}
 
 	-- Interface (UI) language - global, separate from the per-book dictionary
-	-- language. "auto" follows KOReader's app language; English is the fallback.
 	self.ui_lang_choice = settings.get("ui_lang")
 	i18n.setLang(self.ui_lang_choice)
 
@@ -153,7 +152,7 @@ function UnitLens:loadedLangs()
 	return t
 end
 
--- One-shot notice when the book language can't be resolved (guard per book).
+-- One-shot notice when the book language can't be resolved (guard per book)
 function UnitLens:_warnUndetected()
 	if self._lang_warned then
 		return
@@ -191,8 +190,7 @@ function UnitLens:scan(reason)
 		return
 	end
 
-	-- Overlay/tap handlers need self.ui.view / self.ui.highlight, which exist by
-	-- reader time; mount is idempotent so calling it here is safe.
+	-- Overlay/tap handlers need self.ui.view / self.ui.highlight
 	render.mount(self)
 
 	if not self.enabled then
@@ -230,7 +228,7 @@ function UnitLens:scan(reason)
 	local matches = matcher.match(d, texts)
 
 	-- Turn matches into render records carrying the XPointer span (for the box)
-	-- and the precomputed popup text (for the tooltip).
+	local detailed = self.opts.tooltip_detail ~= "simple"
 	local render_matches = {}
 
 	for _, m in ipairs(matches) do
@@ -239,7 +237,7 @@ function UnitLens:scan(reason)
 			render_matches[#render_matches + 1] = {
 				start_xp = tk.start_xp,
 				end_xp = tk.end_xp,
-				popup = format.popup(m.unit, d.strings),
+				popup = format.popup(m.unit, d.strings, detailed),
 				token = tk.text,
 			}
 		end
@@ -296,23 +294,30 @@ function UnitLens:setEnabled(value)
 	end
 end
 
--- Change an appearance option (style/thickness/intensity/tooltip_timeout).
--- These don't affect which units match, so just repaint - no rescan.
+-- Change an appearance option
 function UnitLens:setOpt(key, value)
 	self.opts[key] = value
 	settings.set(key, value)
-	render.refresh(self)
+	if key == "tooltip_detail" then
+		self.last_sig = nil
+		if self.enabled then
+			self:scan("opt")
+		else
+			render.clear(self)
+		end
+	else
+		render.refresh(self)
+	end
 end
 
--- Change the Interface (UI) language ("auto" or a shipped l10n code). Menu labels
--- are rebuilt on the next menu open; nothing on the page needs to change.
+-- Change the Interface (UI) language ("auto" or a shipped l10n code)
 function UnitLens:setUiLanguage(choice)
 	self.ui_lang_choice = choice
 	settings.set("ui_lang", choice)
 	i18n.setLang(choice)
 end
 
--- Change the per-book language choice ("auto" or a dict code) and rescan.
+-- Change the per-book language choice ("auto" or a dict code) and rescan
 function UnitLens:setLanguage(code)
 	langselect.setChoice(self, code)
 	self._lang_warned = nil -- allow a fresh notice if the new choice is undetectable
