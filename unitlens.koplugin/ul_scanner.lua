@@ -44,11 +44,16 @@ function M.pageTokens(doc, page)
 		return tokens
 	end
 
-	-- Boundary: start of the next page (nil on the last page)
+	local start_pos = pos_of(doc, start_xp)
+
 	local end_xp = try(function()
 		return doc:getPageXPointer(page + 1)
 	end)
 	local end_pos = end_xp and pos_of(doc, end_xp) or nil
+
+	if end_pos and start_pos and end_pos <= start_pos then
+		end_pos = nil
+	end
 
 	local cursor = start_xp
 	local guard = 0
