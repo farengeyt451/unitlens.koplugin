@@ -44,21 +44,19 @@ function Tooltip:init()
 
 	local text = self.text or ""
 	local max_w = sw - sc(32)
-	local rows = {}
+	local body = VerticalGroup:new({ align = "left" })
 
 	for line in (text .. "\n"):gmatch("(.-)\n") do
 		if line == "" then
-			rows[#rows + 1] = VerticalSpan:new({ width = sc(6) })
+			table.insert(body, VerticalSpan:new({ width = sc(6) }))
 		else
-			rows[#rows + 1] = TextWidget:new({
+			table.insert(body, TextWidget:new({
 				text = line,
 				face = face,
 				max_width = max_w,
-			})
+			}))
 		end
 	end
-
-	local body = VerticalGroup:new({ align = "left", unpack(rows) })
 
 	-- Compact rounded callout (xray-like): thin border, rounded corners, snug padding
 	local card = FrameContainer:new({
