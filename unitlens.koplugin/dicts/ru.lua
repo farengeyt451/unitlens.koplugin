@@ -1,10 +1,10 @@
 --[[
-dicts/ru.lua - Russian dictionary (length, mass, volume).
+dicts/ru.lua - Russian dictionary (length, mass, volume, area).
 
 Format: see docs/spec.md §4. Values are precomputed strings with a comma decimal
 mark (docs/units.md). Imperial units carry no symbols in Russian prose; only the
 metric side declares digit-gated symbols (км, гм, дам, м, дм, см, мм, мкм, нм,
-т, ц, кг, г, мг, мкг, гл, л, дл, мл).
+т, ц, кг, г, мг, мкг, гл, л, дл, мл, га).
 
 Single-word only (the matcher tests one token at a time). Units that share one
 word across systems are folded into a single entry with several labelled results,
@@ -21,7 +21,7 @@ return {
 		system_label = "Система",
 		category_label = "Категория",
 		systems = { customary = "Имперская", metric = "Метрическая" },
-		categories = { length = "Длина", mass = "Масса", volume = "Объём" },
+		categories = { length = "Длина", mass = "Масса", volume = "Объём", area = "Площадь" },
 	},
 
 	units = {
@@ -755,6 +755,69 @@ return {
 				"баррелях",
 			},
 			results = { { value = "158,99", unit = "л", label = "нефтяной" } },
+		},
+
+		-- ── Area ──────────────────────────────────────────────────────────
+		hectare = {
+			name = "гектар",
+			system = "metric",
+			category = "area",
+			symbols = { "га" },
+			forms = {
+				"гектар",
+				"гектара",
+				"гектару",
+				"гектаром",
+				"гектаре",
+				"гектары",
+				"гектаров",
+				"гектарам",
+				"гектарами",
+				"гектарах",
+			},
+			results = { { value = "2,471", unit = "акра" }, { value = "10000", unit = "м²" } },
+		},
+		are = {
+			name = "сотка",
+			system = "metric",
+			category = "area",
+			forms = {
+				"сотка",
+				"сотки",
+				"сотке",
+				"сотку",
+				"соткой",
+				"соткою",
+				"соток",
+				"соткам",
+				"сотками",
+				"сотках",
+			},
+			results = {
+				{ value = "100", unit = "м²" },
+				{ value = "0,0247", unit = "акра" },
+			},
+		},
+		acre = {
+			name = "акр",
+			system = "customary",
+			category = "area",
+			forms = {
+				"акр",
+				"акра",
+				"акру",
+				"акром",
+				"акре",
+				"акры",
+				"акров",
+				"акрам",
+				"акрами",
+				"акрах",
+			},
+			results = {
+				{ value = "0,405", unit = "га" },
+				{ value = "4047", unit = "м²" },
+			},
 		},
 	},
 }

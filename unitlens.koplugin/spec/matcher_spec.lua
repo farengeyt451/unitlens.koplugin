@@ -81,4 +81,15 @@ return function(t)
 	t.eq(keys("a pint of ale", en), { "pint" }, "en: pint -> pint")
 	t.eq(keys("50 gal drum", en), { "gallon" }, "en: 50 gal -> gallon")
 	t.eq(keys("about 2 L", en), { "litre" }, "en: 2 L -> litre")
+
+	-- Area: Russian spelled forms (incl. сотка) + digit-gated га.
+	t.eq(keys("поле в десять гектаров", ru), { "hectare" }, "ru: гектаров -> hectare")
+	t.eq(keys("участок шесть соток", ru), { "are" }, "ru: соток -> are (сотка)")
+	t.eq(keys("купил три акра земли", ru), { "acre" }, "ru: акра -> acre")
+	t.eq(keys("площадь 5 га", ru), { "hectare" }, "ru: 5 га -> hectare")
+
+	-- Area: English hectare/acre; the are (verb!) is deliberately NOT shipped.
+	t.eq(keys("a hectare of land", en), { "hectare" }, "en: hectare -> hectare")
+	t.eq(keys("fifty acres of wheat", en), { "acre" }, "en: acres -> acre")
+	t.eq(keys("we are here now", en), {}, "en: verb 'are' is not a unit")
 end

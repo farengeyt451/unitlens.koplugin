@@ -96,4 +96,11 @@ return function(t)
 		"1 унция = 28,35 г - вес\n1 унция = 29,57 мл - жидк. (амер.)\n1 унция = 28,41 мл - жидк. (брит.)",
 		"ru ounce popup (weight + fluid, header-less)"
 	)
+
+	-- Area: acre -> metric with hectare + m² results.
+	t.eq(
+		format.popup(ru.units.acre, ru.strings),
+		"Система: Имперская\nКатегория: Площадь\n\n1 акр = 0,405 га\n1 акр = 4047 м²",
+		"ru acre popup (area, ha + m²)"
+	)
 end

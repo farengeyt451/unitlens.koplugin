@@ -1,5 +1,5 @@
 --[[
-dicts/en.lua - English dictionary (length, mass, volume).
+dicts/en.lua - English dictionary (length, mass, volume, area).
 
 Format: see docs/spec.md §4. Values are precomputed strings (docs/units.md).
 Customary/imperial units convert -> metric; metric units convert -> customary.
@@ -19,7 +19,7 @@ return {
 		system_label = "System",
 		category_label = "Category",
 		systems = { customary = "Customary", metric = "Metric" },
-		categories = { length = "Length", mass = "Mass", volume = "Volume" },
+		categories = { length = "Length", mass = "Mass", volume = "Volume", area = "Area" },
 	},
 
 	units = {
@@ -386,6 +386,27 @@ return {
 			symbols = { "bbl" },
 			forms = { "barrel", "barrels" },
 			results = { { value = "158.99", unit = "L", label = "oil" } },
+		},
+
+		-- ── Area ──────────────────────────────────────────────────────────
+		hectare = {
+			name = "hectare",
+			system = "metric",
+			category = "area",
+			symbols = { "ha" },
+			forms = { "hectare", "hectares" },
+			results = { { value = "2.471", unit = "acres" } },
+		},
+		acre = {
+			name = "acre",
+			system = "customary",
+			category = "area",
+			symbols = { "ac" },
+			forms = { "acre", "acres" },
+			results = {
+				{ value = "0.405", unit = "ha" },
+				{ value = "4047", unit = "m²" },
+			},
 		},
 	},
 }
