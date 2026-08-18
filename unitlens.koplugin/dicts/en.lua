@@ -1,15 +1,5 @@
 --[[
-dicts/en.lua - English dictionary (length, mass, volume, area, temperature).
-
-Format: see docs/spec.md §4. Values are precomputed strings (docs/units.md).
-Customary/imperial units convert -> metric; metric units convert -> customary.
-
-Single-word only (the matcher tests one token at a time); multi-word units are out
-of scope. Units that share one word across systems are folded into a single entry
-with several labelled results, so the reader picks by context: mile (statute/
-nautical), ton (metric/long/short), hundredweight (long/short), gallon/quart/pint
-(US/UK), ounce (weight + fluid US/UK, cross-category so header-less). Temperature
-is affine, so its results are formula strings (r.text), not "1 name = value unit".
+dicts/en.lua - English dictionary
 ]]
 
 return {
@@ -66,6 +56,14 @@ return {
 			forms = { "chain", "chains" },
 			symbols = { "ch" },
 			results = { { value = "20.117", unit = "m" } },
+		},
+		fathom = {
+			name = "fathom",
+			system = "customary",
+			category = "length",
+			forms = { "fathom", "fathoms" },
+			symbols = { "ftm", "fath" },
+			results = { { value = "1.829", unit = "m" } },
 		},
 		yard = {
 			name = "yard",

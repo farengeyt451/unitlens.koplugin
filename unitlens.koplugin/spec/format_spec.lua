@@ -42,11 +42,11 @@ return function(t)
 		"ru tonne simple popup (multi-result, no header)"
 	)
 
-	-- M7: mass unit with the new category header.
+	-- Cross-system fold: "фунт" drops `system`, showing the English + Russian pound.
 	t.eq(
 		format.popup(ru.units.pound, ru.strings),
-		"Система: Имперская\nКатегория: Масса\n\n1 фунт = 453,6 г",
-		"ru pound popup (mass)"
+		"Категория: Масса\n\n1 фунт = 453,6 г - английский\n1 фунт = 409,5 г - русский",
+		"ru pound popup (english + russian, header-less system)"
 	)
 
 	-- Mass unit with long/short variants -> labelled result lines.
@@ -107,12 +107,19 @@ return function(t)
 	-- Temperature: affine -> results are formula strings (r.text), no "1 name =".
 	t.eq(
 		format.popup(ru.units.celsius, ru.strings),
-		"Система: Метрическая\nКатегория: Температура\n\n°F = °C × 9/5 + 32\nK = °C + 273,15\nПрикидка: °F ≈ 2 × °C + 30",
+		"Система: Метрическая\nКатегория: Температура\n\n°F = °C × 9/5 + 32\nK = °C + 273,15\nПримерно: °F ≈ 2 × °C + 30",
 		"ru celsius popup (formulas + rule of thumb)"
 	)
 	t.eq(
 		format.popup(en.units.fahrenheit, en.strings, false),
 		"°C = (°F − 32) × 5/9\nK = (°F − 32) × 5/9 + 273.15\nRule of thumb: °C ≈ (°F − 30) / 2",
 		"en fahrenheit simple popup (formulas + rule of thumb)"
+	)
+
+	-- Russian-historical unit: dedicated "Русская" system header.
+	t.eq(
+		format.popup(ru.units.versta, ru.strings),
+		"Система: Русская\nКатегория: Длина\n\n1 верста = 1,067 км",
+		"ru versta popup (russian system)"
 	)
 end

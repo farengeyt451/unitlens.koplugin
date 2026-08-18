@@ -1,17 +1,5 @@
 --[[
-dicts/ru.lua - Russian dictionary (length, mass, volume, area, temperature).
-
-Format: see docs/spec.md §4. Values are precomputed strings with a comma decimal
-mark (docs/units.md). Imperial units carry no symbols in Russian prose; only the
-metric side declares digit-gated symbols (км, гм, дам, м, дм, см, мм, мкм, нм,
-т, ц, кг, г, мг, мкг, гл, л, дл, мл, га); temperature adds °C/°F/K.
-
-Single-word only (the matcher tests one token at a time). Units that share one
-word across systems are folded into a single entry with several labelled results,
-so the reader picks by context: миля (сухопутная/морская), тонна (метрическая/
-длинная/короткая), хандредвейт (брит./амер.), галлон/кварта/пинта (амер./брит.),
-унция (вес + жидк. амер./брит., cross-category so header-less). Temperature is
-affine, so its results are formula strings (r.text), not "1 name = value unit".
+dicts/ru.lua - Russian dictionary
 ]]
 
 return {
@@ -21,7 +9,7 @@ return {
 	strings = {
 		system_label = "Система",
 		category_label = "Категория",
-		systems = { customary = "Имперская", metric = "Метрическая" },
+		systems = { customary = "Имперская", metric = "Метрическая", russian = "Русская" },
 		categories = {
 			length = "Длина",
 			mass = "Масса",
@@ -108,6 +96,24 @@ return {
 				"чейнах",
 			},
 			results = { { value = "20,117", unit = "м" } },
+		},
+		fathom = {
+			name = "фатом",
+			system = "customary",
+			category = "length",
+			forms = {
+				"фатом",
+				"фатома",
+				"фатому",
+				"фатомом",
+				"фатоме",
+				"фатомы",
+				"фатомов",
+				"фатомам",
+				"фатомами",
+				"фатомах",
+			},
+			results = { { value = "1,829", unit = "м" } },
 		},
 		yard = {
 			name = "ярд",
@@ -517,9 +523,10 @@ return {
 			},
 			results = { { value = "6,35", unit = "кг" } },
 		},
+		-- Один "фунт" -> два значения: английский (avoirdupois) и русский
+		-- (409,5 г, в классике). Кросс-системный, поэтому без system-заголовка.
 		pound = {
 			name = "фунт",
-			system = "customary",
 			category = "mass",
 			forms = {
 				"фунт",
@@ -533,7 +540,10 @@ return {
 				"фунтами",
 				"фунтах",
 			},
-			results = { { value = "453,6", unit = "г" } },
+			results = {
+				{ value = "453,6", unit = "г", label = "английский" },
+				{ value = "409,5", unit = "г", label = "русский" },
+			},
 		},
 		ounce = {
 			name = "унция",
@@ -889,6 +899,139 @@ return {
 			results = {
 				{ text = "°C = K − 273,15" },
 				{ text = "°F = (K − 273,15) × 9/5 + 32" },
+			},
+		},
+		versta = {
+			name = "верста",
+			system = "russian",
+			category = "length",
+			forms = {
+				"верста",
+				"версты",
+				"версте",
+				"версту",
+				"верстой",
+				"верстою",
+				"верст",
+				"верстам",
+				"верстами",
+				"верстах",
+				"вёрст",
+				"вёрсты",
+				"вёрстах",
+			},
+			results = { { value = "1,067", unit = "км" } },
+		},
+		sazhen = {
+			name = "сажень",
+			system = "russian",
+			category = "length",
+			forms = {
+				"сажень",
+				"сажени",
+				"саженью",
+				"сажен",
+				"саженей",
+				"саженям",
+				"саженями",
+				"саженях",
+			},
+			results = { { value = "2,134", unit = "м" } },
+		},
+		arshin = {
+			name = "аршин",
+			system = "russian",
+			category = "length",
+			forms = {
+				"аршин",
+				"аршина",
+				"аршину",
+				"аршином",
+				"аршине",
+				"аршины",
+				"аршинов",
+				"аршинам",
+				"аршинами",
+				"аршинах",
+			},
+			results = {
+				{ value = "71,12", unit = "см" },
+				{ value = "0,7112", unit = "м" },
+			},
+		},
+		vershok = {
+			name = "вершок",
+			system = "russian",
+			category = "length",
+			forms = {
+				"вершок",
+				"вершка",
+				"вершку",
+				"вершком",
+				"вершке",
+				"вершки",
+				"вершков",
+				"вершкам",
+				"вершками",
+				"вершках",
+			},
+			results = { { value = "4,45", unit = "см" } },
+		},
+		pud = {
+			name = "пуд",
+			system = "russian",
+			category = "mass",
+			forms = {
+				"пуд",
+				"пуда",
+				"пуду",
+				"пудом",
+				"пуде",
+				"пуды",
+				"пудов",
+				"пудам",
+				"пудами",
+				"пудах",
+			},
+			results = { { value = "16,38", unit = "кг" } },
+		},
+		zolotnik = {
+			name = "золотник",
+			system = "russian",
+			category = "mass",
+			forms = {
+				"золотник",
+				"золотника",
+				"золотнику",
+				"золотником",
+				"золотнике",
+				"золотники",
+				"золотников",
+				"золотникам",
+				"золотниками",
+				"золотниках",
+			},
+			results = { { value = "4,27", unit = "г" } },
+		},
+		desyatina = {
+			name = "десятина",
+			system = "russian",
+			category = "area",
+			forms = {
+				"десятина",
+				"десятины",
+				"десятине",
+				"десятину",
+				"десятиной",
+				"десятиною",
+				"десятин",
+				"десятинам",
+				"десятинами",
+				"десятинах",
+			},
+			results = {
+				{ value = "1,093", unit = "га" },
+				{ value = "10925", unit = "м²" },
 			},
 		},
 	},

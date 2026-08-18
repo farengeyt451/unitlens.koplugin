@@ -100,4 +100,20 @@ return function(t)
 	t.eq(keys("около трёхсот кельвинов", ru), { "kelvin" }, "ru: кельвинов -> kelvin")
 	t.eq(keys("measured in fahrenheit", en), { "fahrenheit" }, "en: fahrenheit -> fahrenheit")
 	t.eq(keys("the core hit 300 K", en), { "kelvin" }, "en: 300 K -> kelvin")
+
+	-- Fathom: English word + symbol; Russian matches the transliteration "фатом".
+	t.eq(keys("five fathoms deep", en), { "fathom" }, "en: fathoms -> fathom")
+	t.eq(keys("на глубине десяти фатомов", ru), { "fathom" }, "ru: фатомов -> fathom")
+
+	-- Russian historical units (старорусские меры) match by spelled form.
+	t.eq(keys("три версты до села", ru), { "versta" }, "ru: версты -> versta")
+	t.eq(keys("от горшка два вершка", ru), { "vershok" }, "ru: вершка -> vershok")
+	t.eq(keys("косая сажень в плечах", ru), { "sazhen" }, "ru: сажень -> sazhen")
+	t.eq(keys("ростом два аршина", ru), { "arshin" }, "ru: аршина -> arshin")
+	t.eq(keys("привёз пять пудов муки", ru), { "pud" }, "ru: пудов -> pud")
+	t.eq(keys("золотник серебра", ru), { "zolotnik" }, "ru: золотник -> zolotnik")
+	t.eq(keys("десятина пахотной земли", ru), { "desyatina" }, "ru: десятина -> desyatina")
+
+	-- "фунт" now folds English + Russian pound into one match.
+	t.eq(keys("он весил три фунта", ru), { "pound" }, "ru: фунта -> pound (folded)")
 end
