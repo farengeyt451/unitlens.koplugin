@@ -18,12 +18,12 @@ return function(t)
 		"ru metre popup"
 	)
 
-	-- Graceful skip: arshin has no `system`, so that header line is omitted;
-	-- two results -> two lines.
+	-- Graceful skip: тонна has no `system`, so that header line is omitted;
+	-- three folded results -> three lines.
 	t.eq(
-		format.popup(ru.units.arshin, ru.strings),
-		"Категория: Длина\n\n1 аршин = 71,12 см\n1 аршин = 0,7112 м",
-		"ru arshin popup (skipped system + multi-result)"
+		format.popup(ru.units.tonne, ru.strings),
+		"Категория: Масса\n\n1 тонна = 1000 кг - метрическая\n1 тонна = 1016 кг - длинная (брит.)\n1 тонна = 907 кг - короткая (амер.)",
+		"ru tonne popup (skipped system + folded variants)"
 	)
 
 	-- No strings at all -> only the result line(s), no header, no blank line.
@@ -37,9 +37,9 @@ return function(t)
 	-- strings are present. Multi-result still lists every line.
 	t.eq(format.popup(en.units.foot, en.strings, false), "1 foot = 0.3048 m", "en foot simple popup")
 	t.eq(
-		format.popup(ru.units.arshin, ru.strings, false),
-		"1 аршин = 71,12 см\n1 аршин = 0,7112 м",
-		"ru arshin simple popup (multi-result, no header)"
+		format.popup(ru.units.tonne, ru.strings, false),
+		"1 тонна = 1000 кг - метрическая\n1 тонна = 1016 кг - длинная (брит.)\n1 тонна = 907 кг - короткая (амер.)",
+		"ru tonne simple popup (multi-result, no header)"
 	)
 
 	-- M7: mass unit with the new category header.
@@ -49,16 +49,16 @@ return function(t)
 		"ru pound popup (mass)"
 	)
 
-	-- M7: volume unit with US/Imperial variants -> labelled result lines.
+	-- Mass unit with long/short variants -> labelled result lines.
 	t.eq(
-		format.popup(ru.units.gallon, ru.strings),
-		"Система: Имперская\nКатегория: Объём\n\n1 галлон = 3,785 л - США\n1 галлон = 4,546 л - Великобритания",
-		"ru gallon popup (US/Imperial labels)"
+		format.popup(ru.units.hundredweight, ru.strings),
+		"Система: Имперская\nКатегория: Масса\n\n1 хандредвейт = 50,8 кг - длинный (брит.)\n1 хандредвейт = 45,36 кг - короткий (амер.)",
+		"ru hundredweight popup (long/short labels)"
 	)
 	t.eq(
-		format.popup(ru.units.gallon, ru.strings, false),
-		"1 галлон = 3,785 л - США\n1 галлон = 4,546 л - Великобритания",
-		"ru gallon simple popup"
+		format.popup(ru.units.hundredweight, ru.strings, false),
+		"1 хандредвейт = 50,8 кг - длинный (брит.)\n1 хандредвейт = 45,36 кг - короткий (амер.)",
+		"ru hundredweight simple popup"
 	)
 
 	-- M7 length: uncommon metric unit leads with a familiar-scale result.

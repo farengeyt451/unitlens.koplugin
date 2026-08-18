@@ -34,17 +34,29 @@ return function(t)
 	-- Multiple units on one line, in order.
 	t.eq(keys("6 ft and 3 inches", en), { "foot", "inch" }, "en: two matches in order")
 
-	-- M7: Russian mass/volume spelled forms match standalone.
+	-- Mass: Russian spelled forms match standalone; ton/hundredweight fold to one
+	-- word with several labelled results (see format_spec).
 	t.eq(keys("он весил три фунта", ru), { "pound" }, "ru: фунта -> pound")
-	t.eq(keys("бочка на сто галлонов", ru), { "gallon" }, "ru: галлонов -> gallon")
 	t.eq(keys("в двух унциях золота", ru), { "ounce" }, "ru: унциях -> ounce")
-	t.eq(keys("выпил пинту эля", ru), { "pint" }, "ru: пинту -> pint")
+	t.eq(keys("груз весом в тонну", ru), { "tonne" }, "ru: тонну -> tonne")
+	t.eq(keys("собрали сто центнеров", ru), { "quintal" }, "ru: центнеров -> quintal")
+	t.eq(keys("весил десять стоунов", ru), { "stone" }, "ru: стоунов -> stone")
 
-	-- M7: Russian metric symbols are digit-gated.
+	-- Mass: Russian metric symbols are digit-gated.
 	t.eq(keys("масса 5 кг", ru), { "kilogram" }, "ru: 5 кг -> kilogram")
 	t.eq(keys("добавьте 200 г муки", ru), { "gram" }, "ru: 200 г -> gram")
-	t.eq(keys("бутыль на 3 л", ru), { "litre" }, "ru: 3 л -> litre")
+	t.eq(keys("груз 2 т", ru), { "tonne" }, "ru: 2 т -> tonne")
+	t.eq(keys("доза 50 мкг", ru), { "microgram" }, "ru: 50 мкг -> microgram")
 	t.eq(keys("вес т неизвестен", ru), {}, "ru: bare т (no digit) ignored")
+
+	-- Mass: English forms + digit-gated symbols; the ton word covers metric/long/short.
+	t.eq(keys("weighed ten pounds", en), { "pound" }, "en: pounds -> pound")
+	t.eq(keys("just a few ounces", en), { "ounce" }, "en: ounces -> ounce")
+	t.eq(keys("hauled three tons", en), { "tonne" }, "en: tons -> tonne")
+	t.eq(keys("about 10 cwt", en), { "hundredweight" }, "en: 10 cwt -> hundredweight")
+	t.eq(keys("twelve stone heavy", en), { "stone" }, "en: stone standalone (no symbol)")
+	-- Stone has no symbol on purpose, so ordinals like "21st" do NOT false-match.
+	t.eq(keys("finished 21st", en), {}, "en: 21st is not stone")
 
 	-- M7 length: new Russian units (spelled forms + digit-gated metric symbols).
 	t.eq(keys("отшагал десять лиг", ru), { "league" }, "ru: лиг -> league")

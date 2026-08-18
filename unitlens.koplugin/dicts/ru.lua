@@ -1,15 +1,15 @@
 --[[
-dicts/ru.lua - Russian dictionary (length, mass, volume).
+dicts/ru.lua - Russian dictionary (length, mass).
 
 Format: see docs/spec.md §4. Values are precomputed strings with a comma decimal
-mark (docs/units.md). Imperial units rarely carry symbols in Russian prose, so
-only the metric side declares digit-gated symbols (м, см, мм, км, г, кг, т, ц, л).
+mark (docs/units.md). Imperial units carry no symbols in Russian prose; only the
+metric side declares digit-gated symbols (км, гм, дам, м, дм, см, мм, мкм, нм,
+т, ц, кг, г, мг, мкг).
 
-Only single-word forms are listed: the matcher tests one token at a time, so
-multi-word units (жидкая унция, кубический метр, миля в час, квадратный метр) are
-deferred until phrase matching lands — this is why area/speed are not here yet.
-Where US and British Imperial diverge (galon, pint, quart, bushel), both variants
-are shown as separate labelled results (США / Великобритания).
+Single-word only (the matcher tests one token at a time). Units that share one
+word across systems are folded into a single entry with several labelled results,
+so the reader picks by context: миля (сухопутная/морская), тонна (метрическая/
+длинная/короткая), хандредвейт (британский/американский).
 ]]
 
 return {
@@ -20,7 +20,7 @@ return {
 		system_label = "Система",
 		category_label = "Категория",
 		systems = { customary = "Имперская", metric = "Метрическая" },
-		categories = { length = "Длина", mass = "Масса", volume = "Объём" },
+		categories = { length = "Длина", mass = "Масса" },
 	},
 
 	units = {
@@ -342,6 +342,244 @@ return {
 				{ value = "0,001", unit = "мкм" },
 				{ value = "0,000001", unit = "мм" },
 			},
+		},
+
+		-- ── Mass / weight ─────────────────────────────────────────────────
+		tonne = {
+			name = "тонна",
+			category = "mass",
+			symbols = { "т" },
+			forms = {
+				"тонна",
+				"тонны",
+				"тонне",
+				"тонну",
+				"тонной",
+				"тонною",
+				"тонн",
+				"тоннам",
+				"тоннами",
+				"тоннах",
+			},
+			results = {
+				{ value = "1000", unit = "кг", label = "метрическая" },
+				{ value = "1016", unit = "кг", label = "длинная (брит.)" },
+				{ value = "907", unit = "кг", label = "короткая (амер.)" },
+			},
+		},
+		quintal = {
+			name = "центнер",
+			system = "metric",
+			category = "mass",
+			symbols = { "ц" },
+			forms = {
+				"центнер",
+				"центнера",
+				"центнеру",
+				"центнером",
+				"центнере",
+				"центнеры",
+				"центнеров",
+				"центнерам",
+				"центнерами",
+				"центнерах",
+			},
+			results = {
+				{ value = "100", unit = "кг" },
+				{ value = "220,5", unit = "фунта" },
+			},
+		},
+		kilogram = {
+			name = "килограмм",
+			system = "metric",
+			category = "mass",
+			symbols = { "кг" },
+			forms = {
+				"килограмм",
+				"килограмма",
+				"килограмму",
+				"килограммом",
+				"килограмме",
+				"килограммы",
+				"килограммов",
+				"килограммам",
+				"килограммами",
+				"килограммах",
+			},
+			results = { { value = "2,205", unit = "фунта" } },
+		},
+		gram = {
+			name = "грамм",
+			system = "metric",
+			category = "mass",
+			symbols = { "г" },
+			forms = {
+				"грамм",
+				"грамма",
+				"грамму",
+				"граммом",
+				"грамме",
+				"граммы",
+				"граммов",
+				"граммам",
+				"граммами",
+				"граммах",
+			},
+			results = { { value = "0,0353", unit = "унции" } },
+		},
+		milligram = {
+			name = "миллиграмм",
+			system = "metric",
+			category = "mass",
+			symbols = { "мг" },
+			forms = {
+				"миллиграмм",
+				"миллиграмма",
+				"миллиграмму",
+				"миллиграммом",
+				"миллиграмме",
+				"миллиграммы",
+				"миллиграммов",
+				"миллиграммам",
+				"миллиграммами",
+				"миллиграммах",
+			},
+			results = {
+				{ value = "0,001", unit = "г" },
+				{ value = "0,0154", unit = "грана" },
+			},
+		},
+		microgram = {
+			name = "микрограмм",
+			system = "metric",
+			category = "mass",
+			symbols = { "мкг" },
+			forms = {
+				"микрограмм",
+				"микрограмма",
+				"микрограмму",
+				"микрограммом",
+				"микрограмме",
+				"микрограммы",
+				"микрограммов",
+				"микрограммам",
+				"микрограммами",
+				"микрограммах",
+			},
+			results = {
+				{ value = "0,001", unit = "мг" },
+				{ value = "0,000001", unit = "г" },
+			},
+		},
+		hundredweight = {
+			name = "хандредвейт",
+			system = "customary",
+			category = "mass",
+			forms = {
+				"хандредвейт",
+				"хандредвейта",
+				"хандредвейту",
+				"хандредвейтом",
+				"хандредвейте",
+				"хандредвейты",
+				"хандредвейтов",
+				"хандредвейтам",
+				"хандредвейтами",
+				"хандредвейтах",
+			},
+			results = {
+				{ value = "50,8", unit = "кг", label = "длинный (брит.)" },
+				{ value = "45,36", unit = "кг", label = "короткий (амер.)" },
+			},
+		},
+		stone = {
+			name = "стоун",
+			system = "customary",
+			category = "mass",
+			forms = {
+				"стоун",
+				"стоуна",
+				"стоуну",
+				"стоуном",
+				"стоуне",
+				"стоуны",
+				"стоунов",
+				"стоунам",
+				"стоунами",
+				"стоунах",
+			},
+			results = { { value = "6,35", unit = "кг" } },
+		},
+		pound = {
+			name = "фунт",
+			system = "customary",
+			category = "mass",
+			forms = {
+				"фунт",
+				"фунта",
+				"фунту",
+				"фунтом",
+				"фунте",
+				"фунты",
+				"фунтов",
+				"фунтам",
+				"фунтами",
+				"фунтах",
+			},
+			results = { { value = "453,6", unit = "г" } },
+		},
+		ounce = {
+			name = "унция",
+			system = "customary",
+			category = "mass",
+			forms = {
+				"унция",
+				"унции",
+				"унцию",
+				"унцией",
+				"унциею",
+				"унций",
+				"унциям",
+				"унциями",
+				"унциях",
+			},
+			results = { { value = "28,35", unit = "г" } },
+		},
+		dram = {
+			name = "драхма",
+			system = "customary",
+			category = "mass",
+			forms = {
+				"драхма",
+				"драхмы",
+				"драхме",
+				"драхму",
+				"драхмой",
+				"драхмою",
+				"драхм",
+				"драхмам",
+				"драхмами",
+				"драхмах",
+			},
+			results = { { value = "3,888", unit = "г", label = "аптечная" } },
+		},
+		grain = {
+			name = "гран",
+			system = "customary",
+			category = "mass",
+			forms = {
+				"гран",
+				"грана",
+				"грану",
+				"граном",
+				"гране",
+				"граны",
+				"гранов",
+				"гранам",
+				"гранами",
+				"гранах",
+			},
+			results = { { value = "64,8", unit = "мг" } },
 		},
 	},
 }
