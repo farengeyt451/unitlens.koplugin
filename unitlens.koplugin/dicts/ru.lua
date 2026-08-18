@@ -1,15 +1,16 @@
 --[[
-dicts/ru.lua - Russian dictionary (length, mass).
+dicts/ru.lua - Russian dictionary (length, mass, volume).
 
 Format: see docs/spec.md §4. Values are precomputed strings with a comma decimal
 mark (docs/units.md). Imperial units carry no symbols in Russian prose; only the
 metric side declares digit-gated symbols (км, гм, дам, м, дм, см, мм, мкм, нм,
-т, ц, кг, г, мг, мкг).
+т, ц, кг, г, мг, мкг, гл, л, дл, мл).
 
 Single-word only (the matcher tests one token at a time). Units that share one
 word across systems are folded into a single entry with several labelled results,
 so the reader picks by context: миля (сухопутная/морская), тонна (метрическая/
-длинная/короткая), хандредвейт (британский/американский).
+длинная/короткая), хандредвейт (брит./амер.), галлон/кварта/пинта (амер./брит.),
+унция (вес + жидк. амер./брит., cross-category so header-less).
 ]]
 
 return {
@@ -20,13 +21,12 @@ return {
 		system_label = "Система",
 		category_label = "Категория",
 		systems = { customary = "Имперская", metric = "Метрическая" },
-		categories = { length = "Длина", mass = "Масса" },
+		categories = { length = "Длина", mass = "Масса", volume = "Объём" },
 	},
 
 	units = {
 
 		-- ── Length ────────────────────────────────────────────────────────
-
 		league = {
 			name = "лига",
 			system = "customary",
@@ -530,8 +530,6 @@ return {
 		},
 		ounce = {
 			name = "унция",
-			system = "customary",
-			category = "mass",
 			forms = {
 				"унция",
 				"унции",
@@ -543,7 +541,11 @@ return {
 				"унциями",
 				"унциях",
 			},
-			results = { { value = "28,35", unit = "г" } },
+			results = {
+				{ value = "28,35", unit = "г", label = "вес" },
+				{ value = "29,57", unit = "мл", label = "жидк. (амер.)" },
+				{ value = "28,41", unit = "мл", label = "жидк. (брит.)" },
+			},
 		},
 		dram = {
 			name = "драхма",
@@ -580,6 +582,179 @@ return {
 				"гранах",
 			},
 			results = { { value = "64,8", unit = "мг" } },
+		},
+
+		-- ── Volume ────────────────────────────────────────────────────────
+		hectolitre = {
+			name = "гектолитр",
+			system = "metric",
+			category = "volume",
+			symbols = { "гл" },
+			forms = {
+				"гектолитр",
+				"гектолитра",
+				"гектолитру",
+				"гектолитром",
+				"гектолитре",
+				"гектолитры",
+				"гектолитров",
+				"гектолитрам",
+				"гектолитрами",
+				"гектолитрах",
+			},
+			results = {
+				{ value = "100", unit = "л" },
+				{ value = "26,42", unit = "галлона", label = "амер." },
+				{ value = "22", unit = "галлона", label = "брит." },
+			},
+		},
+		litre = {
+			name = "литр",
+			system = "metric",
+			category = "volume",
+			symbols = { "л" },
+			forms = {
+				"литр",
+				"литра",
+				"литру",
+				"литром",
+				"литре",
+				"литры",
+				"литров",
+				"литрам",
+				"литрами",
+				"литрах",
+			},
+			results = {
+				{ value = "2,11", unit = "пинты", label = "амер." },
+				{ value = "1,76", unit = "пинты", label = "брит." },
+			},
+		},
+		decilitre = {
+			name = "децилитр",
+			system = "metric",
+			category = "volume",
+			symbols = { "дл" },
+			forms = {
+				"децилитр",
+				"децилитра",
+				"децилитру",
+				"децилитром",
+				"децилитре",
+				"децилитры",
+				"децилитров",
+				"децилитрам",
+				"децилитрами",
+				"децилитрах",
+			},
+			results = {
+				{ value = "100", unit = "мл" },
+				{ value = "3,38", unit = "жидк. унции", label = "амер." },
+				{ value = "3,52", unit = "жидк. унции", label = "брит." },
+			},
+		},
+		millilitre = {
+			name = "миллилитр",
+			system = "metric",
+			category = "volume",
+			symbols = { "мл" },
+			forms = {
+				"миллилитр",
+				"миллилитра",
+				"миллилитру",
+				"миллилитром",
+				"миллилитре",
+				"миллилитры",
+				"миллилитров",
+				"миллилитрам",
+				"миллилитрами",
+				"миллилитрах",
+			},
+			results = {
+				{ value = "0,0338", unit = "жидк. унции", label = "амер." },
+				{ value = "0,0352", unit = "жидк. унции", label = "брит." },
+			},
+		},
+		gallon = {
+			name = "галлон",
+			system = "customary",
+			category = "volume",
+			forms = {
+				"галлон",
+				"галлона",
+				"галлону",
+				"галлоном",
+				"галлоне",
+				"галлоны",
+				"галлонов",
+				"галлонам",
+				"галлонами",
+				"галлонах",
+			},
+			results = {
+				{ value = "3,785", unit = "л", label = "амер." },
+				{ value = "4,546", unit = "л", label = "брит." },
+			},
+		},
+		quart = {
+			name = "кварта",
+			system = "customary",
+			category = "volume",
+			forms = {
+				"кварта",
+				"кварты",
+				"кварте",
+				"кварту",
+				"квартой",
+				"квартою",
+				"кварт",
+				"квартам",
+				"квартами",
+				"квартах",
+			},
+			results = {
+				{ value = "0,946", unit = "л", label = "амер." },
+				{ value = "1,137", unit = "л", label = "брит." },
+			},
+		},
+		pint = {
+			name = "пинта",
+			system = "customary",
+			category = "volume",
+			forms = {
+				"пинта",
+				"пинты",
+				"пинте",
+				"пинту",
+				"пинтой",
+				"пинтою",
+				"пинт",
+				"пинтам",
+				"пинтами",
+				"пинтах",
+			},
+			results = {
+				{ value = "0,473", unit = "л", label = "амер." },
+				{ value = "0,568", unit = "л", label = "брит." },
+			},
+		},
+		barrel = {
+			name = "баррель",
+			system = "customary",
+			category = "volume",
+			forms = {
+				"баррель",
+				"барреля",
+				"баррелю",
+				"баррелем",
+				"барреле",
+				"баррели",
+				"баррелей",
+				"баррелям",
+				"баррелями",
+				"баррелях",
+			},
+			results = { { value = "158,99", unit = "л", label = "нефтяной" } },
 		},
 	},
 }

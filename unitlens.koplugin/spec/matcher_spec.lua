@@ -69,4 +69,16 @@ return function(t)
 	t.eq(keys("a hectometre track", en), { "hectometre" }, "en: hectometre standalone")
 	t.eq(keys("about 40 microns", en), { "micrometre" }, "en: microns -> micrometre")
 	t.eq(keys("10 nmi offshore", en), { "mile" }, "en: 10 nmi -> mile (nautical result)")
+
+	-- Volume: Russian spelled forms; gallon/quart/pint fold US+UK into one word.
+	t.eq(keys("выпил галлон воды", ru), { "gallon" }, "ru: галлон -> gallon")
+	t.eq(keys("две кварты молока", ru), { "quart" }, "ru: кварты -> quart")
+	t.eq(keys("бочка нефти баррель", ru), { "barrel" }, "ru: баррель -> barrel")
+	t.eq(keys("объём 3 л", ru), { "litre" }, "ru: 3 л -> litre")
+	t.eq(keys("добавь 50 мл", ru), { "millilitre" }, "ru: 50 мл -> millilitre")
+
+	-- Volume: English forms + digit-gated symbols.
+	t.eq(keys("a pint of ale", en), { "pint" }, "en: pint -> pint")
+	t.eq(keys("50 gal drum", en), { "gallon" }, "en: 50 gal -> gallon")
+	t.eq(keys("about 2 L", en), { "litre" }, "en: 2 L -> litre")
 end

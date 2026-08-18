@@ -74,4 +74,26 @@ return function(t)
 		"Система: Имперская\nКатегория: Длина\n\n1 миля = 1,609 км - сухопутная\n1 миля = 1,852 км - морская",
 		"ru mile popup (land + sea variants)"
 	)
+
+	-- Volume: gallon folds US + UK into one word (labelled results).
+	t.eq(
+		format.popup(ru.units.gallon, ru.strings),
+		"Система: Имперская\nКатегория: Объём\n\n1 галлон = 3,785 л - амер.\n1 галлон = 4,546 л - брит.",
+		"ru gallon popup (US/UK variants)"
+	)
+
+	-- Volume: uncommon metric unit leads with a familiar-scale result.
+	t.eq(
+		format.popup(en.units.hectolitre, en.strings),
+		"System: Metric\nCategory: Volume\n\n1 hectolitre = 100 L\n1 hectolitre = 26.42 gal - US\n1 hectolitre = 22 gal - UK",
+		"en hectolitre popup (familiar-scale + US/UK)"
+	)
+
+	-- Cross-category fold: "ounce" has no system/category -> header-less popup with
+	-- the weight ounce plus both fluid ounces.
+	t.eq(
+		format.popup(ru.units.ounce, ru.strings),
+		"1 унция = 28,35 г - вес\n1 унция = 29,57 мл - жидк. (амер.)\n1 унция = 28,41 мл - жидк. (брит.)",
+		"ru ounce popup (weight + fluid, header-less)"
+	)
 end

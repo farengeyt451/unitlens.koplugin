@@ -1,5 +1,5 @@
 --[[
-dicts/en.lua - English dictionary (length, mass).
+dicts/en.lua - English dictionary (length, mass, volume).
 
 Format: see docs/spec.md §4. Values are precomputed strings (docs/units.md).
 Customary/imperial units convert -> metric; metric units convert -> customary.
@@ -7,7 +7,8 @@ Customary/imperial units convert -> metric; metric units convert -> customary.
 Single-word only (the matcher tests one token at a time); multi-word units are out
 of scope. Units that share one word across systems are folded into a single entry
 with several labelled results, so the reader picks by context: mile (statute/
-nautical), ton (metric/long/short), hundredweight (long/short).
+nautical), ton (metric/long/short), hundredweight (long/short), gallon/quart/pint
+(US/UK), ounce (weight + fluid US/UK, cross-category so header-less).
 ]]
 
 return {
@@ -18,7 +19,7 @@ return {
 		system_label = "System",
 		category_label = "Category",
 		systems = { customary = "Customary", metric = "Metric" },
-		categories = { length = "Length", mass = "Mass" },
+		categories = { length = "Length", mass = "Mass", volume = "Volume" },
 	},
 
 	units = {
@@ -273,11 +274,13 @@ return {
 		},
 		ounce = {
 			name = "ounce",
-			system = "customary",
-			category = "mass",
 			symbols = { "oz" },
 			forms = { "ounce", "ounces" },
-			results = { { value = "28.35", unit = "g" } },
+			results = {
+				{ value = "28.35", unit = "g", label = "weight" },
+				{ value = "29.57", unit = "mL", label = "fluid US" },
+				{ value = "28.41", unit = "mL", label = "fluid UK" },
+			},
 		},
 		dram = {
 			name = "dram",
@@ -294,6 +297,95 @@ return {
 			symbols = { "gr" },
 			forms = { "grain", "grains" },
 			results = { { value = "64.8", unit = "mg" } },
+		},
+
+		-- ── Volume ────────────────────────────────────────────────────────
+		hectolitre = {
+			name = "hectolitre",
+			system = "metric",
+			category = "volume",
+			symbols = { "hl" },
+			forms = { "hectolitre", "hectolitres", "hectoliter", "hectoliters" },
+			results = {
+				{ value = "100", unit = "L" },
+				{ value = "26.42", unit = "gal", label = "US" },
+				{ value = "22", unit = "gal", label = "UK" },
+			},
+		},
+		litre = {
+			name = "litre",
+			system = "metric",
+			category = "volume",
+			symbols = { "L", "l" },
+			forms = { "litre", "litres", "liter", "liters" },
+			results = {
+				{ value = "2.11", unit = "pt", label = "US" },
+				{ value = "1.76", unit = "pt", label = "UK" },
+			},
+		},
+		decilitre = {
+			name = "decilitre",
+			system = "metric",
+			category = "volume",
+			symbols = { "dl" },
+			forms = { "decilitre", "decilitres", "deciliter", "deciliters" },
+			results = {
+				{ value = "100", unit = "mL" },
+				{ value = "3.38", unit = "fl oz", label = "US" },
+				{ value = "3.52", unit = "fl oz", label = "UK" },
+			},
+		},
+		millilitre = {
+			name = "millilitre",
+			system = "metric",
+			category = "volume",
+			symbols = { "mL", "ml" },
+			forms = { "millilitre", "millilitres", "milliliter", "milliliters" },
+			results = {
+				{ value = "0.0338", unit = "fl oz", label = "US" },
+				{ value = "0.0352", unit = "fl oz", label = "UK" },
+			},
+		},
+		gallon = {
+			name = "gallon",
+			system = "customary",
+			category = "volume",
+			symbols = { "gal" },
+			forms = { "gallon", "gallons" },
+			results = {
+				{ value = "3.785", unit = "L", label = "US" },
+				{ value = "4.546", unit = "L", label = "UK" },
+			},
+		},
+		quart = {
+			name = "quart",
+			system = "customary",
+			category = "volume",
+			symbols = { "qt" },
+			forms = { "quart", "quarts" },
+			results = {
+				{ value = "0.946", unit = "L", label = "US" },
+				{ value = "1.137", unit = "L", label = "UK" },
+			},
+		},
+		pint = {
+			name = "pint",
+			system = "customary",
+			category = "volume",
+			symbols = { "pt" },
+			forms = { "pint", "pints" },
+			results = {
+				{ value = "0.473", unit = "L", label = "US" },
+				{ value = "0.568", unit = "L", label = "UK" },
+			},
+		},
+		barrel = {
+			name = "barrel",
+			system = "customary",
+			category = "volume",
+			symbols = { "bbl" },
+			forms = { "barrel", "barrels" },
+			results = { { value = "158.99", unit = "L", label = "oil" } },
 		},
 	},
 }
