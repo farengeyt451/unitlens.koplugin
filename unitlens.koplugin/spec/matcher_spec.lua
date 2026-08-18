@@ -92,4 +92,12 @@ return function(t)
 	t.eq(keys("a hectare of land", en), { "hectare" }, "en: hectare -> hectare")
 	t.eq(keys("fifty acres of wheat", en), { "acre" }, "en: acres -> acre")
 	t.eq(keys("we are here now", en), {}, "en: verb 'are' is not a unit")
+
+	-- Temperature: spelled forms match; Kelvin's bare K is digit-gated. (Popup is
+	-- a formula, not a 1:1 value — see format_spec.)
+	t.eq(keys("измерено по шкале Цельсия", ru), { "celsius" }, "ru: Цельсия -> celsius")
+	t.eq(keys("температура по Фаренгейту", ru), { "fahrenheit" }, "ru: Фаренгейту -> fahrenheit")
+	t.eq(keys("около трёхсот кельвинов", ru), { "kelvin" }, "ru: кельвинов -> kelvin")
+	t.eq(keys("measured in fahrenheit", en), { "fahrenheit" }, "en: fahrenheit -> fahrenheit")
+	t.eq(keys("the core hit 300 K", en), { "kelvin" }, "en: 300 K -> kelvin")
 end

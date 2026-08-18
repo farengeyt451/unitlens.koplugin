@@ -103,4 +103,16 @@ return function(t)
 		"Система: Имперская\nКатегория: Площадь\n\n1 акр = 0,405 га\n1 акр = 4047 м²",
 		"ru acre popup (area, ha + m²)"
 	)
+
+	-- Temperature: affine -> results are formula strings (r.text), no "1 name =".
+	t.eq(
+		format.popup(ru.units.celsius, ru.strings),
+		"Система: Метрическая\nКатегория: Температура\n\n°F = °C × 9/5 + 32\nK = °C + 273,15\nПрикидка: °F ≈ 2 × °C + 30",
+		"ru celsius popup (formulas + rule of thumb)"
+	)
+	t.eq(
+		format.popup(en.units.fahrenheit, en.strings, false),
+		"°C = (°F − 32) × 5/9\nK = (°F − 32) × 5/9 + 273.15\nRule of thumb: °C ≈ (°F − 30) / 2",
+		"en fahrenheit simple popup (formulas + rule of thumb)"
+	)
 end

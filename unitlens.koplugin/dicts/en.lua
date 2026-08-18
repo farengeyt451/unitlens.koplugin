@@ -1,5 +1,5 @@
 --[[
-dicts/en.lua - English dictionary (length, mass, volume, area).
+dicts/en.lua - English dictionary (length, mass, volume, area, temperature).
 
 Format: see docs/spec.md §4. Values are precomputed strings (docs/units.md).
 Customary/imperial units convert -> metric; metric units convert -> customary.
@@ -8,7 +8,8 @@ Single-word only (the matcher tests one token at a time); multi-word units are o
 of scope. Units that share one word across systems are folded into a single entry
 with several labelled results, so the reader picks by context: mile (statute/
 nautical), ton (metric/long/short), hundredweight (long/short), gallon/quart/pint
-(US/UK), ounce (weight + fluid US/UK, cross-category so header-less).
+(US/UK), ounce (weight + fluid US/UK, cross-category so header-less). Temperature
+is affine, so its results are formula strings (r.text), not "1 name = value unit".
 ]]
 
 return {
@@ -19,7 +20,13 @@ return {
 		system_label = "System",
 		category_label = "Category",
 		systems = { customary = "Customary", metric = "Metric" },
-		categories = { length = "Length", mass = "Mass", volume = "Volume", area = "Area" },
+		categories = {
+			length = "Length",
+			mass = "Mass",
+			volume = "Volume",
+			area = "Area",
+			temperature = "Temperature",
+		},
 	},
 
 	units = {
@@ -406,6 +413,46 @@ return {
 			results = {
 				{ value = "0.405", unit = "ha" },
 				{ value = "4047", unit = "m²" },
+			},
+		},
+
+		-- ── Temperature ───────────────────────────────────────────────────
+
+		-- Temperature is affine (offset + scale), not a single factor, so results
+		-- carry formula strings (r.text) instead of "1 name = value unit".
+		celsius = {
+			name = "Celsius",
+			system = "metric",
+			category = "temperature",
+			symbols = { "°C", "℃" },
+			forms = { "celsius", "centigrade" },
+			results = {
+				{ text = "°F = °C × 9/5 + 32" },
+				{ text = "K = °C + 273.15" },
+				{ text = "Rule of thumb: °F ≈ 2 × °C + 30" },
+			},
+		},
+		fahrenheit = {
+			name = "Fahrenheit",
+			system = "customary",
+			category = "temperature",
+			symbols = { "°F", "℉" },
+			forms = { "fahrenheit" },
+			results = {
+				{ text = "°C = (°F − 32) × 5/9" },
+				{ text = "K = (°F − 32) × 5/9 + 273.15" },
+				{ text = "Rule of thumb: °C ≈ (°F − 30) / 2" },
+			},
+		},
+		kelvin = {
+			name = "kelvin",
+			system = "metric",
+			category = "temperature",
+			symbols = { "K" },
+			forms = { "kelvin", "kelvins" },
+			results = {
+				{ text = "°C = K − 273.15" },
+				{ text = "°F = (K − 273.15) × 9/5 + 32" },
 			},
 		},
 	},

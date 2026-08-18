@@ -30,7 +30,10 @@ function M.popup(unit, strings, detailed)
 	end
 
 	for _, r in ipairs(unit.results or {}) do
-		local line = "1 " .. unit.name .. " = " .. r.value .. " " .. r.unit
+		-- A result is either a "1 name = value unit" conversion or a precomputed
+		-- raw line (r.text) — used where the "1 name =" template doesn't fit, e.g.
+		-- temperature carries formulas ("°F = °C × 9/5 + 32") instead of a factor.
+		local line = r.text or ("1 " .. unit.name .. " = " .. r.value .. " " .. r.unit)
 
 		if r.label then
 			line = line .. " - " .. r.label

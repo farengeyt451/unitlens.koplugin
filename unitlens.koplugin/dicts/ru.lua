@@ -1,16 +1,17 @@
 --[[
-dicts/ru.lua - Russian dictionary (length, mass, volume, area).
+dicts/ru.lua - Russian dictionary (length, mass, volume, area, temperature).
 
 Format: see docs/spec.md §4. Values are precomputed strings with a comma decimal
 mark (docs/units.md). Imperial units carry no symbols in Russian prose; only the
 metric side declares digit-gated symbols (км, гм, дам, м, дм, см, мм, мкм, нм,
-т, ц, кг, г, мг, мкг, гл, л, дл, мл, га).
+т, ц, кг, г, мг, мкг, гл, л, дл, мл, га); temperature adds °C/°F/K.
 
 Single-word only (the matcher tests one token at a time). Units that share one
 word across systems are folded into a single entry with several labelled results,
 so the reader picks by context: миля (сухопутная/морская), тонна (метрическая/
 длинная/короткая), хандредвейт (брит./амер.), галлон/кварта/пинта (амер./брит.),
-унция (вес + жидк. амер./брит., cross-category so header-less).
+унция (вес + жидк. амер./брит., cross-category so header-less). Temperature is
+affine, so its results are formula strings (r.text), not "1 name = value unit".
 ]]
 
 return {
@@ -21,7 +22,13 @@ return {
 		system_label = "Система",
 		category_label = "Категория",
 		systems = { customary = "Имперская", metric = "Метрическая" },
-		categories = { length = "Длина", mass = "Масса", volume = "Объём", area = "Площадь" },
+		categories = {
+			length = "Длина",
+			mass = "Масса",
+			volume = "Объём",
+			area = "Площадь",
+			temperature = "Температура",
+		},
 	},
 
 	units = {
@@ -817,6 +824,71 @@ return {
 			results = {
 				{ value = "0,405", unit = "га" },
 				{ value = "4047", unit = "м²" },
+			},
+		},
+
+		-- ── Temperature ───────────────────────────────────────────────────
+
+		-- Temperature is affine (offset + scale), not a single factor, so results
+		-- carry formula strings (r.text) instead of "1 name = value unit".
+		celsius = {
+			name = "цельсий",
+			system = "metric",
+			category = "temperature",
+			symbols = { "°C", "℃" },
+			forms = {
+				"цельсий",
+				"цельсия",
+				"цельсию",
+				"цельсием",
+				"цельсии",
+			},
+			results = {
+				{ text = "°F = °C × 9/5 + 32" },
+				{ text = "K = °C + 273,15" },
+				{ text = "Примерно: °F ≈ 2 × °C + 30" },
+			},
+		},
+		fahrenheit = {
+			name = "фаренгейт",
+			system = "customary",
+			category = "temperature",
+			symbols = { "°F", "℉" },
+			forms = {
+				"фаренгейт",
+				"фаренгейта",
+				"фаренгейту",
+				"фаренгейтом",
+				"фаренгейте",
+				"фаренгейты",
+				"фаренгейтов",
+			},
+			results = {
+				{ text = "°C = (°F − 32) × 5/9" },
+				{ text = "K = (°F − 32) × 5/9 + 273,15" },
+				{ text = "Примерно: °C ≈ (°F − 30) / 2" },
+			},
+		},
+		kelvin = {
+			name = "кельвин",
+			system = "metric",
+			category = "temperature",
+			symbols = { "K", "К" },
+			forms = {
+				"кельвин",
+				"кельвина",
+				"кельвину",
+				"кельвином",
+				"кельвине",
+				"кельвины",
+				"кельвинов",
+				"кельвинам",
+				"кельвинами",
+				"кельвинах",
+			},
+			results = {
+				{ text = "°C = K − 273,15" },
+				{ text = "°F = (K − 273,15) × 9/5 + 32" },
 			},
 		},
 	},
