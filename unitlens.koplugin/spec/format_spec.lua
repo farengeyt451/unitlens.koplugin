@@ -27,7 +27,11 @@ return function(t)
 	)
 
 	-- No strings at all -> only the result line(s), no header, no blank line.
-	t.eq(format.popup(en.units.mile, {}), "1 mile = 1.609 km", "popup with empty strings skips header")
+	t.eq(
+		format.popup(en.units.mile, {}),
+		"1 mile = 1.609 km - statute\n1 mile = 1.852 km - nautical",
+		"popup with empty strings skips header"
+	)
 
 	-- Simple mode (detailed = false): conversion only, header dropped even when
 	-- strings are present. Multi-result still lists every line.
@@ -55,5 +59,19 @@ return function(t)
 		format.popup(ru.units.gallon, ru.strings, false),
 		"1 галлон = 3,785 л - США\n1 галлон = 4,546 л - Великобритания",
 		"ru gallon simple popup"
+	)
+
+	-- M7 length: uncommon metric unit leads with a familiar-scale result.
+	t.eq(
+		format.popup(en.units.hectometre, en.strings),
+		"System: Metric\nCategory: Length\n\n1 hectometre = 100 m\n1 hectometre = 328.08 ft",
+		"en hectometre popup (familiar-scale + imperial)"
+	)
+
+	-- One word "миля" -> land + sea shown as two labelled results.
+	t.eq(
+		format.popup(ru.units.mile, ru.strings),
+		"Система: Имперская\nКатегория: Длина\n\n1 миля = 1,609 км - сухопутная\n1 миля = 1,852 км - морская",
+		"ru mile popup (land + sea variants)"
 	)
 end

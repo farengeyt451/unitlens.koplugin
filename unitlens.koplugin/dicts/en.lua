@@ -1,8 +1,13 @@
 --[[
-dicts/en.lua - English dictionary (length subset for Milestone 1).
+dicts/en.lua - English dictionary (length).
 
 Format: see docs/spec.md §4. Values are precomputed strings (docs/units.md).
-Customary units convert -> metric; metric units convert -> customary.
+Customary/imperial units convert -> metric; metric units convert -> customary.
+
+Only single-word forms are listed: the matcher tests one token at a time, so
+multi-word units (square metre, miles per hour) are out of scope. The nautical
+mile is folded into `mile` as an extra result (nmi/NM symbols land there too) —
+the reader picks the land/sea value from context.
 ]]
 
 return {
@@ -18,22 +23,41 @@ return {
 
 	units = {
 
-		-- Customary -> metric
-		inch = {
-			name = "inch",
+		-- ── Length ────────────────────────────────────────────────────────
+		league = {
+			name = "league",
 			system = "customary",
 			category = "length",
-			forms = { "inch", "inches" },
-			symbols = { "in", "″" },
-			results = { { value = "2.54", unit = "cm" } },
+			forms = { "league", "leagues" },
+			symbols = { "lea" },
+			results = { { value = "4.828", unit = "km" } },
 		},
-		foot = {
-			name = "foot",
+		mile = {
+			name = "mile",
 			system = "customary",
 			category = "length",
-			forms = { "foot", "feet" },
-			symbols = { "ft", "′" },
-			results = { { value = "0.3048", unit = "m" } },
+			forms = { "mile", "miles" },
+			symbols = { "mi", "nmi", "NM" },
+			results = {
+				{ value = "1.609", unit = "km", label = "statute" },
+				{ value = "1.852", unit = "km", label = "nautical" },
+			},
+		},
+		furlong = {
+			name = "furlong",
+			system = "customary",
+			category = "length",
+			forms = { "furlong", "furlongs" },
+			symbols = { "fur" },
+			results = { { value = "201.17", unit = "m" } },
+		},
+		chain = {
+			name = "chain",
+			system = "customary",
+			category = "length",
+			forms = { "chain", "chains" },
+			symbols = { "ch" },
+			results = { { value = "20.117", unit = "m" } },
 		},
 		yard = {
 			name = "yard",
@@ -43,47 +67,121 @@ return {
 			symbols = { "yd" },
 			results = { { value = "0.9144", unit = "m" } },
 		},
-		mile = {
-			name = "mile",
+		foot = {
+			name = "foot",
 			system = "customary",
 			category = "length",
-			forms = { "mile", "miles" },
-			symbols = { "mi" },
-			results = { { value = "1.609", unit = "km" } },
+			forms = { "foot", "feet" },
+			symbols = { "ft", "′" },
+			results = { { value = "0.3048", unit = "m" } },
 		},
-
-		-- Metric -> customary
-		millimetre = {
-			name = "mm",
-			system = "metric",
+		inch = {
+			name = "inch",
+			system = "customary",
 			category = "length",
-			forms = { "millimetre", "millimetres", "millimeter", "millimeters" },
-			symbols = { "mm" },
-			results = { { value = "0.0394", unit = "in" } },
-		},
-		centimetre = {
-			name = "cm",
-			system = "metric",
-			category = "length",
-			forms = { "centimetre", "centimetres", "centimeter", "centimeters" },
-			symbols = { "cm" },
-			results = { { value = "0.3937", unit = "in" } },
-		},
-		metre = {
-			name = "m",
-			system = "metric",
-			category = "length",
-			forms = { "metre", "metres", "meter", "meters" },
-			symbols = { "m" },
-			results = { { value = "3.2808", unit = "ft" } },
+			forms = { "inch", "inches" },
+			symbols = { "in", "″" },
+			results = { { value = "2.54", unit = "cm" } },
 		},
 		kilometre = {
-			name = "km",
+			name = "kilometre",
 			system = "metric",
 			category = "length",
-			forms = { "kilometre", "kilometres", "kilometer", "kilometers" },
 			symbols = { "km" },
+			forms = { "kilometre", "kilometres", "kilometer", "kilometers" },
 			results = { { value = "0.6214", unit = "mi" } },
+		},
+		hectometre = {
+			name = "hectometre",
+			system = "metric",
+			category = "length",
+			symbols = { "hm" },
+			forms = { "hectometre", "hectometres", "hectometer", "hectometers" },
+			results = {
+				{ value = "100", unit = "m" },
+				{ value = "328.08", unit = "ft" },
+			},
+		},
+		decametre = {
+			name = "decametre",
+			system = "metric",
+			category = "length",
+			symbols = { "dam" },
+			forms = {
+				"decametre",
+				"decametres",
+				"decameter",
+				"decameters",
+				"dekametre",
+				"dekametres",
+				"dekameter",
+				"dekameters",
+			},
+			results = {
+				{ value = "10", unit = "m" },
+				{ value = "32.81", unit = "ft" },
+			},
+		},
+		metre = {
+			name = "metre",
+			system = "metric",
+			category = "length",
+			symbols = { "m" },
+			forms = { "metre", "metres", "meter", "meters" },
+			results = { { value = "3.28084", unit = "ft" } },
+		},
+		decimetre = {
+			name = "decimetre",
+			system = "metric",
+			category = "length",
+			symbols = { "dm" },
+			forms = { "decimetre", "decimetres", "decimeter", "decimeters" },
+			results = { { value = "3.937", unit = "in" } },
+		},
+		centimetre = {
+			name = "centimetre",
+			system = "metric",
+			category = "length",
+			symbols = { "cm" },
+			forms = { "centimetre", "centimetres", "centimeter", "centimeters" },
+			results = { { value = "0.3937", unit = "in" } },
+		},
+		millimetre = {
+			name = "millimetre",
+			system = "metric",
+			category = "length",
+			symbols = { "mm" },
+			forms = { "millimetre", "millimetres", "millimeter", "millimeters" },
+			results = { { value = "0.03937", unit = "in" } },
+		},
+		micrometre = {
+			name = "micrometre",
+			system = "metric",
+			category = "length",
+			symbols = { "µm", "um" },
+			forms = {
+				"micrometre",
+				"micrometres",
+				"micrometer",
+				"micrometers",
+				"micron",
+				"microns",
+			},
+			results = {
+				{ value = "0.001", unit = "mm" },
+				{ value = "1000", unit = "nm" },
+			},
+		},
+		nanometre = {
+			name = "nanometre",
+			system = "metric",
+			category = "length",
+			symbols = { "nm" },
+			forms = { "nanometre", "nanometres", "nanometer", "nanometers" },
+			results = {
+				{ value = "0.001", unit = "µm" },
+				{ value = "0.000001", unit = "mm" },
+			},
 		},
 	},
 }

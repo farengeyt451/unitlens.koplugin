@@ -45,4 +45,16 @@ return function(t)
 	t.eq(keys("добавьте 200 г муки", ru), { "gram" }, "ru: 200 г -> gram")
 	t.eq(keys("бутыль на 3 л", ru), { "litre" }, "ru: 3 л -> litre")
 	t.eq(keys("вес т неизвестен", ru), {}, "ru: bare т (no digit) ignored")
+
+	-- M7 length: new Russian units (spelled forms + digit-gated metric symbols).
+	t.eq(keys("отшагал десять лиг", ru), { "league" }, "ru: лиг -> league")
+	t.eq(keys("до цели один фурлонг", ru), { "furlong" }, "ru: фурлонг -> furlong")
+	t.eq(keys("толщина 5 мкм", ru), { "micrometre" }, "ru: 5 мкм -> micrometre")
+	t.eq(keys("волна 500 нм", ru), { "nanometre" }, "ru: 500 нм -> nanometre")
+
+	-- M7 length: new English units + micron alias; the nautical-mile symbol nmi
+	-- now folds into `mile` (both land/sea results shown in the popup).
+	t.eq(keys("a hectometre track", en), { "hectometre" }, "en: hectometre standalone")
+	t.eq(keys("about 40 microns", en), { "micrometre" }, "en: microns -> micrometre")
+	t.eq(keys("10 nmi offshore", en), { "mile" }, "en: 10 nmi -> mile (nautical result)")
 end
