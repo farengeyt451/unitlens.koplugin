@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FictionBook xmlns="http://www.gribuser.ru/xml/fictionbook/2.0" xmlns:l="http://www.w3.org/1999/xlink">
+  <description>
+    <title-info>
+      <genre>sf</genre>
+      <author>
+        <first-name>A.</first-name>
+        <last-name>&amp; B. Testov</last-name>
+      </author>
+      <book-title>The Metric Wing</book-title>
+      <annotation>
+        <p>Test book for the Unit Lens plugin. Contains ONLY metric / SI units - as words and as digit+symbol (2 mm, 5 cm, 40 m, 7 kg, 500 g, 10 mg, 50 µg, 3 L, 200 mL, 1 dL, 5 hL, 4 ha, 20 °C, 293 K). Exercises the rare units: micrometre, nanometre, decimetre, hectometre, decilitre, hectolitre, microgram, kelvin, hectare. Styled after the Strugatsky brothers.</p>
+      </annotation>
+      <lang>en</lang>
+    </title-info>
+    <document-info>
+      <author><nickname>koreader-dev</nickname></author>
+      <program-used>Cursor</program-used>
+      <date value="2026-08-19">19 August 2026</date>
+      <id>unitlens-test-metric-en-0005</id>
+      <version>1.0</version>
+    </document-info>
+  </description>
+  <body>
+    <title>
+      <p>The Metric Wing</p>
+      <p>A Tale Told in Round Numbers</p>
+    </title>
+
+    <section>
+      <title><p>Chapter One. Monday in the Laboratory</p></title>
+      <p>The metrology wing woke slowly. First the thermostat hummed, showed twenty-two degrees Celsius, and settled. Then the balance came to life, on which since yesterday a one-kilogram weight had lain and stubbornly weighed nine hundred and ninety-eight grams.</p>
+      <p>— Two grams lost again, - said Fenwick, without turning. - It was a thousand grams; now it is nine hundred and ninety-eight. Two grams of pure standard evaporated overnight.</p>
+      <p>— Not of the standard, - I answered, - but of our reputation. A standard cannot weigh less than a kilogram; that is what makes it a standard. So the balance lies by two grams, that is by two parts in a thousand. A trifle, but a vexing one.</p>
+      <p>Beyond the window stretched the Bureau courtyard - forty metres long, no more. I knew it exactly, for in spring I had rolled a tape across it myself and measured thirty-eight metres and sixty centimetres, with a metre and a half of shrubbery still to the fence.</p>
+      <p>— Fenwick, - I said, - how far is it to the canteen?</p>
+      <p>— Two hundred metres in a straight line, - he answered. - Three hundred and forty by the gate. And if you go by the smoking-corner, where Dr. Vane holds court, then half a kilometre will not save you, for he will hold you forty minutes on the centimetres of the soul.</p>
+    </section>
+
+    <section>
+      <title><p>Chapter Two. The Weighing of Ideas</p></title>
+      <p>At ten Dr. Vane came in and set upon the bench something wrapped in paper. The something weighed exactly seven kilograms two hundred grams and was cold as five below zero Celsius.</p>
+      <p>— Weigh it, - he said. - and measure it. And tell me its density.</p>
+      <p>Fenwick unwrapped it. Within lay a cube exactly twenty centimetres to a side - perfect, not a millimetre out of true. The volume came to eight thousand cubic centimetres, that is eight litres exactly.</p>
+      <p>— Seven kilos two on eight litres, - I reckoned, - is nine hundred grams to the litre. Lighter than water. It floats.</p>
+      <p>— It does not float, - said Vane. - It sinks. Try it.</p>
+      <p>We lowered the cube into a tank of fifty litres of water. The cube sank at once, as though it weighed not seven kilograms but a quintal. The column of water rose exactly four centimetres, displacing its eight litres, all honest, yet the cube lay on the bottom and would not rise.</p>
+      <p>— Density nine hundred grams to the litre, and it sinks, - Fenwick summed up. - As if a man of eighty kilograms filled a hundred litres and still would not stay afloat.</p>
+      <p>— Just so, - said Vane, satisfied. - Because it does not weigh here. It weighs two metres below the floor, in the cellar, where I shall leave it. Thank you.</p>
+      <p>And he carried off his seven kilograms two hundred grams again, and the tank of fifty litres we bailed out until evening.</p>
+    </section>
+
+    <section>
+      <title><p>Chapter Three. Field Measurements</p></title>
+      <p>After dinner we drove to the testing ground - twelve kilometres from town by the highway, then three kilometres by a cart track. The ground was square, a kilometre to a side, its area one square kilometre, one hundred hectares, ten thousand ares, or, as the old caretaker put it, "ten thousand little plots, love, you'll weed yourself to death."</p>
+      <p>— A simple task, - Fenwick announced. - In the centre of the field, a pit. We must measure its depth, its diameter, and the temperature at the bottom.</p>
+      <p>The diameter of the pit proved six metres forty centimetres. The depth we took with a weighted line: eighteen metres, then a little more, eighteen metres seventy centimetres to the first water. The thermometer at the bottom showed plus four degrees Celsius - as in a cellar.</p>
+      <p>— Eighteen metres, - I said. - That is a six-storey house downward. And along the rim the grass is waist-high, ninety centimetres if a millimetre.</p>
+      <p>We let a probe down the pit. It ran out twenty metres of cable, then ten more, thirty metres in all, and struck not the bottom but a ceiling - that is, the cable began to rise from inside the earth. The gauge above showed the probe now two metres higher than we stood, though with our own eyes we had seen it go thirty metres down.</p>
+      <p>— An anomaly, - sighed Fenwick, and wound up thirty metres of cable. - Write it: depth negative, minus two metres. The management loves round numbers; it will be pleased.</p>
+    </section>
+
+    <section>
+      <title><p>Chapter Four. Morning of Labels</p></title>
+      <p>A new instrument arrived from the works already marked up, and Fenwick read the labels aloud, like verse, for on them everything was in abbreviations.</p>
+      <p>— Length error 2 mm per metre, - he read. - Range from 5 cm to 40 m. Instrument mass 7 kg, check weight 500 g, spare weights from 10 mg to 200 g. Working temperature from 5 °C to 40 °C.</p>
+      <p>— In plain words, - I asked. - what does it measure at all?</p>
+      <p>— Everything, - said Fenwick. - It measures length to 1 mm, mass to 10 mg, and temperature to 0.1 °C. And best of all - here, in small print: it can catch a shift of 50 µm, fifty micrometres, the thickness of a hair split lengthwise.</p>
+      <p>We tested it. We set the instrument on the bench; the bench proved uneven - a warp of 3 mm over 2 m of length - and the instrument honestly took offence, showing that its left edge stood 300 µm below its right. Three hundred micrometres, a third of a millimetre, a difference the eye will not see but the works will.</p>
+      <p>— On this, - said Fenwick with respect, - metrology stands. Not on kilometres, but on micrometres. He who is honest at 50 µm is honest at 50 km.</p>
+    </section>
+
+    <section>
+      <title><p>Chapter Five. The Apothecary Balance</p></title>
+      <p>In the next room sat Miss Quill, the pharmacologist, weighing powders on a balance that caught even a microgram.</p>
+      <p>— The dose, - she explained, - is 250 mg of the active substance. Impurity, no more than 5 mg. But of the working principle there are in the dose only 50 µg, fifty micrograms, one twenty-thousandth of a gram. Err by 10 µg and instead of a medicine you have a poison.</p>
+      <p>— Fifty micrograms, - I repeated respectfully. - and in grams, how many noughts is that?</p>
+      <p>— Nought point nought-nought-nought-five-nought of a gram, - said Miss Quill. - Easier in micrograms. In one gram a thousand milligrams, in one milligram a thousand micrograms. So a million micrograms to the gram, and with each of that million I am bound to reckon.</p>
+      <p>The balance chirped and showed that the phial had gained 2 mg of its own accord - drawn damp from the air. Two milligrams of water, two thousand micrograms, come out of nothing, and the whole dosage was undone.</p>
+      <p>— And that is why, - said Miss Quill, capping the balance, - true precision lives not in tonnes but in micrograms. A tonne any bridge will weigh. But try to keep watch on 50 µg that breathe when you breathe.</p>
+    </section>
+
+    <section>
+      <title><p>Chapter Six. Hydraulics by Eye</p></title>
+      <p>After dinner we mended the hydraulics, and here the small water measures came out in force - litres, decilitres and millilitres all at once.</p>
+      <p>— In the header tank, - Fenwick reported, - there should be 3 L, and there are 3.2 L. The surplus 200 mL must be drained. The oil-can takes 50 mL, the measuring beaker 250 mL, and this pipette here holds exactly 1 dL, a hundred millilitres, a tenth of a litre.</p>
+      <p>— Why decilitres? - I wondered. - Who on earth measures in decilitres?</p>
+      <p>— The Swiss, and cooks, - said Fenwick. - And this tank. It has ten graduations, and each is 1 dL. A full tank is 1 L, ten decilitres, a hundred centilitres, a thousand millilitres. One and the same, only for different moods.</p>
+      <p>We drained the surplus 200 mL, topped up 50 mL again for good order, and an honest pressure settled in the system. The large tank of 50 L beside it hummed contentedly, and the very large one, of 5 hL, five hundred litres, stood in the corner and held its peace, full to the brim, as hectolitres should - with dignity and no fuss.</p>
+      <p>— Half a hectolitre in reserve, - said Fenwick, patting the tank. - in case the Celsius grows cross and it all comes to the boil.</p>
+    </section>
+
+    <section>
+      <title><p>Chapter Seven. Frost and Kelvin</p></title>
+      <p>Toward night a cryostat was lowered into the wing, and the talk went off into the cold, there where Celsius ends and Kelvin begins.</p>
+      <p>— Look, - said Dr. Vane, tapping the glass coldly. - The room is 293 K. That is twenty degrees Celsius, ordinary warmth, only counted from absolute zero. The ice in the cryostat is 273 K, exactly nought Celsius. And in here, deep down, we have driven it to 77 K - that is minus one hundred and ninety-six Celsius, liquid nitrogen, where rubber crumbles like a rusk.</p>
+      <p>— And lower? - asked Fenwick, shivering.</p>
+      <p>— Lower is 4 K, helium, - said Vane. - Four kelvins above absolute zero. And absolute zero itself, 0 K, is minus 273.15 °C, and there you may not go; nobody is let in there, for there everything stops, even metrology.</p>
+      <p>The thermometer in his hand read now 300 K, now 27 °C - one and the same warmth, named two ways - and Fenwick looked at the figures as if he understood for the first time that cold and heat are one ruler, merely told off from opposite ends: the engineer counts from the melting of ice, the physicist from the end of all motion.</p>
+      <p>— Enter it in the journal, - he said at last. - Room 293 K, being 20 °C. And add that we have begun, it seems, to see the use of kelvins. Their use is to give the cold an honest floor.</p>
+    </section>
+
+    <section>
+      <title><p>Chapter Eight. The Field Hectare</p></title>
+      <p>In spring the Bureau was granted land for its trials, and the area had to be received by deed - in hectares and ares, for land loves a count.</p>
+      <p>— The plot, - Fenwick read from the paper, - 4 ha exactly. That is forty thousand square metres, four hundred ares. Of these, 2.5 ha to the plough, half a hectare to woodland, and the rest a gully, which measure it or not, a whole 1 ha has gone down it beyond recall.</p>
+      <p>— An are is a hundred square metres, - I recalled. - Ten by ten.</p>
+      <p>— The very thing, - Fenwick nodded. - A hundred ares to the hectare, ten thousand square metres. We measured a side of 200 m with the tape, a second of 200 m, multiplied - and out came 40 000 m², those same 4 ha. It all tallied to the square metre, which for a field is very nearly a miracle.</p>
+      <p>Toward evening the agronomist came, walked the plot lengthwise and across, paced it out, distrusted the tape, measured again with a wheel, and at last agreed: 4 ha, four hundred ares, not an are more.</p>
+      <p>— There is all the metrology of the land, - said Fenwick, signing the deed. - Micrograms above, hectares below, and between them you and I, and the whole of it one decimal stair: from Miss Quill's 50 µg to our 4 ha, and on every tread exactly ten. Handsome. Come, it is just plus ten Celsius out, the very weather for home.</p>
+    </section>
+
+    <section>
+      <title><p>Chapter Nine. The Annual Report</p></title>
+      <p>The report took a week. It ran to forty pages and weighed, if the postal balance was to be believed, two hundred and ten grams with its cover.</p>
+      <p>— During the period under review, - wrote Fenwick, - a ground of one square kilometre was surveyed. A pit was found, 6.4 m across and 18.7 m deep, passing at a depth of 30 m into the negative. The temperature at the bottom, plus four degrees Celsius. Lost: 30 m of cable, 8 L of an unknown substance of density 900 g per litre, and 200 mL of tea.</p>
+      <p>— Add the bit about the standard, - I prompted. - that the one-kilogram weight still weighs 998 g, and that over the year the shortfall came to exactly 730 g, at 2 g a day.</p>
+      <p>— Already added, - said Fenwick. - and I appended that if it keeps on so, in a year and a half our kilogram will be a half-kilogram, and a year after that will vanish outright, and we shall have to send to Paris for a new one - and Paris is two thousand kilometres and more, and the travel allowance will not stretch.</p>
+      <p>We handed the two hundred and ten grams of report to the registry and went out into the street. It was evening, plus twelve degrees Celsius, a light wind of some three metres a second, and home was only a kilometre and a half away - those same fifteen hundred metres that in fair weather you walk in twenty minutes and never notice how the world, honest and decimal, lays itself beneath you in even metres.</p>
+    </section>
+  </body>
+</FictionBook>

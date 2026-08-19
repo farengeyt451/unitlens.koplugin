@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FictionBook xmlns="http://www.gribuser.ru/xml/fictionbook/2.0" xmlns:l="http://www.w3.org/1999/xlink">
+  <description>
+    <title-info>
+      <genre>sf</genre>
+      <author>
+        <first-name>A.</first-name>
+        <last-name>&amp; B. Testov</last-name>
+      </author>
+      <book-title>The Conversion Office</book-title>
+      <annotation>
+        <p>Test book for the Unit Lens plugin. Contains MIXED units: imperial and metric side by side, often adjacent (foot and metre, pound and kilogram, mile and kilometre, gallon and litre, Fahrenheit and Celsius and Kelvin), with US vs Imperial and long/short/metric divergences. Units appear both as words and as digit+symbol (3 m, 10 ft, 45 kg, 300 °C, 50 gal). Styled after the Strugatsky brothers.</p>
+      </annotation>
+      <lang>en</lang>
+    </title-info>
+    <document-info>
+      <author><nickname>koreader-dev</nickname></author>
+      <program-used>Cursor</program-used>
+      <date value="2026-08-19">19 August 2026</date>
+      <id>unitlens-test-mixed-en-0006</id>
+      <version>1.0</version>
+    </document-info>
+  </description>
+  <body>
+    <title>
+      <p>The Conversion Office</p>
+      <p>A Tale of Two Systems</p>
+    </title>
+
+    <section>
+      <title><p>Chapter One. A Client with a Strange Request</p></title>
+      <p>Over the door hung a sign: "The Conversion Office. We convert anything into anything, money excepted." I had worked there three years and could turn pounds into kilograms in my sleep, but a client like this one I had never met.</p>
+      <p>— I need, - he said, laying a parcel on the counter, - this to weigh both five pounds and two kilograms at once.</p>
+      <p>— Five pounds is two kilograms two hundred and seventy grams, - I answered mechanically. - A difference of two hundred and seventy grams. Both at once will not do; physics is against it.</p>
+      <p>— Physics is your trouble, - he said. - The supplier's docket says five pounds, and our customs accept only kilograms, and there it stands at two. Somebody must eat the two hundred and seventy grams. I pay for you to eat them.</p>
+      <p>I unwrapped the parcel. Inside was a bar one foot long - thirty point five centimetres - three inches wide, that is seven and a half centimetres, and an inch thick, a good twenty-five millimetres and a whisker.</p>
+      <p>— Very well, - I sighed. - Leave it. Come back in a day. Or, as you would have it, in one gallon of time; we convert time here too.</p>
+    </section>
+
+    <section>
+      <title><p>Chapter Two. How It Works</p></title>
+      <p>The secret of the Office was simple and therefore incredible: in our cellar stood a Converter, left by the former owners. It could take any quantity in one system and give it out in another not approximately but by force - so that the object truly changed its properties.</p>
+      <p>Drop into the hopper a stone weighing one pound, and the Converter growls, and out comes a stone weighing four hundred and fifty-three grams and six tenths, not a gram more. Pour in a gallon of water - four litres fifty-five, an honest four and a half litres and a drop. Feed in a ruler of one yard - out slides a metre less nine centimetres, exactly ninety-one point four centimetres.</p>
+      <p>— The main thing, - old Pritchard, the former keeper, taught me, - is not to confuse the imperial gallon with the American. The imperial is four litres fifty-five; the American is three litres seventy-nine. A difference of near three-quarters of a litre to every gallon. Once a client ordered a hundred gallons of fuel converted, I muddled the system, and he came up seventy-five litres short. He chased me three miles - that is near five kilometres, mind you - and I barely got away.</p>
+      <p>— And temperature? - I asked him once.</p>
+      <p>— Temperature is the hardest, - he said. - There you do not multiply, there it is a formula. A hundred degrees Fahrenheit is thirty-seven point eight Celsius, near body heat. And nought Fahrenheit is minus eighteen Celsius, a wicked winter. Subtract thirty-two, multiply by five, divide by nine. Err by a degree and the client catches cold or comes to the boil.</p>
+    </section>
+
+    <section>
+      <title><p>Chapter Three. The Great Order</p></title>
+      <p>On Thursday an order came from a whole expedition. The list ran to three pages, and all of it was to be turned into metric by morning.</p>
+      <p>— Provisions: flour, ten bushels - that is three hundred and sixty-three litres, or three and a half quintals by weight. Salt beef, four stone, being twenty-five kilograms four hundred grams. Rum, forty gallons, a hundred and eighty-two litres imperial. Water, two hundred gallons, nine hundred litres and over.</p>
+      <p>— It gets merrier, - said Fenwick, running his finger down. - "Rope, one hundred fathoms, convert to metres." A hundred fathoms is a hundred and eighty-three metres, each fathom one metre eighty-three. "Anchor, three hundredweight," and it does not say long or short. A long hundredweight is fifty point eight kilograms, a short one forty-five point three. Over three hundredweight the gap runs to sixteen kilograms, and an anchor is a thing where sixteen kilos decide.</p>
+      <p>— Write it long, - I said. - The expedition is English; with them all is long. Three long hundredweight is a hundred and fifty-two kilograms of anchor.</p>
+      <p>— "Route," Fenwick read on, "forty miles by land, then a hundred nautical miles by water." Forty statute miles is sixty-four and a half kilometres. And a hundred nautical miles is a hundred and eighty-five kilometres, for the sea mile is the longer - eighteen hundred and fifty-two metres against sixteen hundred and nine of the land. Folk forever confuse them and fetch up in the wrong place.</p>
+      <p>— "Cargo on deck, two tons." Here you must ask: a long ton is a thousand and sixteen kilograms, a short one nine hundred and seven, a metric tonne exactly a thousand. Three different tons, all called the same. There is the translator's inferno.</p>
+    </section>
+
+    <section>
+      <title><p>Chapter Four. The Converter Falters</p></title>
+      <p>In the night the Converter rebelled. I fed it a plain bar - one foot long - and out came an object one end of which was a metre and the other still in inches.</p>
+      <p>— It has tangled its systems, - Pritchard judged, examining the freak. - See: length thirty centimetres, yet it weighs a pound and a half still, that is six hundred and eighty grams, but it reckons its volume in pints. It has turned half-breed. One gallon in it sits beside four litres, and both readings true.</p>
+      <p>We ran to check the store. Half the goods had gone mad overnight. A sack of flour weighed at once a quintal and fifty kilograms - and the needle showed each honestly, swinging. A cask held forty gallons from above and a hundred and eighty litres from below, and in the middle, if the dipstick was to be trusted, exactly two and a half quarts of a void that could not be.</p>
+      <p>— The thermometer is clean out of its wits, - said Fenwick. - It shows seventy Fahrenheit and twenty-one Celsius at once, and that, mind you, is one and the same temperature, twenty-one degrees of warmth. For once it is right in both systems together. First thing all night that has tallied.</p>
+      <p>— Then here is the order, - Pritchard resolved. - While it is not yet cool, we convert everything one way only. From imperial into metric, and back not at all. A metre is honester than a foot, a litre than a gallon, and a kilogram does not know whether it is long or short. We go into metric and lock the door.</p>
+    </section>
+
+    <section>
+      <title><p>Chapter Five. Symbols against Words</p></title>
+      <p>On Friday the order came from engineers, and all of it was written in shorthand, in little marks beside the figures, at which Fenwick grumbled long that a number without a word is like a name without a face.</p>
+      <p>— "Beam: 3 m by 200 mm by 12 mm," - he read. - Three metres long, two hundred millimetres wide, twelve thick. In the old way that is ten feet by eight inches by half an inch, but the engineer writes in marks; it is quicker for him.</p>
+      <p>— "Mass 45 kg, tolerance 50 g," - I took up. - Forty-five kilograms, that is near seven stone, or ninety-nine pounds. Tolerance fifty grams, less than two ounces. "Welding temperature 300 °C," that is five hundred and seventy-two Fahrenheit, iron glowing red.</p>
+      <p>— "Reservoir: 5 hL, working 3.2 L a minute," - Fenwick finished. - Five hundred litres of capacity, a good three litres a minute of flow. In gallons the capacity is a hundred and ten imperial, the flow two-thirds of a gallon a minute. One and the same pump, and it sounds now like an apothecary, now like a foundry.</p>
+      <p>— There is the whole trick of our Office, - said Pritchard. - The words "two hundred millimetres" and the mark "200 mm" are one and the same, but a man trusts words and a machine trusts marks. We convert not measures, we convert trust. To some the words, to some the figures, and to us, the Office, both - so long as it tallies.</p>
+    </section>
+
+    <section>
+      <title><p>Chapter Six. The Draper and the Grocer</p></title>
+      <p>Toward noon two neighbours came in together and fell to quarrelling at the counter, for one measured the world in yards and the other in metres, and neither would yield.</p>
+      <p>— Cloth, - said the draper, unrolling a bolt. - three yards and a foot. That is three metres and four centimetres, near enough. And the width, forty-five inches, a metre fourteen. Convert it, and be quick.</p>
+      <p>— Sugar, - the grocer cut in. - two pounds, and mind you weigh it true, for two pounds is nine hundred and seven grams, and the customer swears it should be a round kilogram. It never is. A kilogram is two pounds and three ounces, and the extra three ounces are where all the arguments live.</p>
+      <p>— Milk, - the draper went on, to spite him, - one gallon. The grocer sells it by the litre, four and a half litres imperial, and pours it back into pints, eight pints to the gallon, twenty fluid ounces to the pint. Somewhere between the gallon and the pint one honest cupful always goes astray.</p>
+      <p>— Convert them both into metric, - I said wearily, - and let them make peace in litres. A yard and a metre are near enough brothers, a pound and a half-kilo close cousins. It is only the last few grams and the last few centimetres that men come to blows over.</p>
+    </section>
+
+    <section>
+      <title><p>Chapter Seven. The Cellar of Old Casks</p></title>
+      <p>In the far cellar stood the old casks, and their gauging was a museum of measures, for every cooper had marked his own the way his grandfather taught him.</p>
+      <p>— This one, - said Pritchard, rapping it, - a barrel of thirty-six gallons imperial, a hundred and sixty-three litres. That one, an oil barrel of forty-two gallons, a hundred and fifty-nine litres, for the oil folk count otherwise. And the little keg, ten gallons, forty-five litres, half a hectolitre all but five.</p>
+      <p>— And the depth of them? - I asked.</p>
+      <p>— By the dipstick, - he said. - This cask reads four feet to the bung, one metre twenty-two. The wine in it stands three feet six, a metre and a bit, and above is a foot of air, thirty centimetres of nothing that the taxman still counts as something.</p>
+      <p>We gauged the lot: a hundred and sixty-three litres, a hundred and fifty-nine, forty-five, and a puddle on the floor no measure would own. And Pritchard wrote in the book that the cellar held, all told, some four hectolitres of liquid and one of doubt, and that the doubt, as usual, would be written off to shrinkage at a pint to the gallon.</p>
+    </section>
+
+    <section>
+      <title><p>Chapter Eight. The Weather Bureau Complains</p></title>
+      <p>On Saturday the weather men sent down a grievance, for their instruments spoke Fahrenheit and the public spoke Celsius, and between the two lay a daily war of a few degrees.</p>
+      <p>— Yesterday noon, - their note ran, - 86 °F, which is thirty degrees Celsius, a heatwave. Yesterday night 50 °F, ten Celsius, a light frost by their reckoning though not by ours. Convert it and tell the public plainly.</p>
+      <p>— Body heat is 98.6 °F, - said Fenwick, - which is thirty-seven Celsius, and any fool who reads it in Fahrenheit thinks himself on fire. Water boils at 212 °F, a hundred Celsius, and freezes at 32 °F, nought Celsius. And the physicists, to spite everyone, count from 0 K, absolute zero, minus 273.15 °C, where the argument itself freezes solid.</p>
+      <p>— Give them one number, - said Pritchard. - Twenty-one Celsius, seventy Fahrenheit, 294 K. One warmth, three names. Print all three and let each man read the one he was raised on.</p>
+      <p>We sent the reply up with the three figures, and the weather men, it is said, framed it and hung it over their door, as proof that peace between the systems was, on a mild day, at least possible.</p>
+    </section>
+
+    <section>
+      <title><p>Chapter Nine. The Reckoning</p></title>
+      <p>By morning the Converter had cooled, and the world had chosen itself a system. The client's bar lay on the counter and weighed exactly two kilograms - those very two that stood on the customs docket. The five pounds had vanished as though they had never been, and with them the disputed two hundred and seventy grams.</p>
+      <p>— How did you do it? - asked the client, taking up his parcel.</p>
+      <p>— We did not eat the difference, - I said honestly. - We converted it. The two hundred and seventy grams went where the half-pint of shrinkage goes, and the sixteen kilograms on three hundredweight, and the three-quarter litre on every gallon when the systems are muddled. There is a place into which all the difference of the world drains. We call it the Error.</p>
+      <p>The client looked at me, at the bar of two kilograms exactly, at the sign "We convert anything into anything," and went out without a word.</p>
+      <p>And we sat down to tea. Fenwick poured me three hundred millilitres and himself a half-pint - he measured his tea in pints on principle, said it tasted better so - and we looked out of the window, where a man walked down the street, and it was either forty metres to him or forty yards, and in our Office that, to be honest, was very nearly one and the same.</p>
+    </section>
+  </body>
+</FictionBook>

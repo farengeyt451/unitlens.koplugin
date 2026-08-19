@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FictionBook xmlns="http://www.gribuser.ru/xml/fictionbook/2.0" xmlns:l="http://www.w3.org/1999/xlink">
+  <description>
+    <title-info>
+      <genre>sf</genre>
+      <author>
+        <first-name>A.</first-name>
+        <last-name>&amp; B. Testov</last-name>
+      </author>
+      <book-title>The Imperial Yard</book-title>
+      <annotation>
+        <p>Test book for the Unit Lens plugin. Contains ONLY imperial / customary units in many forms and cases (inches, feet, yards, chains, furlongs, miles, leagues, fathoms, drams, grains, ounces, pounds, stones, hundredweights, tons, pints, quarts, gallons, barrels, acres) plus Fahrenheit, written both as words and as digit+symbol (6 ft, 100 yd, 3 mi, 10 cwt, 60 °F). Styled after the Strugatsky brothers.</p>
+      </annotation>
+      <lang>en</lang>
+    </title-info>
+    <document-info>
+      <author><nickname>koreader-dev</nickname></author>
+      <program-used>Cursor</program-used>
+      <date value="2026-08-19">19 August 2026</date>
+      <id>unitlens-test-imperial-en-0004</id>
+      <version>1.0</version>
+    </document-info>
+  </description>
+  <body>
+    <title>
+      <p>The Imperial Yard</p>
+      <p>A Tale Told in Old Measures</p>
+    </title>
+
+    <section>
+      <title><p>Chapter One. An Inventory of the Impossible</p></title>
+      <p>Old Harrow sat on a crate and measured the air with a tape. This was not as foolish as it sounds: twelve feet from the fence the air simply ended, and something else began, and the Bureau wished to know precisely where the boundary ran.</p>
+      <p>— Twelve feet four inches, - he said, and wrote it down. - Yesterday it was twelve feet flat. It grows four inches a day, regular as rent.</p>
+      <p>— A third of a foot a day, - corrected Fenwick without opening his eyes. - And in a hundred yards it reaches the road, and then the fun begins.</p>
+      <p>I stood a little apart, exactly three yards off, and tried not to breathe toward the anomaly. Regulations required us to keep no nearer than two yards and no farther than five; who invented these numbers, and why, nobody remembered, but nobody dared break them. Fenwick swore that the first clerk to step within eighteen inches of it still weighed nine pounds less than he ought, though he ate for two.</p>
+      <p>— Write this down too, - said Fenwick. - From the stone to the post, forty-two yards. From the post to the ditch, a furlong and a half. From the ditch to the wood I decline to measure; there are three surprises to the mile in there.</p>
+      <p>— A furlong and a half, - I repeated, writing. - That is some three hundred and thirty yards. Why measure in furlongs when there are yards?</p>
+      <p>— Because a furlong is an honest measure, - said Fenwick. - One furlong is one furrow, and one furrow is what an ox can plough without dropping dead. A yard was invented by tailors.</p>
+    </section>
+
+    <section>
+      <title><p>Chapter Two. The Warden's Ledger</p></title>
+      <p>By noon Warden Mould arrived - a man for whom the universe divided neatly into the accountable and the unaccountable. He brought a ledger and demanded a reckoning.</p>
+      <p>— Hemp rope, - he read, - one hundred and twenty feet in length, being twenty fathoms. Where is the rope?</p>
+      <p>— Shortened, - Fenwick answered honestly. - It was twenty fathoms; it is now eighteen. Two fathoms walked into the anomaly and did not come back.</p>
+      <p>— Spirits, drinking, - Mould continued, paling. - three gallons. One measuring jug of a single pint. One flask of two quarts. Where is the half-gallon short?</p>
+      <p>— Evaporation, - said Fenwick. - and settling. Every gallon is allowed a shrinkage of one eighth, that is one pint to the gallon. Three gallons, three pints gone. And less remains even than that, for we measured not in pints but in gills, and a gill is a treacherous measure.</p>
+      <p>— Flour, - the Warden pressed on. - one bushel. Salt, a quarter-bushel. Where is my order?</p>
+      <p>— A mouse, - I sighed. - A mouse comes weighing two ounces and carries off a dram a night. In a month that makes three pounds. Reckoned in grains it is thousands of them, but the mouse declines to be reckoned in grains.</p>
+      <p>— In my ledger, - said Mould quietly, - everything tallies to the last grain. In your yard it does not tally even to the hundredweight. One hundredweight of potatoes I struck off yesterday - one long hundredweight, one hundred and twelve pounds - and where is it?</p>
+      <p>— Sprouted, - said Fenwick. - Into the anomaly.</p>
+    </section>
+
+    <section>
+      <title><p>Chapter Three. Surveying the Blight</p></title>
+      <p>After dinner we set to measuring in earnest. Fenwick dragged out a barometer, a thermometer graduated in Fahrenheit, and an old log for gauging speed - the sort that reads in knots.</p>
+      <p>— Temperature at the boundary, - he reported, - a hundred and two degrees Fahrenheit. Three feet back, a decent sixty-eight. A drop of thirty-four degrees Fahrenheit across three feet. That, gentlemen, is unscientific.</p>
+      <p>— And the wind? - I asked.</p>
+      <p>— No wind, but the log reads three knots. It blows from nowhere to nowhere at three nautical miles an hour. Reckoned overland that is nearly three and a half miles an hour, the pace of a brisk walker going nowhere.</p>
+      <p>Old Harrow meanwhile crawled about the earth with a square, measuring the patch where no grass grew.</p>
+      <p>— The patch, - he said, - is roughly round. Nine feet across, so the area is about sixty-four square feet, or seven square yards and a bit. And all around it, where the grass is yellow, a whole acre. One acre exactly; I checked. Four roods. Ten square chains. The old surveyors knew their cursed places.</p>
+      <p>— One acre, - echoed Fenwick. - and you cannot live on it. A tree's shadow crosses it in a day - some fifteen feet - and in a week a whole chain, twenty-two yards, and in a furlong of such weeks the autumn comes and we are still here, measuring.</p>
+    </section>
+
+    <section>
+      <title><p>Chapter Four. The Night Watch</p></title>
+      <p>Fenwick and I kept the night watch. He lay on a camp bed exactly six feet two inches long - to his own height, not an inch more - and philosophised into the dark.</p>
+      <p>— You see, - he said, - the whole trouble is that the yard measures in its own coin. We give it yards; it gives us back leagues. We give it a pint; it returns a barrel. Yesterday I threw in a stone weighing one pound, and back came a stone of one quarter - twenty-eight pounds, dead level. It multiplies by twenty-eight. Or divides. You never know which.</p>
+      <p>— And if you threw in a dram? - I asked.</p>
+      <p>— You must never throw a dram, - he answered gravely. - A dram is one eighth of an ounce, sixty grains. Throw a dram and back comes an ounce. Throw an ounce and back comes a pound. Throw a pound and back comes a stone, fourteen pounds. Throw a stone and it returns you a hundredweight - and count yourself lucky if it is the short one of ninety-odd pounds and not the long one of a hundred and twelve.</p>
+      <p>Somewhere in the dark it thudded. By the instruments the sound came from a quarter of a mile off - two furlongs - yet it arrived a half-second sooner than it should at a speed of sound of some eleven hundred feet a second.</p>
+      <p>— Hear that? - said Fenwick. - It has squeezed the distance again. It was a quarter-mile; now it is three hundred yards. Sleep. We measure it fresh at dawn.</p>
+    </section>
+
+    <section>
+      <title><p>Chapter Five. Harrow's Instruments</p></title>
+      <p>A week on, Fenwick returned from town with a crate of instruments, and half of them measured heat. All in Fahrenheit, for they were left over from an older, thoroughly imperial expedition.</p>
+      <p>— Look here, - he said, prodding the largest. - At the boundary it honestly shows 102 °F. In the shade of the awning, only 68 °F, and the awning is four feet from the line, no farther.</p>
+      <p>— Thirty-four degrees across four feet, - I said. - We have had that before.</p>
+      <p>— But at night, - Fenwick pressed on, - it falls to 14 °F, and the puddles by the post freeze though at noon it neared a hundred. One instrument read -40 °F once, but I do not believe it: at forty below it would freeze itself, and me with it.</p>
+      <p>Old Harrow took the thermometer, eyed it with suspicion, and tucked it inside his coat.</p>
+      <p>— Let it warm, - he explained. - An instrument that has seen -40 °F deserves pity. Let it find the freezing point of water, 32 °F, on its own, once it recovers to a human condition.</p>
+      <p>I wrote it down: boundary a hundred and two Fahrenheit, shade sixty-eight, nights down to fourteen. The wind that was not there, the log still read at three knots - three nautical miles an hour, and thus three and a half by land, the pace of an unhurried man walking into nothing.</p>
+    </section>
+
+    <section>
+      <title><p>Chapter Six. The Field Dispensary</p></title>
+      <p>The medicine chest was kept by Harrow, and kept the old way, in apothecary measures, because so, he said, it was nobler to be poisoned.</p>
+      <p>— Powder for the head, - he dictated, tipping a little onto the tiny scale. - One scruple, that is twenty grains. Draught, two drams, sixty grains apiece. Altogether not quite an ounce, and an ounce of powder for the whole yard, my lads, is a fortune.</p>
+      <p>— How many of your grains in a pound? - asked Fenwick idly.</p>
+      <p>— In an apothecaries' pound, near seven thousand, - Harrow answered without pause. - and reckoned in drams, a pound is near a hundred and twenty-eight drams. The mouse that carries off a dram a night will ruin us in half a year exactly.</p>
+      <p>The mouse, hearing itself named, came out from under the crate. It weighed two ounces by the look of it, regarded us with the dignity of a creature that knows the worth of every grain, and carried off precisely one dram of powder - sixty grains, not a seed more.</p>
+      <p>— See that? - said Harrow, almost tenderly. - Honester than any warden. Mould, with his hundredweights and his stones, might learn from that mouse an accuracy to the grain.</p>
+    </section>
+
+    <section>
+      <title><p>Chapter Seven. The Road Beyond the League</p></title>
+      <p>On the ninth day we resolved to reach the neighbouring station. By the map it was one league off - three miles, twenty-four furlongs for those who love furlongs, or near five thousand three hundred yards for those altogether mad for yards.</p>
+      <p>— We will go by chains, - Fenwick proposed. - A chain is twenty-two yards, a surveyor's measure. Eighty chains to the mile, two hundred and forty to the league. We will count our paces and not lose the way.</p>
+      <p>The first mile went easily, eighty chains told off. On the second furlong of the second mile the road twisted, and the log Fenwick had insisted on dragging along declared that we had walked not a statute mile but a nautical one - eighteen hundred and fifty-two metres in place of the sixteen hundred and nine of dry land.</p>
+      <p>— The yard has stretched the road, - Harrow judged. - It was a statute mile; it is now a sea mile. To every mile it adds a couple of furlongs and more, and we shall reach the station having walked not a league but a league and a half.</p>
+      <p>And so it fell out. We gained the station by evening, having measured by every instrument one league and half a league over - eight surplus furlongs, which the yard took of us as a toll is taken: not in coin, but in yards.</p>
+    </section>
+
+    <section>
+      <title><p>Chapter Eight. Casks and Barrels</p></title>
+      <p>At the station a storeman met us and led us first of all to the barrels, for with him, as with every storeman, it was the liquid that ached.</p>
+      <p>— Rum, - he showed us. - It was a full barrel, thirty-six gallons imperial. Some thirty gallons remain, and where the six went, do not ask - we write it off to shrinkage at a pint to the gallon.</p>
+      <p>— Six gallons is forty-eight pints, - Fenwick reckoned with respect. - or twenty-four quarts. Such shrinkage I honour; for such shrinkage I would shrink myself.</p>
+      <p>— Water, - the storeman went on, undeterred. - two barrels, forty-two gallons apiece, for our water lives in oil casks. Milk, one gallon - but I measured it in quarts, four quarts, and poured it into pints, and got seven pints somehow instead of eight. One pint of milk walked into the yard, like that rope.</p>
+      <p>— It did not spare even the fluid ounce, - sighed Harrow. - Twenty fluid ounces to the pint, forty to the quart, a hundred and sixty to the gallon. Count it all in fluid ounces and your head spins, yet the shortfall stands the same: one pint, twenty honest ounces of liquid gone who knows where.</p>
+      <p>We drank a half-pint apiece to the success of the survey, and the storeman, watching his barrel dwindle, looked upon the yard for the first time that day with understanding.</p>
+    </section>
+
+    <section>
+      <title><p>Chapter Nine. The Great Reckoning</p></title>
+      <p>Before we left, Warden Mould held a great reckoning and weighed everything that could be weighed - in stones, hundredweights and tons, for the small measures he despised.</p>
+      <p>— Potatoes, - he thundered. - five stone, fourteen pounds to the stone, seventy pounds in all. Flour, one hundredweight. Which? The long, of course, a hundred and twelve pounds; with us all is long. The short hundredweight, ninety-odd pounds, is for the Americans, and we are not Americans.</p>
+      <p>— Iron, - he read on, - one long ton, two thousand two hundred and forty pounds. That is no metric tonne and no short American ton of two thousand pounds; that is an honest British ton, twenty hundredweight, and each a stone told eight times.</p>
+      <p>— And the stone from the yard? - asked Fenwick innocently.</p>
+      <p>Mould set yesterday's stone on the scale. It weighed one quarter - twenty-eight pounds, two stone exactly - though yesterday it had been a pound, and the day before a dram. The needle held firm, as if the stone had weighed just so all its life.</p>
+      <p>— Struck off, - said the Warden softly. - One quarter of the inexplicable. In my ledger all will tally to the pound, and let this stone weigh what it pleases. We are leaving, and let the measure stay with the yard. It has eternity to measure here; we have home - seven miles by the straight road and two leagues by the crooked one, and a surprise to every mile, as was written in the very first report.</p>
+    </section>
+  </body>
+</FictionBook>
