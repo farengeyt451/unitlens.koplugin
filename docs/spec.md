@@ -493,13 +493,28 @@ Lua's `%a` and `string.lower` are ASCII-only. Therefore:
   we never half-match non-Latin text. This is what lets a user drop in _any_ language dict.
 - Truncate strings on UTF-8 character boundaries, never raw bytes.
 
-## 6. Caching
+## 6. Caching & debounce
 
-- Scan/box results are cached in memory, keyed by a **signature** that includes
-  `doc:getDocumentRenderingHash()` + current position + screen width/height.
-- Changing font, margins, page, or screen size changes the hash -> cache auto-invalidates.
-  This sidesteps the fact that EPUB page numbers are **not stable** across reflow.
-- Cache is dropped on document close. No time-based or page-count-based cleaning needed.
+Two in-memory caches, both keyed by a **page signature** and dropped on document
+close (no time- or page-count-based cleaning needed):
+
+- **Result cache** (`main.lua`): page signature (`page number + doc:getDocumentRenderingHash()`)
+  -> computed matches (XPointer spans + popup text). Flipping back to a visited page reuses
+  it instantly, with no re-tokenize/re-match and no flicker. FIFO-capped (`SCAN_CACHE_MAX`).
+  Invalidated wholesale when the popup text changes (book language, detailed/simple content).
+- **Box cache** (`ul_render.lua`): same signature **+ screen width/height** -> on-screen
+  boxes resolved from the XPointers via `getScreenBoxesFromPositions`. Screen-dependent, so
+  it carries the extra dimensions; the XPointers themselves are layout-independent.
+
+Changing font, margins, page, or screen size changes the rendering hash, so both caches
+auto-invalidate. This sidesteps the fact that EPUB page numbers are **not stable** across reflow.
+
+**Debounce.** A page turn emits a burst of `PageUpdate`/`PosUpdate` events as the page
+reflows. Scanning mid-reflow reads a half-laid-out page (transient `matches=0`) and briefly
+clears the underlines. So navigation events schedule the scan `SCAN_DEBOUNCE` seconds after
+the burst goes quiet (coalesced; a cache hit still applies immediately). As a second guard, a
+scan that reads back **zero tokens** is treated as "not laid out yet" — it keeps the current
+underlines and retries shortly (bounded) instead of clearing.
 
 ## 7. Milestones
 
