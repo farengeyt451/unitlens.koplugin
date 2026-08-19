@@ -41,7 +41,7 @@ local langselect = require("ul_langselect")
 local i18n = require("ul_i18n")
 local menu = require("ul_menu")
 
-local VERSION = "0.5.0"
+local VERSION = "0.6.0"
 
 -- Navigation fires in bursts (page turn -> partial reflow -> settle). We coalesce
 -- them into a single scan once things go quiet, so we never scan a half-laid-out
@@ -106,11 +106,62 @@ local function pinToToolsTop()
 	end)
 end
 
--- Load and compile the built-in dictionaries once
+-- Absolute directory of this plugin (…/unitlens.koplugin). Derived from the running
+-- chunk so it works both on-device and in tests, without depending on KOReader's
+-- internal plugin-path fields. Used to enumerate the dicts/ directory.
+local PLUGIN_DIR = (debug.getinfo(1, "S").source or ""):match("^@?(.*)[/\\][^/\\]*$")
+
+-- Built-in dictionaries, used as a fallback if the directory can't be listed.
+local BUILTIN_DICTS = { "en", "ru" }
+
+-- KOReader ships LuaFileSystem as "libs/libkoreader-lfs"; plain "lfs" covers other envs.
+local function get_lfs()
+	for _, name in ipairs({ "libs/libkoreader-lfs", "lfs" }) do
+		local ok, m = pcall(require, name)
+		if ok and m and m.dir then
+			return m
+		end
+	end
+	return nil
+end
+
+-- Discover dictionary codes from dicts/*.lua, so dropping in a new language file makes
+-- it appear automatically (Book language menu, script scan). Files whose name starts
+-- with "_" (e.g. a "_template.lua") or "." are skipped. Falls back to the built-in
+-- list if the directory can't be read.
+local function discoverDictCodes()
+	local codes, seen = {}, {}
+	local lfs = get_lfs()
+
+	if lfs and PLUGIN_DIR and PLUGIN_DIR ~= "" then
+		pcall(function()
+			for name in lfs.dir(PLUGIN_DIR .. "/dicts") do
+				-- must start alnum -> skips "_template.lua", "." and ".."
+				local code = name:match("^([%w][%w_%-]*)%.lua$")
+				if code and not seen[code] then
+					seen[code] = true
+					codes[#codes + 1] = code
+				end
+			end
+		end)
+	end
+
+	if #codes == 0 then
+		for _, c in ipairs(BUILTIN_DICTS) do
+			codes[#codes + 1] = c
+		end
+		log("dict discovery unavailable - using built-in list")
+	end
+
+	table.sort(codes)
+	return codes
+end
+
+-- Load and compile every discovered dictionary once.
 local function loadDicts()
 	local out = {}
 
-	for _, lang in ipairs({ "en", "ru" }) do
+	for _, lang in ipairs(discoverDictCodes()) do
 		local ok, raw = pcall(require, "dicts." .. lang)
 
 		if ok and raw then
@@ -125,6 +176,7 @@ local function loadDicts()
 			log("failed to load dict '" .. lang .. "': " .. tostring(raw))
 		end
 	end
+
 	return out
 end
 

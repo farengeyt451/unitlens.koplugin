@@ -1,17 +1,18 @@
-# Unit Lens - Interface translations (`l10n/`)
+# Translating the interface (`unitlens.koplugin/l10n/`)
 
 These files translate the plugin's **interface** - its menu, the About box and
 notifications. This is separate from the **book language** (the dictionaries in
-`dicts/`, which decide _which units are detected_ on the page).
+`dicts/`, which decide _which units are detected_ on the page - see
+[dictionaries.md](dictionaries.md)).
 
-- **Interface language** → `l10n/<code>.lua` (this folder). Global setting.
-- **Book language** → `dicts/<code>.lua`. Per-book setting.
+- **Interface language** → `unitlens.koplugin/l10n/<code>.lua`. Global setting.
+- **Book language** → `unitlens.koplugin/dicts/<code>.lua`. Per-book setting.
 
 ## Add or update a language
 
-1. Copy `en.lua` to `l10n/<code>.lua`, where `<code>` is the language's
-   [ISO 639-1] code (`de`, `fr`, `pt`, …). `en.lua` is the canonical,
-   always-complete list of strings.
+1. Copy [`en.lua`](../unitlens.koplugin/l10n/en.lua) to `l10n/<code>.lua`, where
+   `<code>` is the language's [ISO 639-1] code (`de`, `fr`, `pt`, …). `en.lua` is
+   the canonical, always-complete list of strings.
 2. Set `name` to the language's **own** endonym - this is what shows in the menu
    (e.g. `"Deutsch"`, `"Français"`, `"Português"`). Show the language in itself,
    not in English.

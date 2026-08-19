@@ -388,7 +388,7 @@ layer** touches KOReader APIs.
 | `ul_menu.lua`       | KOReader | Build the **Unit Lens ▸** submenu (enable toggle, Language, style/thickness/intensity, tooltip timeout, About) from plugin state.                                                                         |
 | `ul_scanner.lua`    | KOReader | Walk visible page into `{text, start_xp, end_xp}` tokens; run matcher against the active dict.                                                                                                            |
 | `ul_render.lua`     | KOReader | Wrap `view.paintTo` (underline, style/thickness/intensity from settings); resolve XPointers -> boxes; wrap `ui.highlight.onTap`; show the `ul_format.lua` tooltip (timeout from settings).                |
-| `main.lua`          | KOReader | Wiring: page-change events, menu, settings, cache, lifecycle.                                                                                                                                             |
+| `main.lua`          | KOReader | Wiring: page-change events, menu, settings, cache, lifecycle; **auto-discover `dicts/*.lua`** (via `lfs`, skipping `_`/dot files) so dropped-in dictionaries load automatically.                          |
 
 > **Module naming.** Every plugin module is prefixed `ul_` (Unit Lens). KOReader loads
 > all plugins into a **shared `package.loaded`**, and it already owns generic names such as
@@ -454,30 +454,30 @@ defaults to `auto` (follow KOReader's app language, English fallback).
 `{ name = <endonym>, strings = { [english] = translated } }`; keys are the English
 source string and missing keys fall back to English. Files are auto-discovered by
 scanning `l10n/`, so a new language is a one-file PR with no code changes
-(`en.lua` is the canonical, complete key list - see `l10n/README.md`).
+(`en.lua` is the canonical, complete key list - see [interface-languages.md](interface-languages.md)).
 
-| Setting             | Key (`unitlens_`)         | Values                               | Default  | Scope        |
-| ------------------- | ------------------------- | ------------------------------------ | -------- | ------------ |
-| Enabled             | `enabled`                 | bool                                 | `true`   | global       |
-| Underline style     | `underline_style`         | wavy/solid/dotted/dashed/double/none | `wavy`   | global       |
-| Underline thickness | `underline_thickness`     | 1/2/3 (px)                           | `2`      | global       |
-| Underline intensity | `underline_intensity`     | light/medium/dark (grey)             | `medium` | global       |
-| Tooltip timeout     | `tooltip_timeout`         | 2/4/8/0 (0 = never, seconds)         | `4`      | global       |
-| Tooltip text size   | `tooltip_text_size`       | auto/smallest(−4)/smaller(−2)/bigger(+2)/biggest(+4) | `auto`   | global       |
-| Tooltip content     | `tooltip_detail`          | detailed (header + conversion) / simple (conversion only) | `detailed` | global |
-| Interface language  | `ui_lang`                 | `auto` or an l10n code               | `auto`   | global       |
-| Book language       | `unitlens_lang` (sidecar) | `auto` or a dict code                | `auto`   | **per-book** |
+| Setting             | Key (`unitlens_`)         | Values                                                    | Default    | Scope        |
+| ------------------- | ------------------------- | --------------------------------------------------------- | ---------- | ------------ |
+| Enabled             | `enabled`                 | bool                                                      | `true`     | global       |
+| Underline style     | `underline_style`         | wavy/solid/dotted/dashed/double/none                      | `wavy`     | global       |
+| Underline thickness | `underline_thickness`     | 1/2/3 (px)                                                | `2`        | global       |
+| Underline intensity | `underline_intensity`     | light/medium/dark (grey)                                  | `medium`   | global       |
+| Tooltip timeout     | `tooltip_timeout`         | 2/4/8/0 (0 = never, seconds)                              | `4`        | global       |
+| Tooltip text size   | `tooltip_text_size`       | auto/smallest(−4)/smaller(−2)/bigger(+2)/biggest(+4)      | `auto`     | global       |
+| Tooltip content     | `tooltip_detail`          | detailed (header + conversion) / simple (conversion only) | `detailed` | global       |
+| Interface language  | `ui_lang`                 | `auto` or an l10n code                                    | `auto`     | global       |
+| Book language       | `unitlens_lang` (sidecar) | `auto` or a dict code                                     | `auto`     | **per-book** |
 
 Appearance settings persist globally via `G_reader_settings`; the language choice is
 per-book in the document sidecar (`DocSettings`). `ul_render` reads the appearance values
 at paint/tooltip time, so changes apply on the next repaint without a rescan; changing the
-language, the enable toggle, or *Tooltip content* (the popup text is baked into the match
+language, the enable toggle, or _Tooltip content_ (the popup text is baked into the match
 records at scan time) triggers a rescan.
 
 **Tooltip typography** follows the reader instead of a hardcoded value: the size is the
 book's active body font size (`document.configurable.font_size`, global `cre_font_size`
-fallback), optionally nudged by *Tooltip text size*, and clamped for sanity. The face is
-KOReader's `cfont` content-font alias — `Font:getFace` resolves aliases/filenames, not
+fallback), optionally nudged by _Tooltip text size_, and clamped for sanity. The face is
+KOReader's `cfont` content-font alias - `Font:getFace` resolves aliases/filenames, not
 crengine font-family names, so the book's actual family can't be reused reliably. Note
 `Font:getFace` scales the size by screen DPI internally, so a **raw** point size is passed.
 
@@ -513,7 +513,7 @@ auto-invalidate. This sidesteps the fact that EPUB page numbers are **not stable
 reflows. Scanning mid-reflow reads a half-laid-out page (transient `matches=0`) and briefly
 clears the underlines. So navigation events schedule the scan `SCAN_DEBOUNCE` seconds after
 the burst goes quiet (coalesced; a cache hit still applies immediately). As a second guard, a
-scan that reads back **zero tokens** is treated as "not laid out yet" — it keeps the current
+scan that reads back **zero tokens** is treated as "not laid out yet" - it keeps the current
 underlines and retries shortly (bounded) instead of clearing.
 
 ## 7. Milestones
@@ -532,18 +532,19 @@ underlines and retries shortly (bounded) instead of clearing.
    submenu at the top of Tools. Polish since: underline style/thickness/intensity, tooltip
    timeout, tooltip content (detailed/simple), tooltip size (follow-book ±nudge), last-page scan fix.
 
-### Remaining — execution order **M7 → M8 → M6 → M9**
+### Remaining - execution order **M7 → M8 → M6 → M9**
 
-6. **Extensibility — user dictionaries:** auto-discover `dicts/*.lua` (drop the hardcoded en/ru
-   require list) so a dropped-in file shows up under Book language automatically; ship a dict
-   **template + authoring guide** (mirrors `l10n/README.md`).
+6. ✅ **Extensibility - user dictionaries:** auto-discover `dicts/*.lua` (the hardcoded en/ru
+   list is now only a fallback) so a dropped-in file shows up under Book language automatically;
+   ship a dict **template** (`dicts/_template.lua`, skipped by discovery) + **authoring guide**
+   ([docs/dictionaries.md](dictionaries.md), alongside [docs/interface-languages.md](interface-languages.md)).
 7. **Dictionary coverage:** extend `en`/`ru` from length to the remaining multiplicative categories
-   in `units.md` — mass/weight, volume (US vs imperial variants as multiple `results`), area, speed —
-   with category/system `strings` and precomputed values; add tests. *(Temperature excluded — non-goal.)*
+   in `units.md` - mass/weight, volume (US vs imperial variants as multiple `results`), area, speed —
+   with category/system `strings` and precomputed values; add tests. _(Temperature excluded - non-goal.)_
 8. **Quality & performance:** false-positive audit on the expanded dicts (keep symbols digit-gated;
    drop words common in prose but rare as units); confirm the rendering-hash box cache and profile
-   on-device scan time with the bigger dicts; broaden matcher tests. *(Glued-token/range robustness
-   excluded — non-goal.)*
+   on-device scan time with the bigger dicts; broaden matcher tests. _(Glued-token/range robustness
+   excluded - non-goal.)_
 9. **Release & packaging:** README (features, install, screenshots, how to add languages/dicts),
    version/license/credits, GitHub release (+ optional KOReader plugin-index submission).
 
