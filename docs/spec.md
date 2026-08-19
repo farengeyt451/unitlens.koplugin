@@ -108,7 +108,7 @@ Why one dict instead of all: it removes cross-language collisions entirely (Lati
 _or_ Latin `es` is active, never both), keeps tooltips in the book's language, and minimizes
 scan work.
 
-**Language menu** (modeled on xray's): a submenu with `Auto` plus one radio entry per loaded
+**Language menu**: a submenu with `Auto` plus one radio entry per loaded
 dictionary - `Auto / Russian / English` by default. It is built **dynamically**: at start
 the plugin scans the dict directory, loads each dictionary, and reads its self-declared
 `lang` (BCP-47 primary subtag) and `name` (endonym, e.g. "Русский", "Español") for the label.
@@ -427,8 +427,8 @@ page change
 
 ### 5.4 Settings & menu
 
-All plugin UI lives under a single **Unit Lens ▸** entry at the top of KOReader's Tools tab
-(like X-Ray), built as a standard nested menu (`sub_item_table`) - no bespoke dialog. To get the
+All plugin UI lives under a single **Unit Lens ▸** entry at the top of KOReader's Tools tab,
+built as a standard nested menu (`sub_item_table`) - no bespoke dialog. To get the
 top slot we insert our id at the front of the shared `reader_menu_order.tools` singleton on init
 (`sorting_hint = "tools"` alone only appends us as an orphan after "More tools"). Layout:
 
@@ -550,5 +550,6 @@ underlines and retries shortly (bounded) instead of clearing.
 ## 8. Reference
 
 - Unit data (all categories, forms, values): [docs/units.md](units.md).
-- Interaction/rendering approach studied from the `xray.koplugin` offline unit converter
-  (paintTo overlay, `getScreenBoxesFromPositions`, `highlight.onTap`, rendering-hash cache).
+- Interaction/rendering approach relies on standard KOReader/crengine APIs: a `paintTo`
+  overlay, `getScreenBoxesFromPositions` for boxes, `highlight.onTap` for taps, and a
+  rendering-hash signature for the cache.

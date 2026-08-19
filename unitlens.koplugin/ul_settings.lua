@@ -12,7 +12,7 @@ M.DEFAULTS = {
 	underline_thickness = 2, -- 1 | 2 | 3 (px, pre-scaling)
 	underline_intensity = "medium", -- light | medium | dark
 	tooltip_timeout = 4, -- 2 | 4 | 8 | 0 (0 = never), seconds
-	tooltip_text_size = "auto", -- auto (follow book) | smaller | larger | largest (relative nudge)
+	tooltip_text_size = "auto", -- auto (follow book) | smallest | smaller | bigger | biggest (relative nudge)
 	tooltip_detail = "detailed", -- detailed (System/Category + conversion) | simple (conversion only)
 	ui_lang = "auto", -- "auto" (follow KOReader) or a shipped l10n code (en/ru/es/…)
 }

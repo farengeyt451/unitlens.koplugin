@@ -61,7 +61,7 @@ function Tooltip:init()
 		end
 	end
 
-	-- Compact rounded callout (xray-like): thin border, rounded corners, snug padding
+	-- Compact rounded callout: thin border, rounded corners, snug padding
 	local card = FrameContainer:new({
 		background = Blitbuffer.COLOR_WHITE,
 		color = Blitbuffer.COLOR_BLACK,

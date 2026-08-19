@@ -85,7 +85,7 @@ local UnitLens = WidgetContainer:extend({
 	is_doc_only = true,
 })
 
--- Pin "Unit Lens" to the TOP of the Tools tab (like X-Ray)
+-- Pin "Unit Lens" to the TOP of the Tools tab
 local function pinToToolsTop()
 	pcall(function()
 		local ok, order = pcall(require, "ui/elements/reader_menu_order")
