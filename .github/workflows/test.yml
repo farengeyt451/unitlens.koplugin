@@ -1,0 +1,31 @@
+name: CI
+
+# Run the pure-core off-device test suite on every push to master and on PRs.
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      # KOReader runs LuaJIT (5.1 semantics); the core avoids version-specific
+      # features, so plain Lua 5.1 is enough and keeps the C rock build simple.
+      - uses: leafo/gh-actions-lua@v13
+        with:
+          luaVersion: '5.1'
+      - uses: leafo/gh-actions-luarocks@v6
+
+      # Off-device Unicode lowercaser used by ul_util (ffi/utf8proc is device-only).
+      - name: Install dependencies
+        run: luarocks install luautf8
+
+      - name: Run tests
+        working-directory: unitlens.koplugin
+        run: |
+          eval "$(luarocks path)"
+          lua spec/run.lua

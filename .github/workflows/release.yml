@@ -1,0 +1,51 @@
+name: Release
+
+# Build and publish the plugin artifact when a version tag (vX.Y.Z) is pushed.
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write # needed to create the GitHub release
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Gate the release on the same test suite that runs on master.
+      - uses: leafo/gh-actions-lua@v13
+        with:
+          luaVersion: '5.1'
+      - uses: leafo/gh-actions-luarocks@v6
+      - name: Install dependencies
+        run: luarocks install luautf8
+      - name: Run tests
+        working-directory: unitlens.koplugin
+        run: |
+          eval "$(luarocks path)"
+          lua spec/run.lua
+
+      # Zip the installable plugin folder (drop dev-only tests and logs; keep
+      # _meta.lua and dicts/_template.lua, which the plugin/users rely on).
+      - name: Package plugin
+        run: |
+          version="${GITHUB_REF_NAME#v}"
+          zipname="unitlens.koplugin-${version}.zip"
+          zip -r "$zipname" unitlens.koplugin \
+            -x 'unitlens.koplugin/spec/*' \
+            -x 'unitlens.koplugin/*.log'
+          echo "ZIPNAME=$zipname" >> "$GITHUB_ENV"
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.ZIPNAME }}
+          path: ${{ env.ZIPNAME }}
+
+      - name: Publish GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ${{ env.ZIPNAME }}
+          generate_release_notes: true

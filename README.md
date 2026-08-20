@@ -1,5 +1,11 @@
 # Unit Lens - a KOReader plugin
 
+<p align="center">
+  <a href="https://github.com/farengeyt451/unitconverter.koplugin/actions/workflows/test.yml"><img src="https://github.com/farengeyt451/unitconverter.koplugin/actions/workflows/test.yml/badge.svg" alt="CI"></a>
+  <a href="https://github.com/koreader/koreader/releases/tag/v2026.07.1"><img src="https://img.shields.io/badge/KOReader-2026.07.1-blue" alt="KOReader 2026.07.1"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-green" alt="License: MIT"></a>
+</p>
+
 Unit Lens provides a reference for units of measurement, allowing you to see the equivalent unit in another measurement system.
 Works - **offline**, with no conversion math at runtime.
 
@@ -79,6 +85,7 @@ Sample FB2 books that exercise the matcher (imperial / metric / mixed, in Russia
 - [docs/spec.md](docs/spec.md) - architecture and design
 - [docs/dictionaries.md](docs/dictionaries.md) - add custom dict (with your language)
 - [docs/interface-languages.md](docs/interface-languages.md) - translate the interface
+- [CHANGELOG.md](CHANGELOG.md) - notable changes per release
 
 ## Credits
 
