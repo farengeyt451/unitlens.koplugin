@@ -23,14 +23,18 @@ Works - **offline**, with no conversion math at runtime.
 
 ## Install
 
-Copy the plugin folder into your KOReader `plugins/` directory:
+1. Go to [releases page](https://github.com/farengeyt451/unitlens.koplugin/releases)
 
-```
-<KOReader>/plugins/unitlens.koplugin/
-```
+2. Download latest release unitlens.koplugin-x.x.x.zip
 
-Restart KOReader. Open a book, then find **Tools ▸ Unit Lens** at the top of the
-Tools tab.
+3. Unzip and copy the plugin folder into your KOReader `plugins/` directory:
+
+   ```
+   <KOReader>/plugins/unitlens.koplugin/
+   ```
+
+4. Restart KOReader. Open a book, then find **Tools ▸ Unit Lens** at the top of the
+   Tools tab.
 
 ## Usage
 
