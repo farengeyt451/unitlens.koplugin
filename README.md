@@ -1,29 +1,19 @@
 # Unit Lens - a KOReader plugin
 
-Unit Lens quietly underlines the measurement units on the page you're reading and,
-on a tap, shows their equivalent in the other measurement system - **offline**, with
-no conversion math at runtime.
-
-It reads like a lens laid over the text: units are recognised and their precomputed
-equivalents revealed, without pulling you out of the book.
+Unit Lens provides a reference for units of measurement, allowing you to see the equivalent unit in another measurement system.
+Works - **offline**, with no conversion math at runtime.
 
 ## Features
 
-- **Offline & private.** No network, no AI. All data ships in the plugin.
-- **Dictionary-driven.** Every conversion is a precomputed string in a per-language
-  dictionary - the engine matches words and renders those strings, nothing more.
-- **Two match paths.** Spelled words (`двенадцати футах`, `several miles`) match
-  standalone; short symbols (`600 mm`, `6 ft`) only match next to a number, to avoid
-  false positives.
-- **Broad coverage.** Length, mass, volume, area and temperature across metric (SI),
-  US customary, British imperial, and old-Russian measures (верста, пуд, …).
-- **Reader-native UI.** A configurable underline (wavy/solid/dotted/dashed/double)
-  and a compact tap tooltip that follows your book's font.
-- **Per-book language, translatable interface.** Book language auto-detects from
+- **Offline:** No network, no AI. All data ships in the plugin
+- **Dictionary-driven:** Every conversion is a precomputed string in a per-language
+  dictionary
+- **Configurable UI:** configurable underline, font and tooltip
+- **Per-book language, translatable interface:** Book language auto-detects from
   metadata (with a manual override remembered per book); the menu itself ships in
-  English, Russian and Spanish.
+  Russian, English and Spanish
 - **User-extensible.** Drop a new `dicts/<code>.lua` in and it's discovered
-  automatically - no code changes.
+  automatically - no code changes
 
 ## Install
 
@@ -45,21 +35,20 @@ docker compose up -d koreader
 
 ## Usage
 
-- Open a book - supported units on the visible page are underlined.
-- **Tap** an underlined unit to see the conversion popup.
+- Open a book - supported units on the visible page are underlined
+- **Tap** an underlined unit to see the conversion popup
 - Tune everything under **Tools ▸ Unit Lens**: enable/disable, book language,
   interface language, underline style/thickness/intensity, tooltip timeout, size and
-  detail (detailed vs. simple).
+  detail (detailed vs. simple)
 
 ## How to extend
 
 Both are plain Lua tables - no build step, auto-discovered on the next launch:
 
-- **Add a book language** (which units are detected): see
-  [docs/dictionaries.md](docs/dictionaries.md). Start from
-  [`unitlens.koplugin/dicts/_template.lua`](unitlens.koplugin/dicts/_template.lua).
-- **Translate the interface** (menu, About, notifications): see
-  [docs/interface-languages.md](docs/interface-languages.md).
+- **Add your custom dict:** see [docs/dictionaries.md](docs/dictionaries.md).
+  Start from [`unitlens.koplugin/dicts/_template.lua`](unitlens.koplugin/dicts/_template.lua)
+- **Translate the interface:** see
+  [docs/interface-languages.md](docs/interface-languages.md)
 
 Contributions of new dictionaries and translations are welcome as small,
 single-file pull requests.
@@ -69,8 +58,7 @@ single-file pull requests.
 On each page change (debounced), the plugin walks the visible page into word tokens,
 runs a pure matcher against the active dictionary, and draws an underline over each
 hit; a tap resolves the tooltip. Results are cached per page by a rendering-hash
-signature. The full design is in [docs/spec.md](docs/spec.md); the canonical unit
-data (forms, symbols, values) is in [docs/units.md](docs/units.md).
+signature
 
 ## Development
 
@@ -83,14 +71,13 @@ lua5.1 spec/run.lua        # luajit / lua5.4 also work
 
 The off-device tests need `luautf8` for Unicode case-folding
 (`luarocks install --local luautf8`). Sample FB2 books that exercise the matcher
-(imperial / metric / mixed, in Russian and English) live in [`books/`](books/).
+(imperial / metric / mixed, in Russian and English) live in [`books/`](books/)
 
 ## Documentation
 
-- [docs/spec.md](docs/spec.md) - architecture and design.
-- [docs/units.md](docs/units.md) - canonical unit reference (all categories).
-- [docs/dictionaries.md](docs/dictionaries.md) - add a book language.
-- [docs/interface-languages.md](docs/interface-languages.md) - translate the interface.
+- [docs/spec.md](docs/spec.md) - architecture and design
+- [docs/dictionaries.md](docs/dictionaries.md) - add custom dict (with your language)
+- [docs/interface-languages.md](docs/interface-languages.md) - translate the interface
 
 ## Credits
 
