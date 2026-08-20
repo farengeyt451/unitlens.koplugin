@@ -170,4 +170,14 @@ return function(t)
 	t.eq(tkeys({ "14", "C" }, en), {}, "en: seat 14C is not celsius")
 	t.eq(tkeys({ "20", "F" }, en), {}, "en: gate 20 F is not fahrenheit")
 	t.eq(keys("°C", ru), {}, "ru: bare °C with no number is ignored")
+
+	-- M8 audit: accepted trade-offs for glued single-letter symbols. We keep glued
+	-- single-char metric (5g, 300K) even though it also matches "10K"-style non-
+	-- units - a deliberate LOW/MEDIUM tolerance (see docs/spec.md §4.1). Case still
+	-- matters (symbols are case-sensitive), and unshipped letters never match.
+	t.eq(tkeys({ "300K" }, en), { "kelvin" }, "en: glued 300K -> kelvin")
+	t.eq(tkeys({ "10K" }, en), { "kelvin" }, "en: glued 10K -> kelvin (accepted)")
+	t.eq(tkeys({ "5g" }, en), { "gram" }, "en: glued 5g -> gram")
+	t.eq(tkeys({ "5G" }, en), {}, "en: 5G (uppercase) is not a unit")
+	t.eq(tkeys({ "14C" }, en), {}, "en: glued seat 14C stays clean (no bare C symbol)")
 end

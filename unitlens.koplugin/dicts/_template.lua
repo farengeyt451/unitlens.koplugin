@@ -3,7 +3,7 @@ dicts/_template.lua - copy this to dicts/<code>.lua to add a Book language.
 
 Files starting with "_" are skipped by auto-discovery, so this template never
 shows up as a language. Copy it, rename it to a BCP-47 primary subtag (de.lua,
-fr.lua, uk.lua, …), set `lang` and `name`, and fill in `units`.
+fr.lua, be.lua, …), set `lang` and `name`, and fill in `units`.
 
 Model (see docs/dictionaries.md and docs/spec.md §4):
   * Nothing is computed at runtime. Every answer is a precomputed STRING you write
@@ -18,7 +18,7 @@ return {
 	lang = "xx",
 
 	-- Endonym shown in Tools ▸ Unit Lens ▸ Book language (the language in itself,
-	-- e.g. "Deutsch", "Français", "Українська").
+	-- e.g. "Deutsch", "Français", "Español").
 	name = "Language name",
 
 	-- Localized popup chrome. Each unit's `system`/`category` is looked up here;

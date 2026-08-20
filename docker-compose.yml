@@ -10,7 +10,7 @@ services:
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=Europe/Kyiv
+      - TZ=Etc/UTC
     volumes:
       - ./books:/books
       - ./unitlens.koplugin:/config/.config/koreader/plugins/unitlens.koplugin

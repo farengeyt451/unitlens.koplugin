@@ -4,20 +4,20 @@ A **book dictionary** decides **which units are detected** in the book text and
 **what the popup shows**. This is separate from the plugin's **interface** language
 (the menu/About strings - see [interface-languages.md](interface-languages.md)).
 
-- **Book language** → `unitlens.koplugin/dicts/<code>.lua`. Per-book setting.
-- **Interface language** → `unitlens.koplugin/l10n/<code>.lua`. Global setting.
+- **Book dictionary** → `unitlens.koplugin/dicts/<code>.lua`. Per-book setting
+- **Interface language** → `unitlens.koplugin/l10n/<code>.lua`. Global setting
 
 There is **no runtime math**. Every conversion is a string you precompute here
-(from [units.md](units.md)) and store on the unit. The engine only matches words and
+and store on the unit. The engine only matches words and
 renders your strings, so a dictionary can support _any_ language.
 
 ## Add or update a language
 
 1. Copy [`_template.lua`](../unitlens.koplugin/dicts/_template.lua) to
    `dicts/<code>.lua`, where `<code>` is the language's [ISO 639-1] code
-   (`de`, `fr`, `uk`, …). It must match the file name.
+   (`de`, `fr`, `be`, …). It must match the file name.
 2. Set `lang` to the same `<code>`, and `name` to the language's **own** endonym
-   (e.g. `"Deutsch"`, `"Українська"`) - this is what shows in the menu.
+   (e.g. `"Deutsch"`, `"Español"`) - this is what shows in the menu.
 3. Translate the `strings` block and fill in `units` (see below).
 4. That's it. Files are **auto-discovered**; the language appears under
    **Tools ▸ Unit Lens ▸ Book language** on the next launch. (Files starting with

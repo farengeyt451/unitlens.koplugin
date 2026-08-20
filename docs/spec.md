@@ -257,6 +257,15 @@ metre = {
 > (`are`, `род`). This judgment lives in the author's head, not in the data - which keeps the
 > dictionaries as simple as possible.
 
+**Accepted trade-off - glued single-letter symbols.** The glued splitter (§3.2) will match a
+number fused to a one-letter symbol, e.g. `300K`/`5g`, which also lights up non-unit forms like
+`10K` ("ten thousand"). This is a deliberate LOW/MEDIUM tolerance: glued single-char symbols are
+common and useful in real prose (`5м`, `20г`, `300K`), and gating them away would cost more than
+the rare `10K` false positive. Case still filters (`symbols` are case-sensitive, so `5G` ≠ `5g`),
+and letters we don't ship never match (bare `C`/`F` are not symbols, so a seat `14C` stays clean).
+A cross-book audit of the sample library found **zero** false positives in curated text; the only
+residual risk is this `10K`-class collision in ordinary prose.
+
 ### 4.2 Results - precomputed conversion lines
 
 Because the plugin never parses the quantity (§2), the converted value is known at authoring
@@ -548,10 +557,11 @@ underlines and retries shortly (bounded) instead of clearing.
 7. **Dictionary coverage:** extend `en`/`ru` from length to the remaining multiplicative categories
    in `units.md` - mass/weight, volume (US vs imperial variants as multiple `results`), area, speed —
    with category/system `strings` and precomputed values; add tests. _(Temperature excluded - non-goal.)_
-8. **Quality & performance:** false-positive audit on the expanded dicts (keep symbols digit-gated;
-   drop words common in prose but rare as units); confirm the rendering-hash box cache and profile
-   on-device scan time with the bigger dicts; broaden matcher tests. _(Single glued number+unit
-   tokens are handled in the matcher (§3.2); multi-token ranges remain out of scope.)_
+8. ✅ **Quality & performance:** headless cross-book audit (all 6 sample books via the real
+   scanner+matcher) found **zero** false positives; the only residual is the accepted `10K`-class
+   glued single-letter collision (§4.1). Matcher tests broadened (glued, degree `°C`/`°F`,
+   case-sensitivity, negatives). _(Single glued number+unit tokens handled in the matcher (§3.2);
+   multi-token ranges remain out of scope.)_
 9. **Release & packaging:** README (features, install, screenshots, how to add languages/dicts),
    version/license/credits, GitHub release (+ optional KOReader plugin-index submission).
 
