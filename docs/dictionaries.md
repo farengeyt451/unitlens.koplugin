@@ -15,13 +15,13 @@ renders your strings, so a dictionary can support _any_ language.
 
 1. Copy [`_template.lua`](../unitlens.koplugin/dicts/_template.lua) to
    `dicts/<code>.lua`, where `<code>` is the language's [ISO 639-1] code
-   (`de`, `fr`, `be`, …). It must match the file name.
+   (`de`, `fr`, `be`, …). It must match the file name
 2. Set `lang` to the same `<code>`, and `name` to the language's **own** endonym
-   (e.g. `"Deutsch"`, `"Español"`) - this is what shows in the menu.
-3. Translate the `strings` block and fill in `units` (see below).
+   (e.g. `"Deutsch"`, `"Español"`) - this is what shows in the menu
+3. Translate the `strings` block and fill in `units` (see below)
 4. That's it. Files are **auto-discovered**; the language appears under
    **Tools ▸ Unit Lens ▸ Book language** on the next launch. (Files starting with
-   `_` or `.` are ignored, which is why the template is skipped.)
+   `_` or `.` are ignored)
 
 ## A unit, field by field
 
@@ -38,17 +38,17 @@ foot = {                                   -- table key: internal id, keep it st
 
 - **`forms`** - spelled-out words, matched **standalone** (no digit needed). List
   every inflected form your language uses (cases, plurals): `фут, фута, футах, …`.
-  Matching is case-folded via full Unicode, so don't add case variants.
+  Matching is case-folded via full Unicode, so don't add case variants
 - **`symbols`** - abbreviations, matched **only when adjacent to a number**
-  (`6 ft`, `40 m`). Case-sensitive on purpose (`m` ≠ `M`, `in` ≠ `IN`).
-- **`results`** - a list of answer lines. Each is either
+  (`6 ft`, `40 m`). Case-sensitive on purpose (`m` ≠ `M`, `in` ≠ `IN`)
+- **`results`** - a **list** of answer lines. Each is either
   - `{ value = "1.609", unit = "km", label = "statute" }` → `1 <name> = 1.609 km - statute`
     (`label` optional), or
   - `{ text = "°F = °C × 9/5 + 32" }` → printed **verbatim** (for temperature and
-    anything the `1 name = …` template doesn't fit).
+    anything the `1 name = …` template doesn't fit)
 - **`system` / `category`** - keys into the `strings` block for the popup header.
   Omit either to drop that header line (used for words that span systems, e.g. a
-  pound that is both avoirdupois and troy).
+  pound that is both avoirdupois and troy)
 
 ### The popup
 
@@ -59,6 +59,32 @@ Category: <strings.categories[category]>    (skipped likewise)
 1 <name> = <value> <unit> - <label>         (one line per result; or the raw text)
 ```
 
+### Example
+
+```
+mile = {
+  name = "mile",
+  system = "customary",
+  category = "length",
+  forms = { "mile", "miles" },
+  symbols = { "mi", "nmi", "NM" },
+  results = {
+    { value = "1.609", unit = "km", label = "statute" },
+    { value = "1.852", unit = "km", label = "nautical" },
+  }
+}
+```
+
+Notice several **results**. The popup will show each of them:
+
+```
+System: Customary
+Category: Length
+
+1 mile = 1.609 km - statute
+1 mile = 1.852 km - nautical
+```
+
 ## False positives - inclusion is the filter
 
 There is no NLP and no context analysis: if a word is in `forms`, it lights up
@@ -67,23 +93,21 @@ wherever it appears. So the dictionary itself is the filter.
 - Put **short/common** abbreviations and any word that collides with ordinary
   prose into **`symbols`** (digit-gated), never `forms`. A spelled unit that is
   also a common word (e.g. Russian «бар», or English "in") should be digit-gated
-  or left out entirely.
-- **Drop** units that are common as words but rare as units (English "are").
+  or left out entirely
+- **Drop** units that are common as words but rare as units (English "are")
 - Keep genuinely unit-only spelled words (`kilometre`, `фунт`, `Fahrenheit`) in
-  `forms` - they are unambiguous.
+  `forms` - they are unambiguous
 - One word, several systems? Don't invent multi-word matches (the matcher is
   single-token). Fold them into several labelled `results` and let the reader
-  choose (see `mile`, `pound` in the template).
+  choose (see `mile`, `pound` in the template)
 
 ## Notes
 
-- Values are **strings**: use your language's decimal mark (`0.3048` vs `0,3048`)
-  and copy figures from [units.md](units.md), the canonical data.
+- Values are **strings:** use your language's decimal mark (`0.3048` vs `0,3048`)
 - There is **no validator** - dictionaries are checked by hand before shipping, so
-  proof-read your forms and values.
+  proof-read your forms and values
 - Match the built-ins for structure and coverage:
-  [`en.lua`](../unitlens.koplugin/dicts/en.lua),
-  [`ru.lua`](../unitlens.koplugin/dicts/ru.lua).
-- Full contract and rationale: [spec.md](spec.md) §4.
+  [`ru.lua`](../unitlens.koplugin/dicts/ru.lua)
+  [`en.lua`](../unitlens.koplugin/dicts/en.lua)
 
 [ISO 639-1]: https://en.wikipedia.org/wiki/List_of_ISO_639_language_codes

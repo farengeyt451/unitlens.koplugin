@@ -26,13 +26,6 @@ Copy the plugin folder into your KOReader `plugins/` directory:
 Restart KOReader. Open a book, then find **Tools ▸ Unit Lens** at the top of the
 Tools tab.
 
-For a local development setup, this repo includes a `docker-compose.yml` that runs
-the KOReader emulator with the plugin mounted:
-
-```bash
-docker compose up -d koreader
-```
-
 ## Usage
 
 - Open a book - supported units on the visible page are underlined
@@ -62,6 +55,13 @@ signature
 
 ## Development
 
+For a local development setup, this repo includes a `docker-compose.yml` that runs
+the KOReader emulator with the plugin mounted:
+
+```bash
+docker compose up -d koreader
+```
+
 The pure core (dictionaries, matcher, formatter, text utils) is testable off-device:
 
 ```bash
@@ -70,8 +70,9 @@ lua5.1 spec/run.lua        # luajit / lua5.4 also work
 ```
 
 The off-device tests need `luautf8` for Unicode case-folding
-(`luarocks install --local luautf8`). Sample FB2 books that exercise the matcher
-(imperial / metric / mixed, in Russian and English) live in [`books/`](books/)
+(`luarocks install --local luautf8`).
+
+Sample FB2 books that exercise the matcher (imperial / metric / mixed, in Russian and English) live in [`books/`](books/)
 
 ## Documentation
 
