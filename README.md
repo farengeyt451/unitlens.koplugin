@@ -1,10 +1,14 @@
+<div align="center">
+
+<img src="assets/icon.png" alt="Unit Lens icon" width="128" height="128">
+
 # Unit Lens - a KOReader plugin
 
-<p align="center">
-  <a href="https://github.com/farengeyt451/unitconverter.koplugin/actions/workflows/test.yml"><img src="https://github.com/farengeyt451/unitconverter.koplugin/actions/workflows/test.yml/badge.svg" alt="CI"></a>
-  <a href="https://github.com/koreader/koreader/releases/tag/v2026.07.1"><img src="https://img.shields.io/badge/KOReader-2026.07.1-blue" alt="KOReader 2026.07.1"></a>
-  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-green" alt="License: MIT"></a>
-</p>
+<a href="https://github.com/farengeyt451/unitconverter.koplugin/actions/workflows/test.yml"><img src="https://github.com/farengeyt451/unitconverter.koplugin/actions/workflows/test.yml/badge.svg" alt="CI"></a>
+<a href="https://github.com/koreader/koreader/releases/tag/v2026.07.1"><img src="https://img.shields.io/badge/KOReader-2026.07.1-blue" alt="KOReader 2026.07.1"></a>
+<a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-green" alt="License: MIT"></a>
+
+</div>
 
 Unit Lens provides a reference for units of measurement, allowing you to see the equivalent unit in another measurement system.
 Works - **offline**, with no conversion math at runtime.
