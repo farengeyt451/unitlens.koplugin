@@ -50,9 +50,14 @@ function M.tokenize(s)
 
 	local u = lutf8_tok
 
-	s = u.gsub(s, "[^%a%d]+", " ") -- any-script punctuation/space -> one space
+	-- Keep the degree marks as word chars so "°C"/"°F"/"℃"/"℉" survive as a token
+	-- (they are punctuation to %a/%d and would otherwise be stripped, leaving a
+	-- bare, unmatchable "C"). See scanner for the on-device counterpart.
+	s = u.gsub(s, "[^%a%d°℃℉]+", " ") -- any-script punctuation/space -> one space
 	s = u.gsub(s, "(%a)(%d)", "%1 %2") -- split letter|digit boundary
 	s = u.gsub(s, "(%d)(%a)", "%1 %2") -- split digit|letter boundary
+	s = u.gsub(s, "(%d)([°℃℉])", "%1 %2") -- split "20°C" -> "20 °C"
+	s = u.gsub(s, "(°)%s+(%a)", "%1%2") -- re-glue "° C" -> "°C"
 
 	local tokens = {}
 

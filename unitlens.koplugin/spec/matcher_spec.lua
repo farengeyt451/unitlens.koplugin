@@ -124,4 +124,50 @@ return function(t)
 
 	-- "фунт" now folds English + Russian pound into one match.
 	t.eq(keys("он весил три фунта", ru), { "pound" }, "ru: фунта -> pound (folded)")
+
+	-- M6c: glued number+unit tokens. crengine hands "600мм" as ONE token, so we
+	-- feed tokens straight to matcher.match (the off-device tokenizer would pre-
+	-- split them, hiding the bug). The leading number is the digit gate.
+	local function tkeys(toks, d)
+		local r = {}
+		for _, m in ipairs(matcher.match(d, toks)) do
+			r[#r + 1] = m.unit.key
+		end
+		return r
+	end
+
+	t.eq(tkeys({ "600мм" }, ru), { "millimetre" }, "ru: glued 600мм -> millimetre")
+	t.eq(tkeys({ "5км" }, ru), { "kilometre" }, "ru: glued 5км -> kilometre")
+	t.eq(tkeys({ "2,5кг" }, ru), { "kilogram" }, "ru: glued 2,5кг (decimal) -> kilogram")
+	t.eq(tkeys({ "12°C" }, ru), { "celsius" }, "ru: glued 12°C -> celsius")
+	t.eq(tkeys({ "600mm" }, en), { "millimetre" }, "en: glued 600mm -> millimetre")
+	t.eq(tkeys({ "1.5kg" }, en), { "kilogram" }, "en: glued 1.5kg (decimal) -> kilogram")
+
+	-- The whole glued token stays a single match anchored at its index.
+	t.eq(#matcher.match(ru, { "600мм" }), 1, "ru: glued token is one match")
+
+	-- Negatives: bare numbers and number+non-unit stay clean.
+	t.eq(tkeys({ "600" }, ru), {}, "ru: bare number is not a unit")
+	t.eq(tkeys({ "3rd" }, en), {}, "en: ordinal 3rd is not a unit")
+	t.eq(tkeys({ "21st" }, en), {}, "en: ordinal 21st is not a unit")
+
+	-- Temperature °C / °F. The degree sign is punctuation, so the tokenizer used
+	-- to strip it and leave a bare, unmatchable "C". Now "°C"/"°F" reach the
+	-- matcher as one token (off-device: ul_util keeps the sign; on-device:
+	-- crengine emits "°" as its own token and drops the trailing C/F into the
+	-- following gap, which ul_scanner re-glues). The number is the digit gate.
+	t.eq(keys("было ровно 20 °C", ru), { "celsius" }, "ru: 20 °C -> celsius")
+	t.eq(keys("нагрели до 20°C", ru), { "celsius" }, "ru: glued 20°C -> celsius")
+	t.eq(keys("outside it was 86 °F", en), { "fahrenheit" }, "en: 86 °F -> fahrenheit")
+	t.eq(keys("a crisp 41°F morning", en), { "fahrenheit" }, "en: glued 41°F -> fahrenheit")
+
+	-- Same via the crengine token shapes the scanner produces after re-gluing.
+	t.eq(tkeys({ "20", "°C" }, ru), { "celsius" }, "ru: {20, °C} -> celsius")
+	t.eq(tkeys({ "86", "°F" }, en), { "fahrenheit" }, "en: {86, °F} -> fahrenheit")
+
+	-- A bare "C"/"F" with NO degree sign must stay clean: seat 14C, gate 20 F, etc.
+	-- (This is why we re-glue the sign instead of shipping C/F as symbols.)
+	t.eq(tkeys({ "14", "C" }, en), {}, "en: seat 14C is not celsius")
+	t.eq(tkeys({ "20", "F" }, en), {}, "en: gate 20 F is not fahrenheit")
+	t.eq(keys("°C", ru), {}, "ru: bare °C with no number is ignored")
 end

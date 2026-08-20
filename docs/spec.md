@@ -41,11 +41,11 @@ Guiding principles:
   word alone (`футах`) triggers the underline; the number is irrelevant to the result.
 - **No region (US vs imperial) detection.** For units that diverge by region, the popup
   lists every variant and the reader picks (see §4.2).
-- **No glued/complex token detection.** Glued number+unit (`600мм`, `12°C`, `5'6"`), numeric
-  ranges (`10–12 km`) and punctuation-edge cases are out of scope; detection works on the whole
-  word tokens crengine word-navigation delivers.
-- **No temperature.** Temperature is an offset (non-multiplicative) conversion and a separate
-  design problem; deferred.
+- **No complex token detection.** A single glued number+unit token (`600мм`, `12°C`) _is_
+  handled: the matcher peels the leading numeric run and matches the remainder (§3.2), so
+  detection no longer depends on the tokenizer splitting it. Multi-token constructs - numeric
+  ranges (`10–12 km`), feet-and-inches (`5'6"`), and other punctuation-edge cases - remain out
+  of scope.
 - No cloud, no AI, no persisted user highlights/annotations.
 
 ## 3. Core rules
@@ -81,6 +81,13 @@ This is **language-agnostic**: full unit words are detected in spelled-number se
 **any** language - Russian `в двенадцати футах` -> `футах`, English `walked several miles`
 -> `miles`. Only symbols need a digit: `stopped in the doorway` stays clean because the
 symbol `in` has no adjacent digit, while `6 in` / `6 ft` still fire.
+
+**Glued number+unit.** crengine word-navigation delivers `600мм` / `12°C` as a _single_
+token, so the neighbour-based digit check can't see the number. The matcher therefore peels a
+leading numeric run (integer or decimal) off any otherwise-unmatched token and tests the
+remainder against `forms`/`symbols`; the leading number itself satisfies the digit gate. The
+match stays anchored to the whole token, so the underline covers all of `600мм` (no sub-word
+XPointer math). Multi-token forms (`10–12 km`, `5'6"`) are still out of scope.
 
 Everything else about false positives is governed by **inclusion, not gating** (§4.1): a word
 only underlines if its unit is in the dictionary at all. High-collision-but-common units
@@ -543,8 +550,8 @@ underlines and retries shortly (bounded) instead of clearing.
    with category/system `strings` and precomputed values; add tests. _(Temperature excluded - non-goal.)_
 8. **Quality & performance:** false-positive audit on the expanded dicts (keep symbols digit-gated;
    drop words common in prose but rare as units); confirm the rendering-hash box cache and profile
-   on-device scan time with the bigger dicts; broaden matcher tests. _(Glued-token/range robustness
-   excluded - non-goal.)_
+   on-device scan time with the bigger dicts; broaden matcher tests. _(Single glued number+unit
+   tokens are handled in the matcher (§3.2); multi-token ranges remain out of scope.)_
 9. **Release & packaging:** README (features, install, screenshots, how to add languages/dicts),
    version/license/credits, GitHub release (+ optional KOReader plugin-index submission).
 

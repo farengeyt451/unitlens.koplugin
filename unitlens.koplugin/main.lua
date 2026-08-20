@@ -41,13 +41,13 @@ local langselect = require("ul_langselect")
 local i18n = require("ul_i18n")
 local menu = require("ul_menu")
 
-local VERSION = "0.6.0"
+local VERSION = "1.0.0"
 
 -- Navigation fires in bursts (page turn -> partial reflow -> settle). We coalesce
 -- them into a single scan once things go quiet, so we never scan a half-laid-out
 -- page - that showed up in the log as a transient matches=0 that briefly cleared
 -- the underlines.
-local SCAN_DEBOUNCE = 0.1 -- seconds
+local SCAN_DEBOUNCE = 0.256 -- seconds
 
 -- Per-document cache of computed matches, keyed by page signature (page number +
 -- rendering hash). Flipping back to a visited page is then instant and flicker-

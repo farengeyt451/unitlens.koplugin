@@ -27,6 +27,39 @@ local function pos_of(doc, xp)
 	end)
 end
 
+local DEGREE = "\194\176" -- U+00B0 "°" (2 UTF-8 bytes)
+
+-- crengine word-navigation emits the degree sign as its OWN token ("27", "°",
+-- ...) and drops the trailing C/F letter entirely - it only survives in the gap
+-- text before the NEXT token. So "27 °C" arrives as {"27", "°"} with a "C " gap,
+-- and neither "°" nor "C" is a symbol on its own. Recover it: for any token that
+-- ends in "°", peek at the text right after it and, if it starts with C/F, glue
+-- that letter on ("°" -> "°C", "20°" -> "20°C"). The matcher then sees the "°C"
+-- symbol, digit-gated by the preceding "27" (or the glued number). A bare "°"
+-- (e.g. "90° turn") is left untouched, so it never false-matches.
+local function reattach_degree(doc, tokens)
+	for i = 1, #tokens do
+		local t = tokens[i]
+
+		if t.text:sub(-2) == DEGREE then
+			local nxt = tokens[i + 1]
+			local after = nxt
+				and try(function()
+					return doc:getTextFromXPointers(t.end_xp, nxt.start_xp)
+				end)
+			local letter = after and after:match("^%s*([CF])")
+
+			if letter then
+				t.text = t.text .. letter
+				-- The C/F is not a token of its own; it lives in the gap up to the
+				-- next token. Extend the span so the underline covers "°C", not the
+				-- lone "°". (Worst case it also spans a trailing space/comma.)
+				t.end_xp = nxt.start_xp
+			end
+		end
+	end
+end
+
 -- Enumerate the visible page's word tokens
 function M.pageTokens(doc, page)
 	local tokens = {}
@@ -117,6 +150,7 @@ function M.pageTokens(doc, page)
 		end
 	end
 
+	reattach_degree(doc, tokens)
 	return tokens
 end
 
