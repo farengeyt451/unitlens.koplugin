@@ -238,6 +238,7 @@ return {
 			results = {
 				{ value = "0.001", unit = "g" },
 				{ value = "0.0154", unit = "gr" },
+				{ value = "0.000035", unit = "oz" },
 			},
 		},
 		microgram = {

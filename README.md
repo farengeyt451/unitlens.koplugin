@@ -15,6 +15,70 @@
 Unit Lens provides a reference for units of measurement, allowing you to see the equivalent unit in another measurement system.
 Works - **offline**, with no conversion math at runtime.
 
+## Demo
+
+<div align="center">
+
+### Detailed Popup
+
+</div>
+
+<div align="center">
+  <img src="assets/screens/sc_1_rus_detailed.png" alt="Unit Lens icon" width="512" height="670">
+  &nbsp;
+  &nbsp;
+  &nbsp;
+  &nbsp;
+  <img src="assets/screens/sc_3_eng_detailed.png" alt="Unit Lens icon" width="512" height="670">
+</div>
+
+<br>
+
+<div align="center">
+
+### Simple Popup
+
+</div>
+
+<div align="center">
+  <img src="assets/screens/sc_2_rus_simple.png" alt="Unit Lens icon" width="512" height="670">
+  &nbsp;
+  &nbsp;
+  &nbsp;
+  &nbsp;
+  <img src="assets/screens/sc_4_eng_simple.png" alt="Unit Lens icon" width="512" height="670">
+</div>
+
+<div align="center">
+
+### Short Units
+
+</div>
+
+<div align="center">
+  <img src="assets/screens/sc_5_rus_symbols.png" alt="Unit Lens icon" width="512" height="670">
+  &nbsp;
+  &nbsp;
+  &nbsp;
+  &nbsp;
+  <img src="assets/screens/sc_6_eng_symbols.png" alt="Unit Lens icon" width="512" height="670">
+</div>
+
+<div align="center">
+
+### Settings Page
+
+</div>
+
+<div align="center">
+  <img src="assets/screens/sc_7_rus_settings.png" alt="Unit Lens icon" width="512" height="670">
+  &nbsp;
+  &nbsp;
+  &nbsp;
+  &nbsp;
+  <img src="assets/screens/sc_8_eng_settings.png" alt="Unit Lens icon" width="512" height="670">
+</div>
+
 ## Features
 
 - **Offline:** No network, no AI. All data ships in the plugin
