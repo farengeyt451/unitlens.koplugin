@@ -24,12 +24,11 @@ Works - **offline**, with no conversion math at runtime.
 </div>
 
 <div align="center">
-  <img src="assets/screens/sc_1_rus_detailed.png" alt="Unit Lens icon" width="512" height="670">
+  <img src="assets/screens/sc_1_rus_detailed.png" alt="Unit Lens icon" width="377" height="493">
   &nbsp;
   &nbsp;
   &nbsp;
-  &nbsp;
-  <img src="assets/screens/sc_3_eng_detailed.png" alt="Unit Lens icon" width="512" height="670">
+  <img src="assets/screens/sc_3_eng_detailed.png" alt="Unit Lens icon" width="377" height="493">
 </div>
 
 <br>
@@ -41,12 +40,11 @@ Works - **offline**, with no conversion math at runtime.
 </div>
 
 <div align="center">
-  <img src="assets/screens/sc_2_rus_simple.png" alt="Unit Lens icon" width="512" height="670">
+  <img src="assets/screens/sc_2_rus_simple.png" alt="Unit Lens icon" width="377" height="493">
   &nbsp;
   &nbsp;
   &nbsp;
-  &nbsp;
-  <img src="assets/screens/sc_4_eng_simple.png" alt="Unit Lens icon" width="512" height="670">
+  <img src="assets/screens/sc_4_eng_simple.png" alt="Unit Lens icon" width="377" height="493">
 </div>
 
 <div align="center">
@@ -56,12 +54,11 @@ Works - **offline**, with no conversion math at runtime.
 </div>
 
 <div align="center">
-  <img src="assets/screens/sc_5_rus_symbols.png" alt="Unit Lens icon" width="512" height="670">
+  <img src="assets/screens/sc_5_rus_symbols.png" alt="Unit Lens icon" width="377" height="493">
   &nbsp;
   &nbsp;
   &nbsp;
-  &nbsp;
-  <img src="assets/screens/sc_6_eng_symbols.png" alt="Unit Lens icon" width="512" height="670">
+  <img src="assets/screens/sc_6_eng_symbols.png" alt="Unit Lens icon" width="377" height="493">
 </div>
 
 <div align="center">
@@ -71,12 +68,11 @@ Works - **offline**, with no conversion math at runtime.
 </div>
 
 <div align="center">
-  <img src="assets/screens/sc_7_rus_settings.png" alt="Unit Lens icon" width="512" height="670">
+  <img src="assets/screens/sc_7_rus_settings.png" alt="Unit Lens icon" width="377" height="493">
   &nbsp;
   &nbsp;
   &nbsp;
-  &nbsp;
-  <img src="assets/screens/sc_8_eng_settings.png" alt="Unit Lens icon" width="512" height="670">
+  <img src="assets/screens/sc_8_eng_settings.png" alt="Unit Lens icon" width="377" height="493">
 </div>
 
 ## Features
