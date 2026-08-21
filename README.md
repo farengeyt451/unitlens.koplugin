@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="assets/icon.png" alt="Unit Lens icon" width="128" height="128">
+<img src="assets/mascot.png" alt="Unit Lens icon" width="128" height="128">
 
 # Unit Lens - a KOReader plugin
 
@@ -9,6 +9,8 @@
 <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-green" alt="License: MIT"></a>
 
 </div>
+
+## Overview
 
 Unit Lens provides a reference for units of measurement, allowing you to see the equivalent unit in another measurement system.
 Works - **offline**, with no conversion math at runtime.
