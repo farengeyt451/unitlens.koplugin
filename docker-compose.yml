@@ -7,6 +7,9 @@ services:
       - '3001:3001' # HTTPS
     cap_add:
       - CAP_NET_RAW
+    shm_size: '1gb'
+    security_opt:
+      - seccomp:unconfined
     environment:
       - PUID=1000
       - PGID=1000
